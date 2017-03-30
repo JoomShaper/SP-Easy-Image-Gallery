@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <extension type="module" version="3.1" client="site" method="upgrade">
 	<name>mod_speasyimagegallery</name>
-	<author>Joomla! Project</author>
-	<creationDate>July 2004</creationDate>
-	<copyright>Copyright (C) 2005 - 2016 Open Source Matters. All rights reserved.</copyright>
-	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
-	<authorEmail>admin@joomla.org</authorEmail>
-	<authorUrl>www.joomla.org</authorUrl>
-	<version>3.0.0</version>
+	<creationDate>Mar 2016</creationDate>
+	<author>JoomShaper</author>
+	<authorEmail>support@joomshaper.com</authorEmail>
+	<authorUrl>http://www.joomshaper.com</authorUrl>
+	<copyright>@JoomShaper 2010 - 2017. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<version>1.1</version>
 	<description>MOD_SPEASYIMAGEGALLERY_XML_DESCRIPTION</description>
 	<files>
-		<filename module="mod_search">mod_speasyimagegallery.php</filename>
+		<filename module="mod_speasyimagegallery">mod_speasyimagegallery.php</filename>
 		<folder>tmpl</folder>
 		<filename>helper.php</filename>
 	</files>
