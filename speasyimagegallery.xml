@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension type="component" version="3.6" method="upgrade">
+	<name>COM_SPEASYIMAGEGALLERY</name>
+	<creationDate>Mar 2016</creationDate>
+	<author>JoomShaper</author>
+	<authorEmail>support@joomshaper.com</authorEmail>
+	<authorUrl>http://www.joomshaper.com</authorUrl>
+	<copyright>@JoomShaper 2010 - 2017. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<version>1.1</version>
+	<description>A simple image gallery component for Joomla.</description>
+
+	<updateservers>
+		<server type="extension" priority="1" name="SP Easy Image Gallery">https://www.joomshaper.com/updates/com-speasyimagegallery.xml</server>
+	</updateservers>
+
+	<install> <!-- Runs on install -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
+		</sql>
+	</install>
+
+	<uninstall> <!-- Runs on uninstall -->
+		<sql>
+			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
+		</sql>
+	</uninstall>
+
+	<files folder="site">
+		<filename>speasyimagegallery.php</filename>
+		<filename>controller.php</filename>
+		<filename>router.php</filename>
+		<folder>views</folder>
+		<folder>models</folder>
+		<folder>layouts</folder>
+		<folder>assets</folder>
+	</files>
+	<languages folder="language/site">
+		<language tag="en-GB">en-GB/en-GB.com_speasyimagegallery.ini</language>
+	</languages>
+
+	<administration>
+		<menu link='index.php?option=com_speasyimagegallery'>COM_SPEASYIMAGEGALLERY</menu>
+		<files folder="admin">
+			<filename>speasyimagegallery.php</filename>
+			<filename>config.xml</filename>
+			<filename>controller.php</filename>
+			<filename>access.xml</filename>
+			<folder>assets</folder>
+			<folder>controllers</folder>
+			<folder>helpers</folder>
+			<folder>layouts</folder>
+			<folder>models</folder>
+			<folder>sql</folder>
+			<folder>tables</folder>
+			<folder>views</folder>
+		</files>
+		<languages folder="language/admin">
+			<language tag="en-GB">en-GB/en-GB.com_speasyimagegallery.ini</language>
+			<language tag="en-GB">en-GB/en-GB.com_speasyimagegallery.sys.ini</language>
+		</languages>
+	</administration>
+
+</extension>

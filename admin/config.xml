@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config>
+	<fieldset name="component" label="COM_SPEASYIMAGEGALLERY_GLOBAL_OPTIONS">
+		<field name="thumb_width" type="number" label="COM_SPEASYIMAGEGALLERY_GLOBAL_THUMB_WIDTH" description="COM_SPEASYIMAGEGALLERY_GLOBAL_THUMB_WIDTH_DESC" default="400" />
+		<field name="thumb_height" type="number" label="COM_SPEASYIMAGEGALLERY_GLOBAL_THUMB_HEIGHT" description="COM_SPEASYIMAGEGALLERY_GLOBAL_THUMB_HEIGHT_DESC" default="400" />
+	</fieldset>
+	<fieldset	name="permissions" label="JCONFIG_PERMISSIONS_LABEL" description="JCONFIG_PERMISSIONS_DESC">
+		<field name="rules"	type="rules" label="JCONFIG_PERMISSIONS_LABEL" class="inputbox"	validate="rules" filter="rules"	component="com_speasyimagegallery" section="component" />
+	</fieldset>
+</config>
