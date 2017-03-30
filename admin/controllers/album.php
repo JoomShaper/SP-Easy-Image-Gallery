@@ -36,8 +36,8 @@ class SpeasyimagegalleryControllerAlbum extends JControllerForm
 	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{
 		$params = JComponentHelper::getParams('com_speasyimagegallery');
-		$width = $params->get('thumb_width', 150);
-		$height = $params->get('thumb_height', 150);
+		$width = $params->get('thumb_width', 400);
+		$height = $params->get('thumb_height', 400);
 		$item = $model->getItem();
 		$id = $item->get('id');
 		$image = JPATH_ROOT . '/' . $item->image;
