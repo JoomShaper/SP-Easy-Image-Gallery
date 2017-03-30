@@ -29,7 +29,7 @@
 
 				<field name="spacer1" type="spacer" hr="true" showon="layout:albums" />
 				<field name="spacer2" type="spacer" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_ALBUM_LIST_OPTIONS" showon="layout:albums" />
-				<field name="catid" type="category" label="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY" description="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY_DESC" extension="MOD_SPEASYIMAGEGALLERY" showon="layout:albums">
+				<field name="catid" type="category" label="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY" description="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY_DESC" extension="com_speasyimagegallery" showon="layout:albums">
 					<option value="">MOD_SPEASYIMAGEGALLERY_SELECT_CATEGORY</option>
 				</field>
 				<field name="albums_column" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_DESC" default="3" showon="layout:albums">
