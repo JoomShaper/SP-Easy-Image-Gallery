@@ -66,12 +66,12 @@ if(count($this->items)) {
         <div class="<?php echo $col; ?>">
           <div class="speasyimagegallery-album">
             <div>
-              <a href="<?php echo JText::_($link); ?>">
+              <a href="<?php echo JRoute::_($link); ?>">
                 <img src="images/speasyimagegallery/albums/<?php echo $this->item->id; ?>/<?php echo $cover; ?>" alt="<?php echo $this->item->title; ?>">
                 <div class="speasyimagegallery-album-info">
                   <span class="speasyimagegallery-album-title"><?php echo $this->item->title; ?></span>
                   <div class="speasyimagegallery-album-meta clearfix">
-                    <span class="speasyimagegallery-album-meta-count"><?php echo $this->item->count; ?> <?php echo ($this->item->count > 1) ? 'Photos' : 'Photo'; ?></span>
+                    <span class="speasyimagegallery-album-meta-count"><?php echo $this->item->count; ?> <?php echo ($this->item->count > 1) ? JText::_('COM_SPEASYIMAGEGALLERY_PHOTOS') : JText::_('COM_SPEASYIMAGEGALLERY_PHOTO'); ?></span>
                   </div>
                 </div>
               </a>
