@@ -12,9 +12,9 @@ defined('_JEXEC') or die('Restricted access');
 
 extract($displayData);
 
-$col = 'speasyimagegallery-col-md-' . $params->get('column', 4);
-$col .= ' speasyimagegallery-col-sm-' . $params->get('column_sm', 3);
-$col .= ' speasyimagegallery-col-xs-' . $params->get('column_xs', 2);
+$col = 'speasyimagegallery-col-md-' . $params->get('album_column', 4);
+$col .= ' speasyimagegallery-col-sm-' . $params->get('album_column_sm', 3);
+$col .= ' speasyimagegallery-col-xs-' . $params->get('album_column_xs', 2);
 $layout = new JLayoutFile('gallery.default.image', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
 
 echo '<div class="speasyimagegallery-row clearfix">';

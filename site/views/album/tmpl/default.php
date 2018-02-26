@@ -32,7 +32,7 @@ jQuery(function ($) {
       showCounter: {$show_count}
     });
 	});
-});
+})
 JS;
 $doc->addScriptDeclaration($js);
 

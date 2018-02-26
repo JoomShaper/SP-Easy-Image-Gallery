@@ -37,7 +37,7 @@ jQuery(function($) {
       showCounter: {$show_count}
     });
   });
-});
+})
 JS;
 
 if((($option != 'com_speasyimagegallery') && ($view != 'album')) || (($option == 'com_speasyimagegallery') && ($view == 'albums'))) {

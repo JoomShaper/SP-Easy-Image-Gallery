@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.6" method="upgrade">
 	<name>COM_SPEASYIMAGEGALLERY</name>
-	<creationDate>Mar 2016</creationDate>
+	<creationDate>Mar 2017</creationDate>
 	<author>JoomShaper</author>
 	<authorEmail>support@joomshaper.com</authorEmail>
 	<authorUrl>http://www.joomshaper.com</authorUrl>
 	<copyright>@JoomShaper 2010 - 2017. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>1.2</version>
+	<version>1.3</version>
 	<description>A simple image gallery component for Joomla.</description>
 
 	<updateservers>
-		<server type="extension" priority="1" name="SP Easy Image Gallery">https://www.joomshaper.com/updates/com-speasyimagegallery.xml</server>
+		<server type="extension" priority="1" name="SP Easy Image Gallery">https://www.joomshaper.com/updates/com-sp-easyimagegallery.xml</server>
 	</updateservers>
 
 	<install> <!-- Runs on install -->
