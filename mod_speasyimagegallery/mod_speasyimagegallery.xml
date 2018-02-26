@@ -7,7 +7,7 @@
 	<authorUrl>http://www.joomshaper.com</authorUrl>
 	<copyright>@JoomShaper 2010 - 2017. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>1.1</version>
+	<version>1.2</version>
 	<description>Module to display albums or album images from SP Easy Image Gallery component.</description>
 	<files>
 		<filename module="mod_speasyimagegallery">mod_speasyimagegallery.php</filename>
