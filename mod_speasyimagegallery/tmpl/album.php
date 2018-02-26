@@ -28,7 +28,7 @@ $id = '#mod-speasyimagegallery-' . $module->id;
 
 // Javascript
 $js = <<<JS
-(function ($) {
+jQuery(function($) {
   $(document).on('click', '.speasyimagegallery-gallery-item', function(event) {
     event.preventDefault();
     $(this).speasyimagegallery({
@@ -37,7 +37,7 @@ $js = <<<JS
       showCounter: {$show_count}
     });
   });
-})(jQuery)
+});
 JS;
 
 if((($option != 'com_speasyimagegallery') && ($view != 'album')) || (($option == 'com_speasyimagegallery') && ($view == 'albums'))) {

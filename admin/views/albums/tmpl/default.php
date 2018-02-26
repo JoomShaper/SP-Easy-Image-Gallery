@@ -109,9 +109,9 @@ Joomla.orderTable = function() {
 						<?php foreach ($this->items as $i => $item) :
 							$item->max_ordering = 0;
 							$ordering   = ($listOrder == 'a.ordering');
-							$canEdit    = $user->authorise('core.edit', 'com_sppagebuilder.page.' . $item->id) || ($user->authorise('core.edit.own',   'com_speasyimagegallery.album.' . $item->id) && $item->created_by == $userId);
+							$canEdit    = $user->authorise('core.edit', 'com_speasyimagegallery.album.' . $item->id) || ($user->authorise('core.edit.own',   'com_speasyimagegallery.album.' . $item->id) && $item->created_by == $userId);
 							$canCheckin = $user->authorise('core.manage', 'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-							$canChange  = $user->authorise('core.edit.state', 'com_sppagebuilder.page.' . $item->id) && $canCheckin;
+							$canChange  = $user->authorise('core.edit.state', 'com_speasyimagegallery.album.' . $item->id) && $canCheckin;
 							$link = JRoute::_('index.php?option=com_speasyimagegallery&task=album.edit&id=' . $item->id);
 						?>
 							<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
@@ -146,7 +146,7 @@ Joomla.orderTable = function() {
 									<?php endif; ?>
 
 									<?php if ($canEdit) : ?>
-										<a class="sp-pagebuilder-page-title" href="<?php echo JRoute::_('index.php?option=com_speasyimagegallery&task=album.edit&id='.$item->id);?>">
+										<a class="sp-easy-image-gallery-title" href="<?php echo JRoute::_('index.php?option=com_speasyimagegallery&task=album.edit&id='.$item->id);?>">
 											<?php echo $this->escape($item->title); ?>
 										</a>
 									<?php else : ?>

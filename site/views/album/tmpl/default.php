@@ -23,7 +23,7 @@ $gutter_xs = $this->params->get('gutter_xs', 10)/2;
 
 // Javascript
 $js = <<<JS
-(function ($) {
+jQuery(function ($) {
 	$(document).on('click', '.speasyimagegallery-gallery-item', function(event) {
 		event.preventDefault();
     $(this).speasyimagegallery({
@@ -32,7 +32,7 @@ $js = <<<JS
       showCounter: {$show_count}
     });
 	});
-})(jQuery)
+});
 JS;
 $doc->addScriptDeclaration($js);
 
