@@ -81,6 +81,12 @@ if(count($this->items)) {
       <?php } ?>
     </div>
   </div>
+
+  <?php if ($this->pagination->get('pages.total') > 1) : ?>
+    <div class="pagination-wrapper">      
+      <?php echo $this->pagination->getPagesLinks(); ?>
+    </div>
+  <?php endif; ?>
   <?php
 } else {
   echo '<div class="alert">' . JText::_('COM_SPEASYIMAGEGALLERY_NO_ALBUMS') . '</div>';

@@ -27,6 +27,7 @@ class SpeasyimagegalleryViewAlbums extends JViewLegacy
 		$this->params = $app->getParams();
 		$menus = JFactory::getApplication()->getMenu();
 		$menu = $menus->getActive();
+		$this->pagination	= $this->get('Pagination');
 
 		if($menu) {
 			$this->params->merge($menu->params);

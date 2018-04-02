@@ -83,6 +83,9 @@
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
 			</field>
+			<field name="spacer6" type="spacer" hr="true" />
+			<field name="spacer7" type="spacer" label="COM_SPEASYIMAGEGALLERY_GLOBAL_PAGINATION" />
+			<field name="limit" type="number" default="20" label="COM_SPEASYIMAGEGALLERY_GLOBAL_LIMIT" description="COM_SPEASYIMAGEGALLERY_GLOBAL_LIMIT_DESC" />
 		</fieldset>
 	</fields>
 </metadata>

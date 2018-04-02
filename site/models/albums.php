@@ -12,6 +12,14 @@ defined('_JEXEC') or die('Restricted access');
 class SpeasyimagegalleryModelAlbums extends JModelList
 {
 
+	protected function populateState($ordering = null, $direction = null) {
+		$app = JFactory::getApplication('site');
+		$params = $app->getParams();
+		$this->setState('list.start', $app->input->get('limitstart', 0, 'uint'));
+		$limit = $params->get('limit', 20);
+		$this->setState('list.limit', $limit);
+	}
+
 	protected function getListQuery()
 	{
 		$app = JFactory::getApplication();
