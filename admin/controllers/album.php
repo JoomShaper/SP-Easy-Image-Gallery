@@ -59,4 +59,44 @@ class SpeasyimagegalleryControllerAlbum extends JControllerForm
 
 		return true;
 	}
+
+	public function deleteSelectedList() {
+		$input = JFactory::getApplication()->input;
+		$selected_id = $input->get('boxchecked', '', 'STRING');
+		$album_id = $input->get('album_id', 0, 'INT');
+		$image_count = 0;
+
+		$app = JFactory::getApplication();
+
+		$output = array();
+
+		if (empty($album_id)) {
+			$url = JRoute::_('index.php?option=com_speasyimagegallery&view=album&layout=edit&id=' . $album_id, false);
+			$app->redirect($url, "No album selected! Something went wrong!", 'error');
+		}
+
+		$image_items = array();
+
+		if (!empty($selected_id)) {
+			$image_items = explode(',', $selected_id);
+		}
+
+		if (!empty($image_items)) {
+			$image_count = count($image_items);
+
+			foreach($image_items as $ii) {
+				$this->image_delete((int)$ii, $album_id);
+			}
+		}
+		
+		$url = JRoute::_('index.php?option=com_speasyimagegallery&view=album&layout=edit&id=' . $album_id, false);
+		$app->redirect($url, $image_count . " Image(s) has been deleted successfully!", 'success');
+	}
+
+	// Delete Image
+	public function image_delete($image_id, $album_id) {
+		$model = $this->getModel();
+		$result = $model->image_delete($image_id, $album_id);
+		return $result;
+	}
 }

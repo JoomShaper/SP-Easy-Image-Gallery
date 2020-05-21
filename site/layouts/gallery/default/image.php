@@ -14,11 +14,14 @@ extract($displayData);
 
 $source = json_decode($image->images);
 ?>
-<a class="speasyimagegallery-gallery-item" href="<?php echo $source->original; ?>" data-title="<?php echo $image->title; ?>" data-desc="<?php echo strip_tags($image->description); ?>">
+<a class="speasyimagegallery-gallery-item" href="<?php echo $source->original; ?>" data-title="<?php echo $image->title; ?>" data-desc="<?php echo htmlspecialchars($image->description); ?>">
   <div>
     <img src="<?php echo $source->thumb; ?>" title="<?php echo $image->title; ?>" alt="<?php echo $image->alt; ?>">
     <div class="speasyimagegallery-gallery-item-content">
       <span class="speasyimagegallery-gallery-item-title"><?php echo $image->title; ?></span>
+	    <?php if($params->get('album_show_desc', false) && $image->description) { ?>
+            <span class="speasyimagegallery-gallery-item-title"><small><?php echo $image->description; ?></small></span>
+	    <?php } ?>
     </div>
   </div>
 </a>

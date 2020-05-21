@@ -247,6 +247,71 @@ jQuery(function($) {
       });
 
     }
-  })
+  });
 
+  /**
+   * Multiple delete of images
+   * 
+  */
+    Joomla.submitbutton = function(pressbutton) {
+        if (pressbutton == 'album.deleteSelectedList') {
+            let confirm = window.confirm('Do you really want to remove those images?');
+            if (confirm) {
+                Joomla.submitform('album.deleteSelectedList');
+            } else {
+                return false;
+            }
+        } else {
+            Joomla.submitform(pressbutton);
+        }
+    }
+    var boxData = [];
+
+
+    // select all image rows
+    $(document).on('change', 'input[type=checkbox].speasyimage-gallery-select-all-row', function(e){
+        e.preventDefault();
+        let is_select_all_checked = $(this).prop('checked');
+        let all_image_id = [];
+        let $image_rows = $('input[type=checkbox].select-single-image');
+        let boxcheckid = '0';
+
+        if (is_select_all_checked) {
+            $image_rows.each(function(e){
+                $(this).prop('checked', true);
+                all_image_id.push($(this).val());
+            });
+        } else {
+            all_image_id = [];
+            $image_rows.each(function(e){
+                $(this).prop('checked', false);
+            });
+        }
+        
+        if (typeof (all_image_id) == 'object' && all_image_id instanceof Array && all_image_id.length > 0) {
+            boxcheckid = all_image_id.join(',');
+        }
+        $('input[name=boxchecked]').val(boxcheckid);
+
+    });
+
+    
+    $(document).on('change', 'input[type=checkbox].select-single-image', function (e) {
+        e.preventDefault();
+
+        let image_id = $(this).val();
+        if (boxData.indexOf(image_id) == -1) {
+            boxData.push(image_id);
+        } else if (boxData.indexOf(image_id) > -1) {
+            let i = boxData.indexOf(image_id);
+            boxData.splice(i,1);
+        }
+        
+        let boxcheckid = '0';
+        if (typeof(boxData) == 'object' && boxData instanceof Array && boxData.length > 0) {
+            boxcheckid = boxData.join(',');
+        }
+
+        $('input[name=boxchecked]').val(boxcheckid);
+    });
 });

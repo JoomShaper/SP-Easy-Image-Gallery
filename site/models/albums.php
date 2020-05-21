@@ -47,7 +47,9 @@ class SpeasyimagegalleryModelAlbums extends JModelList
 
 		// Filter category
 		if($catid) {
-			$query->where('a.catid = ' . $catid);
+			$descendants = implode(',',$this->getCatChild($catid));
+			$query->where('a.catid IN ( ' . $descendants . ')'); // Get in all the descendants
+
 		}
 
 		// Filter by language
@@ -58,4 +60,46 @@ class SpeasyimagegalleryModelAlbums extends JModelList
 		return $query;
 	}
 
+	// Get category child ids
+	public function getCatChild($id)
+	{
+		$children = [];
+		$ids[] = $id;
+
+		while(!empty($ids)) {
+			$cid = array_pop($ids);
+			$children[] = (string)$cid;
+			$categories = $this->getCategories($cid);
+
+			if(!empty($categories)) {
+				foreach($categories as $cat) {
+					$ids[] = $cat;
+				}
+			}
+		}
+
+		return $children;
+	}
+
+	//Get cat ids
+	public function getCategories($catid)
+	{
+		$cats = [];
+		$result = array();
+		
+		$db = $this->getDbo();
+		$query = $db->getQuery(true);
+		$query->select('a.id as cid');
+		$query->from($db->quoteName('#__categories', 'a'));
+		$query->where($db->quoteName('extension') . ' = ' . $db->quote('com_speasyimagegallery'));
+		$query->where('a.parent_id = '. $catid);
+		$db->setQuery($query);
+		$cats = $db->loadObjectList();
+
+		foreach ($cats as $cat) {
+			$result[] = $cat->cid;
+		}
+
+		return $result;
+	}
 }

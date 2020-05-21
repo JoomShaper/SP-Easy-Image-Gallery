@@ -67,6 +67,10 @@ if($gutter || $gutter_sm || $gutter_xs) {
                     <span class="speasyimagegallery-album-title"><?php echo $album->title; ?></span>
                     <div class="speasyimagegallery-album-meta clearfix">
                       <span class="speasyimagegallery-album-meta-count"><?php echo $album->count; ?> <?php echo ($album->count > 1) ? 'Photos' : 'Photo'; ?></span>
+	                    <?php if(!empty($album->description)): ;?>
+                            <br>
+                            <span class="speasyimagegallery-album-meta-count" style="font-weight: normal;"><small><?php echo $album->description ;?></small></span>
+	                    <?php endif; ?>
                     </div>
                   </div>
                 </a>
