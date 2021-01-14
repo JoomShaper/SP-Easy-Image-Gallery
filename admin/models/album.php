@@ -201,7 +201,7 @@ class SpeasyimagegalleryModelAlbum extends JModelAdmin
 		$total = $this->getCount($attribs['album_id']);
 		$db = JFactory::getDbo();
 		$image = new stdClass();
-		$title = ucwords(preg_replace("/[\s-_]+/", " ", $attribs['title']));
+		$title = ucwords(preg_replace("/[\s\-_]+/", " ", $attribs['title']));
 		$image->filename = $attribs['title'] . '.' . $attribs['ext'];
 		$image->title = $title;
 		$image->alt = $title;

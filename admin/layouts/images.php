@@ -40,6 +40,11 @@ defined('_JEXEC') or die('Restricted access');
             <span class="icon-menu-2"></span>
           </div>
         </div>
+        <div style="width: 2%;" class="nowrap center hidden-phone">
+          <div>
+            <input type="checkbox" class="speasyimage-gallery-select-all-row" value="all" />
+          </div>
+        </div>
         <div style="width: 15%;" class="nowrap center">
           <div>
             <?php echo JText::_('COM_SPEASYIMAGEGALLERY_LIST_IMAGE'); ?>

@@ -13,6 +13,7 @@ JHtml::_('jquery.framework');
 $doc = JFactory::getDocument();
 $doc->addStylesheet( JURI::base(true) . '/components/com_speasyimagegallery/assets/css/style-min.css' );
 $doc->addScript( JURI::base(true) . '/components/com_speasyimagegallery/assets/js/script-min.js' );
+$doc->addScript( JURI::base(true) . '/components/com_speasyimagegallery/assets/js/speasygallery-main.js' );
 $layout = $this->params->get('layout', 'default');
 $show_title = $this->params->get('show_title', 1);
 $show_desc = $this->params->get('show_desc', 1);
@@ -21,20 +22,8 @@ $gutter = $this->params->get('gutter', 20)/2;
 $gutter_sm = $this->params->get('gutter_sm', 15)/2;
 $gutter_xs = $this->params->get('gutter_xs', 10)/2;
 
-// Javascript
-$js = <<<JS
-jQuery(function ($) {
-	$(document).on('click', '.speasyimagegallery-gallery-item', function(event) {
-		event.preventDefault();
-    $(this).speasyimagegallery({
-      showTitle: {$show_title},
-      showDescription: {$show_desc},
-      showCounter: {$show_count}
-    });
-	});
-})
-JS;
-$doc->addScriptDeclaration($js);
+// Gallery Attribs
+$gallery_attribs = 'data-showtitle="'. $show_title . '" data-showdescription="' .$show_desc .'" data-showcounter="' . $show_count . '"';
 
 // Stylesheet
 if($gutter || $gutter_sm || $gutter_xs) {
@@ -74,7 +63,7 @@ if($gutter || $gutter_sm || $gutter_xs) {
 <?php
 if(count($this->item->images)) {
   ?>
-  <div class="speasyimagegallery-gallery clearfix">
+  <div class="speasyimagegallery-gallery clearfix" <?php echo $gallery_attribs; ?>>
     <?php echo JLayoutHelper::render('gallery.'. $layout .'.row', array('images'=>$this->item->images, 'params'=>$this->params)); ?>
   </div>
   <?php

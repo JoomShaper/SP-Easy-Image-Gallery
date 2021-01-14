@@ -26,22 +26,10 @@ $gutter_sm = $params->get('album_gutter_sm', 15)/2;
 $gutter_xs = $params->get('album_gutter_xs', 10)/2;
 $id = '#mod-speasyimagegallery-' . $module->id;
 
-// Javascript
-$js = <<<JS
-jQuery(function($) {
-  $(document).on('click', '.speasyimagegallery-gallery-item', function(event) {
-    event.preventDefault();
-    $(this).speasyimagegallery({
-      showTitle: {$show_title},
-      showDescription: {$show_desc},
-      showCounter: {$show_count}
-    });
-  });
-})
-JS;
-
+$gallery_attribs = '';
 if((($option != 'com_speasyimagegallery') && ($view != 'album')) || (($option == 'com_speasyimagegallery') && ($view == 'albums'))) {
-  $doc->addScriptDeclaration($js);
+  $doc->addScript( JURI::base(true) . '/components/com_speasyimagegallery/assets/js/speasygallery-main.js' );
+  $gallery_attribs = 'data-showtitle="'. $show_title . '" data-showdescription="' .$show_desc .'" data-showcounter="' . $show_count . '"';
 }
 
 // Stylesheet
@@ -74,7 +62,7 @@ if($gutter || $gutter_sm || $gutter_xs) {
   <?php
   if(count($images)) {
     ?>
-    <div class="speasyimagegallery-gallery clearfix">
+    <div class="speasyimagegallery-gallery clearfix" <?php echo $gallery_attribs; ?>>
       <?php
       $layout = new JLayoutFile('gallery.'. $layout .'.row', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
       echo $layout->render(array('images'=>$images, 'params'=>$params));

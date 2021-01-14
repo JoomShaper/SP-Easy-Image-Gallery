@@ -78,5 +78,7 @@ if($this->item->id) {
   </div>
 
   <input type="hidden" name="task" value="album.edit" />
+  <input type="hidden" name="boxchecked" value="0" />
+  <input type="hidden" name="album_id" value="<?php echo !empty($this->item->id) ? $this->item->id : 0; ?>" />
   <?php echo JHtml::_('form.token'); ?>
 </form>

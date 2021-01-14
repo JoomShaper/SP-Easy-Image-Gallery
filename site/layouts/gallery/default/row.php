@@ -18,7 +18,7 @@ $col .= ' speasyimagegallery-col-xs-' . $params->get('column_xs', 2);
 echo '<div class="speasyimagegallery-row clearfix">';
 foreach ($images as $key => $image) {
   echo '<div class="'. $col .'">';
-  echo JLayoutHelper::render('gallery.default.image', array('image'=>$image, 'key'=> $key));
+  echo JLayoutHelper::render('gallery.default.image', array('image'=>$image, 'key'=> $key,'params' => $params));
   echo '</div>';
 }
 echo '</div>';

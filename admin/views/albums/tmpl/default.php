@@ -114,7 +114,7 @@ Joomla.orderTable = function() {
 							$canChange  = $user->authorise('core.edit.state', 'com_speasyimagegallery.album.' . $item->id) && $canCheckin;
 							$link = JRoute::_('index.php?option=com_speasyimagegallery&task=album.edit&id=' . $item->id);
 						?>
-							<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
+							<tr class="row<?php echo $i % 2; ?>" sortable-group-id="1">
 								<td class="order nowrap center hidden-phone">
 									<?php
 									$iconClass = '';

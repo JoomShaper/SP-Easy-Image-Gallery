@@ -75,5 +75,9 @@ class SpeasyimagegalleryViewAlbum extends JViewLegacy
 			}
 			JToolBarHelper::cancel('album.cancel', 'JTOOLBAR_CLOSE');
 		}
+
+		if ($this->canDo->get('core.edit')) {
+			JToolBarHelper::custom('album.deleteSelectedList', 'delete has-text-danger', '', 'Delete');
+		}
 	}
 }

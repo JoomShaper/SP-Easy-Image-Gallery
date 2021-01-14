@@ -3,7 +3,7 @@
 * @package com_speasyimagegallery
 * @subpackage mod_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2017 JoomShaper
+* @copyright Copyright (c) 2010 - 2019 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
@@ -16,6 +16,11 @@ class ModSpeasyimagegalleryHelper
 		$app = JFactory::getApplication();
 		$user = JFactory::getUser();
 		$catid = $params->get('catid', 0, 'INT');
+		$layout = $params->get('layout', '' , 'STRING');
+		// Load albums model
+		jimport('joomla.application.component.model');
+		JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_speasyimagegallery/models');
+		$albums_model = JModelLegacy::getInstance( 'albums', 'SpeasyimagegalleryModel' );
 
 		// Create a new query object.
 		$db = JFactory::getDbo();
@@ -26,7 +31,7 @@ class ModSpeasyimagegalleryHelper
 		$query->from($db->quoteName('#__speasyimagegallery_albums', 'a'));
 
 		// Join over the categories.
-		$query->select('c.title AS category_title, c.alias AS category_alias')
+		$query->select('c.title AS category_title, c.alias AS category_alias, c.description as category_description')
 		->join('LEFT', '#__categories AS c ON c.id = a.catid');
 
 		// Images count
@@ -37,8 +42,9 @@ class ModSpeasyimagegalleryHelper
 		$query->where('a.access IN (' . $groups . ')');
 
 		// Filter category
-		if($catid) {
-			$query->where('a.catid = ' . $catid);
+		if( $catid && $layout = 'albums' ) {
+			$descendants = implode(',', $albums_model->getCatChild($catid));
+			$query->where('a.catid IN (' . $descendants . ' )');
 		}
 
 		// Filter by language
@@ -83,7 +89,7 @@ class ModSpeasyimagegalleryHelper
 		$db->setQuery($query);
 		$result = $db->loadResult();
 
-		if(count($result)) {
+		if($result) {
 			return '&Itemid=' . $result;
 		}
 

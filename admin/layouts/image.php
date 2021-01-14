@@ -20,6 +20,10 @@ defined('_JEXEC') or die('Restricted access');
     </span>
   </div>
 
+  <div class="center" style="width: 2%;">
+    <input type="checkbox" name="speasygallery_row[]" class="select-single-image" value="<?php echo $image->id; ?>" />
+  </div>
+
   <div style="width: 15%;" class="center">
     <img src="<?php echo JURI::root(true) . '/' . $sources->mini; ?>" alt="<?php echo $image->alt; ?>" width="64">
   </div>

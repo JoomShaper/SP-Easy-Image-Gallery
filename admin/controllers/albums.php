@@ -99,7 +99,7 @@ class SpeasyimagegalleryControllerAlbums extends JControllerAdmin
 						$path = $file['tmp_name'];
 						// Do no override existing file
 
-						$media_file = preg_replace("/[\s-_]+/", "-", JFile::makeSafe(basename(strtolower($name))));
+						$media_file = preg_replace("/[\s\-_]+/", "-", JFile::makeSafe(basename(strtolower($name))));
 						$i = 0;
 						do {
 							$base_name  = JFile::stripExt($media_file) . ($i ? "$i" : "");
