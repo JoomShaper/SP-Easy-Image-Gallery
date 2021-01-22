@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+	<layout title="COM_SPEASYIMAGEGALLERY_VIEW_ALBUM_TITLE">
+	</layout>
+	<fields name="request" addfieldpath="/administrator/components/com_speasyimagegallery/models/fields">
+		<fieldset name="request">
+			<field name="id" type="albums" label="COM_SPEASYIMAGEGALLERY_CHOOSE_ALBUM" description="COM_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_DESC" required="required">
+			</field>
+		</fieldset>
+	</fields>
+	<fields name="params">
+		<fieldset name="basic" label="COM_SPEASYIMAGEGALLERY_OPTIONS">
+			<field name="layout" type="list" label="COM_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT" description="COM_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_DESC" default="default">
+				<option value="default">COM_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_DEFAULT</option>
+				<option value="mosaic">COM_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_MOSAIC</option>
+				<option value="rectangle">COM_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_RECTANGLE</option>
+			</field>
+			<field name="column" type="list" label="COM_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS" description="COM_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_DESC" default="3" showon="layout:default">
+				<option value="12">1</option>
+				<option value="6">2</option>
+				<option value="4">3</option>
+				<option value="3">4</option>
+				<option value="2">6</option>
+			</field>
+			<field name="column_sm" type="list" label="COM_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_SM" description="COM_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_SM_DESC" default="4" showon="layout:default">
+				<option value="12">1</option>
+				<option value="6">2</option>
+				<option value="4">3</option>
+				<option value="3">4</option>
+				<option value="2">6</option>
+			</field>
+			<field name="column_xs" type="list" label="COM_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_XS" description="COM_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_XS_DESC" default="6" showon="layout:default">
+				<option value="12">1</option>
+				<option value="6">2</option>
+				<option value="4">3</option>
+				<option value="3">4</option>
+				<option value="2">6</option>
+			</field>
+			<field name="gutter" type="number" label="COM_SPEASYIMAGEGALLERY_GLOBAL_GUTTER" description="COM_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_DESC" default="20" />
+			<field name="gutter_sm" type="number" label="COM_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM" description="COM_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM_DESC" default="15" />
+			<field name="gutter_xs" type="number" label="COM_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS" description="COM_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS_DESC" default="10" />
+
+			<field name="spacer1" type="spacer" hr="true" />
+			<field name="spacer2" type="spacer" label="COM_SPEASYIMAGEGALLERY_GLOBAL_POPUP_OPTIONS" />
+			<field name="show_title" type="radio" class="btn-group" label="COM_SPEASYIMAGEGALLERY_POPUP_SHOW_TITLE" description="COM_SPEASYIMAGEGALLERY_POPUP_SHOW_TITLE_DESC" default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+			<field name="show_desc" type="radio" class="btn-group" label="COM_SPEASYIMAGEGALLERY_POPUP_SHOW_DESC" description="COM_SPEASYIMAGEGALLERY_POPUP_SHOW_DESC_DESC" default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+			<field name="show_count" type="radio" class="btn-group" label="COM_SPEASYIMAGEGALLERY_POPUP_SHOW_COUNT" description="COM_SPEASYIMAGEGALLERY_POPUP_SHOW_COUNT_DESC" default="1">
+				<option value="1">JYES</option>
+				<option value="0">JNO</option>
+			</field>
+		</fieldset>
+	</fields>
+</metadata>

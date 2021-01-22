@@ -1,0 +1,226 @@
+/**
+* @package com_speasyimagegallery
+* @author JoomShaper http://www.joomshaper.com
+* @copyright Copyright (c) 2010 - 2017 JoomShaper
+* @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
+*/
+
+.speasyimagegallery-images-wrapper {
+  position: relative;
+}
+
+.speasyimagegallery-toolbar {
+  padding-bottom: 20px;
+}
+
+.speasyimagegallery-album-cover.no-image {
+  display: none;
+}
+
+.speasyimagegallery-no-images .speasyimagegallery-images-empty,
+.speasyimagegallery-images-list.sp-pagebuilder-media-drop .speasyimagegallery-images-empty {
+  display: table;
+}
+
+.speasyimagegallery-no-images .speasyimagegallery-images-wrapper,
+.speasyimagegallery-images-list.sp-pagebuilder-media-drop .speasyimagegallery-images-wrapper {
+  display: none;
+}
+
+.speasyimagegallery-images-empty {
+  display: none;
+  padding: 30px 0;
+  text-align: center;
+  height: 500px;
+  width: 100%;
+  border: 3px dashed #c3c3c3;
+  border-radius: 10px;
+}
+
+.speasyimagegallery-images-empty>div {
+  display: table-cell;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.ui-sortable-helper {
+  background: #f7fcff !important;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.sp-table {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 4px;
+  position: relative;
+}
+
+.sp-thead {
+  display: block;
+  margin-bottom: 15px;
+}
+
+.sp-thead > div {
+  display: block;
+  float: left;
+}
+
+.sp-thead > div > div {
+  font-weight: bold;
+}
+
+.sp-tbody > .sp-tr {
+  background: #fff;
+  padding: 15px 0;
+  display: block;
+  border-radius: 3px;
+  margin-top: 5px;
+}
+
+.sp-tbody > .sp-tr > div {
+  display: block;
+  float: left;
+}
+
+.sp-tbody > .sp-tr img {
+  border: 1px solid #e5e5e5;
+}
+
+.speasyimagegallery-image-title {
+  display: block;
+  font-size: 16px;
+  line-height: 1.8;
+  font-weight: bold;
+}
+
+.speasyimagegallery-image-filename {
+  color: #666;
+}
+
+.speasyimagegallery-image-tools {
+  margin-top: 10px;
+  visibility: hidden;
+}
+
+.speasyimagegallery-singe-image:hover .speasyimagegallery-image-tools {
+  visibility: visible;
+}
+
+.speasyimagegallery-image-tools > a {
+  display: inline-block;
+  margin-right: 10px;
+  text-decoration: none;
+}
+
+.speasyimagegallery-image-tools > a.speasyimagegallery-edit-image,
+.speasyimagegallery-image-tools > a.speasyimagegallery-edit-image:hover {
+  color: #2384d3;
+  text-decoration: none;
+}
+
+.speasyimagegallery-image-tools > a.speasyimagegallery-delete-image,
+.speasyimagegallery-image-tools > a.speasyimagegallery-delete-image:hover {
+  color: #bd362f;
+  text-decoration: none;
+}
+
+/*Progress Bar*/
+.speasyimagegallery-image-loader-text {
+  width: 30%;
+}
+
+.speasyimagegallery-image-loader-progress {
+  width: 70%;
+}
+
+.speasyimagegallery-image-loader-text > div,
+.speasyimagegallery-image-loader-progress > div {
+  padding: 10px 20px;
+}
+
+.speasyimagegallery-progress {
+  height: 20px;
+  overflow: hidden;
+  background-color: #f1f2f3;
+  border-radius: 3px;
+}
+
+.speasyimagegallery-progress-bar {
+  float: left;
+  width: 0;
+  height: 100%;
+  font-size: 12px;
+  line-height: 20px;
+  color: #fff;
+  text-align: center;
+  background-color: #2384d3;
+  -webkit-transition: width .6s ease;
+       -o-transition: width .6s ease;
+          transition: width .6s ease;
+}
+
+/*Modal*/
+.speasyimagegallery-edit-modal-open {
+  overflow: hidden;
+}
+
+.speasyimagegallery-edit-modal-wrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, .5);
+  z-index: 1033;
+  overflow: auto;
+}
+
+.speasyimagegallery-edit-modal {
+  width: 600px;
+  max-width: 95%;
+  background: #fff;
+  margin: 40px auto;
+  border-radius: 4px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  -webkit-box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+}
+
+.speasyimagegallery-edit-modal-header {
+  background: #f5f5f5;
+  padding: 20px;
+  border-radius: 4px 4px 0 0;
+  position: relative;
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.speasyimagegallery-edit-modal-header h3 {
+  font-size: 18px;
+  line-height: 1;
+  margin: 0;
+  padding: 0;
+}
+
+.speasyimagegallery-edit-modal-close {
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  font-size: 18px;
+  color: #888;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+}
+
+.speasyimagegallery-edit-modal-close:hover,
+.speasyimagegallery-edit-modal-close:active,
+.speasyimagegallery-edit-modal-close:focus {
+    color: #2384d3;
+}
+
+.speasyimagegallery-edit-modal-body {
+  padding: 20px;
+}
+
+.center {
+  text-align: center;
+}
