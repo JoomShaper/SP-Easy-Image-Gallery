@@ -10,6 +10,7 @@
 	<version>2.0.0</version>
 	<description>A simple image gallery component for Joomla.</description>
 
+
 	<updateservers>
 		<server type="extension" priority="1" name="SP Easy Image Gallery">https://www.joomshaper.com/updates/com-sp-easyimagegallery.xml</server>
 	</updateservers>
