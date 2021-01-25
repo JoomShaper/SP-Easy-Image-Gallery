@@ -13,7 +13,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\View\HtmlView;
-use Joomla\CMS\HTML\Helpers\Sidebar;
 use Joomla\CMS\Toolbar\ToolbarHelper;
 
 class SpeasyimagegalleryViewAlbums extends HtmlView
@@ -55,7 +54,7 @@ class SpeasyimagegalleryViewAlbums extends HtmlView
 		// Set the submenu
 		SpeasyimagegalleryHelper::addSubmenu('albums');
 		$this->addToolBar();
-		$this->sidebar = Sidebar::render();
+		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 

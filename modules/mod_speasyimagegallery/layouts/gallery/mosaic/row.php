@@ -10,13 +10,15 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\FileLayout;
+
 extract($displayData);
 
 $i = 0;
 $j = 0;
 $last = count($images);
 $count = 3;
-$layout = new JLayoutFile('gallery.mosaic.image', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
+$layout = new FileLayout('gallery.mosaic.image', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
 
 echo '<div class="speasyimagegallery-row clearfix">';
 foreach ($images as $key => $image) {

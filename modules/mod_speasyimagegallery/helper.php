@@ -1,29 +1,33 @@
 <?php
+
 /**
-* @package com_speasyimagegallery
-* @subpackage mod_speasyimagegallery
-* @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2019 JoomShaper
-* @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
-*/
+ * @package com_speasyimagegallery
+ * @subpackage mod_speasyimagegallery
+ * @author JoomShaper http://www.joomshaper.com
+ * @copyright Copyright (c) 2010 - 2019 JoomShaper
+ * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
+ */
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
+use Joomla\CMS\Router\Route;
 class ModSpeasyimagegalleryHelper
 {
 	public static function getAlbumList($params) {
-		$app = JFactory::getApplication();
-		$user = JFactory::getUser();
+		$app = Factory::getApplication();
+		$user = Factory::getUser();
 		$catid = $params->get('catid', 0, 'INT');
 		$layout = $params->get('layout', '' , 'STRING');
 		// Load albums model
 		jimport('joomla.application.component.model');
-		JModelLegacy::addIncludePath(JPATH_SITE.'/components/com_speasyimagegallery/models');
-		$albums_model = JModelLegacy::getInstance( 'albums', 'SpeasyimagegalleryModel' );
+		BaseDatabaseModel::addIncludePath(JPATH_SITE.'/components/com_speasyimagegallery/models');
+		$albums_model = BaseDatabaseModel::getInstance( 'albums', 'SpeasyimagegalleryModel' );
 
 		// Create a new query object.
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 
 		// Select the required fields from the table.
@@ -48,7 +52,7 @@ class ModSpeasyimagegalleryHelper
 		}
 
 		// Filter by language
-		$query->where('a.language in (' . $db->quote(JFactory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
+		$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		$query->where('a.published = 1');
 		$query->order('a.ordering ASC');
 		$db->setQuery($query);
@@ -57,7 +61,7 @@ class ModSpeasyimagegalleryHelper
 
 		if(count($items)) {
 			foreach ($items as &$item) {
-				$item->url = JRoute::_('index.php?option=com_speasyimagegallery&view=album&id=' . $item->id . ':' . $item->alias . $ItemID);
+				$item->url = Route::_('index.php?option=com_speasyimagegallery&view=album&id=' . $item->id . ':' . $item->alias . $ItemID);
 			}
 		}
 
@@ -67,7 +71,7 @@ class ModSpeasyimagegalleryHelper
 	public static function getImages($params) {
 		$album_id = $params->get('album_id', 0);
 		$limit = $params->get('album_limit', 8);
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select(array('a.*'));
 		$query->from($db->quoteName('#__speasyimagegallery_images', 'a'));
@@ -80,7 +84,7 @@ class ModSpeasyimagegalleryHelper
 	}
 
 	private static function getItemID() {
-		$db = JFactory::getDbo();
+		$db = Factory::getDbo();
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id')));
 		$query->from($db->quoteName('#__menu'));

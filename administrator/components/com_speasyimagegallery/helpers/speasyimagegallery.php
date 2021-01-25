@@ -12,7 +12,6 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\Helpers\Sidebar;
 
 /**
  * SP easy image gallery helper class.
@@ -35,19 +34,19 @@ class SpeasyimagegalleryHelper
 	 */
 	public static function addSubmenu($submenu)
 	{
-		Sidebar::addEntry(
+		JHtmlSidebar::addEntry(
 			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_ALBUMS'),
 			'index.php?option=com_speasyimagegallery',
 			$submenu == 'albums'
 		);
 
-		Sidebar::addEntry(
+		JHtmlSidebar::addEntry(
 			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_speasyimagegallery',
 			$submenu == 'categories'
 		);
 
-		Sidebar::addEntry(
+		JHtmlSidebar::addEntry(
 			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_OPTIONS'),
 			'index.php?option=com_config&view=component&component=com_speasyimagegallery',
 			$submenu == 'options'

@@ -7,12 +7,18 @@
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
+use Joomla\CMS\Factory;
+use Joomla\CMS\Uri\Uri;
+use Joomla\CMS\Language\Text;
+use Joomla\CMS\Filesystem\File;
+use Joomla\CMS\HTML\HTMLHelper;
+
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-JHtml::_('jquery.framework');
-$doc = JFactory::getDocument();
-$doc->addStylesheet( JURI::base(true) . '/components/com_speasyimagegallery/assets/css/style-min.css' );
+HTMLHelper::_('jquery.framework');
+$doc = Factory::getDocument();
+$doc->addStylesheet( Uri::base(true) . '/components/com_speasyimagegallery/assets/css/style-min.css' );
 
 $col = 'speasyimagegallery-col-md-' . $params->get('albums_column', 4);
 $col .= ' speasyimagegallery-col-sm-' . $params->get('albums_column_sm', 3);
@@ -56,7 +62,7 @@ if($gutter || $gutter_sm || $gutter_xs) {
       <div class="speasyimagegallery-row clearfix">
         <?php foreach ($albums as $key => $album) { ?>
           <?php
-          $cover = 'thumb.' . JFile::getExt(basename($album->image));
+          $cover = 'thumb.' . File::getExt(basename($album->image));
           ?>
           <div class="<?php echo $col; ?>">
             <div class="speasyimagegallery-album">
@@ -82,7 +88,7 @@ if($gutter || $gutter_sm || $gutter_xs) {
     </div>
 	  <?php
 	} else {
-	  echo '<div class="alert">' . JText::_('MOD_SPEASYIMAGEGALLERY_NO_ALBUMS') . '</div>';
+	  echo '<div class="alert">' . Text::_('MOD_SPEASYIMAGEGALLERY_NO_ALBUMS') . '</div>';
 	}
 	?>
 </div>

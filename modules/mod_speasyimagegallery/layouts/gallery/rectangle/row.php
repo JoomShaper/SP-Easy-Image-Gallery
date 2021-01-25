@@ -10,13 +10,15 @@
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
+use Joomla\CMS\Layout\FileLayout;
+
 extract($displayData);
 
 $i = 0;
 $j = 0;
 $last = count($images);
 
-$layout = new JLayoutFile('gallery.rectangle.image', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
+$layout = new FileLayout('gallery.rectangle.image', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
 
 foreach ($images as $key => $image) {
   if($i == 0) {

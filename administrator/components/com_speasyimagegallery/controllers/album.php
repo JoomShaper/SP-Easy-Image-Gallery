@@ -15,7 +15,6 @@ use Joomla\CMS\Language\Text;
 use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\FormController;
 
 jimport('joomla.filesystem.file');
@@ -43,7 +42,7 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		}
 	}
 
-	protected function postSaveHook(BaseDatabaseModel $model, $validData = array())
+	protected function postSaveHook(JModelLegacy $model, $validData = array())
 	{
 		$params = ComponentHelper::getParams('com_speasyimagegallery');
 		$width = $params->get('thumb_width', 400);
