@@ -3,7 +3,7 @@
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2017 JoomShaper
+ * @copyright Copyright (c) 2010 - 2021 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
  */
 
@@ -13,21 +13,24 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Component\Router\RouterBase;
 
-class SpeasyimagegalleryRouter extends RouterBase
+class SpeasyimagegalleryRouterBase
 {
-	public function build(&$query)
+	public function buildRoute(&$query)
 	{
+		$app = Factory::getApplication();
+		$menu = $app->getMenu();
+
 		$segments = array();
 
 		// We need a menu item.  Either the one specified in the query, or the current active one if none specified
 		if (empty($query['Itemid']))
 		{
-			$menuItem = $this->menu->getActive();
+			$menuItem = $menu->getActive();
 			$menuItemGiven = false;
 		}
 		else
 		{
-			$menuItem = $this->menu->getItem($query['Itemid']);
+			$menuItem = $menu->getItem($query['Itemid']);
 			$menuItemGiven = true;
 		}
 
@@ -36,14 +39,13 @@ class SpeasyimagegalleryRouter extends RouterBase
 		{
 			$menuItemGiven = false;
 			unset($query['Itemid']);
+			unset($query['view']);
 		}
 
 		if (isset($query['view']))
 		{
 			$view = $query['view'];
-		}
-		else
-		{
+		} else {
 			// We need to have a view in the query or it is an invalid URL
 			return $segments;
 		}
@@ -54,11 +56,21 @@ class SpeasyimagegalleryRouter extends RouterBase
 		&& isset($query['id'])
 		&& $menuItem->query['id'] == (int) $query['id'])
 		{
-
 			unset($query['view']);
 			unset($query['id']);
 
 			return $segments;
+		}
+
+		//Replace with menu
+		$mview = (empty($menuItem->query['view'])) ? null : $menuItem->query['view'];
+
+		//List view
+		if ( $view == 'albums' ) {
+			if($mview != $view) {
+				$segments[] = $view;
+			}
+			unset($query['view']);
 		}
 
 		if ($view == 'album')
@@ -79,9 +91,9 @@ class SpeasyimagegalleryRouter extends RouterBase
 					{
 						$db = Factory::getDbo();
 						$dbQuery = $db->getQuery(true)
-						->select('alias')
-						->from('#__speasyimagegallery_albums')
-						->where('id=' . (int) $query['id']);
+							->select('alias')
+							->from('#__speasyimagegallery_albums')
+							->where('id=' . (int) $query['id']);
 						$db->setQuery($dbQuery);
 						$alias = $db->loadResult();
 						$query['id'] = $query['id'] . ':' . $alias;
@@ -117,7 +129,7 @@ class SpeasyimagegalleryRouter extends RouterBase
 
 	}
 
-	public function parse(&$segments)
+	public function parseRoute(&$segments)
 	{
 		$app = Factory::getApplication();
 		$menu = $app->getMenu();
@@ -147,16 +159,38 @@ class SpeasyimagegalleryRouter extends RouterBase
 	}
 }
 
-function  speasyimagegalleryBuildRoute(&$query)
-{
-	$router = new SpeasyimagegalleryRouter;
+if(JVERSION >= 4 ) {
+	/**
+	 * Routing class to support Joomla 4.0
+	 *
+	 */
+	class SpeasyimagegalleryRouter extends Joomla\CMS\Component\Router\RouterBase
+	{
+		public function build(&$query)
+		{
+			$segments = SpeasyimagegalleryRouterBase::buildRoute($query);
+			return $segments;
+		}
 
-	return $router->build($query);
+		public function parse(&$segments)
+		{
+			$vars = SpeasyimagegalleryRouterBase::parseRoute($segments);
+
+			$segments = array();
+
+			return $vars;
+		}
+	}
 }
 
-function speasyimagegalleryParseRoute($segments)
+function speasyimagegalleryBuildRoute(&$query)
 {
-	$router = new SpeasyimagegalleryRouter;
+	$segments = SpeasyimagegalleryRouter::buildRoute($query);
+	return $segments;
+}
 
-	return $router->parse($segments);
+function speasyimagegalleryParseRoute(&$segments)
+{
+	$vars = SpeasyimagegalleryRouter::parseRoute($segments);
+	return $vars;
 }

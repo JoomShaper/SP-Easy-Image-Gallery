@@ -36,7 +36,7 @@ class SpeasyimagegalleryViewAlbums extends HtmlView
 		$this->pagination	= $this->get('Pagination');
 
 		if($menu) {
-			$this->params->merge($menu->params);
+			$this->params->merge($menu->getParams());
 		}
 
 		// Check for errors.

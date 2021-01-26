@@ -33,7 +33,7 @@ class SpeasyimagegalleryViewAlbum extends HtmlView
 		$menu = $menus->getActive();
 
 		if($menu) {
-			$this->params->merge($menu->params);
+			$this->params->merge($menu->getParams());
 		}
 
 		// Check for errors.

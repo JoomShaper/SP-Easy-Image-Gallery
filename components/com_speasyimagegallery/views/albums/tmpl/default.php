@@ -89,7 +89,7 @@ if(count($this->items)) {
     </div>
   </div>
 
-  <?php if ($this->pagination->get('pages.total') > 1) : ?>
+  <?php if ($this->pagination->pagesTotal > 1) : ?>
     <div class="pagination-wrapper">      
       <?php echo $this->pagination->getPagesLinks(); ?>
     </div>
