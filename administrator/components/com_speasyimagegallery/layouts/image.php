@@ -2,7 +2,7 @@
 /**
 * @package com_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2017 JoomShaper
+* @copyright Copyright (c) 2010 - 2021 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
@@ -36,7 +36,7 @@ defined('_JEXEC') or die('Restricted access');
 
 	<div style="width: 25%;" class="has-context">
 		<div class="pull-left break-word">
-			<a class="speasyimagegallery-image-title" href="<?php echo JURI::root(true) . '/' . $sources->original; ?>" target="_blank"><?php echo $image->title; ?></a>
+			<a class="speasyimagegallery-image-title" href="<?php echo Uri::root(true) . '/' . $sources->original; ?>" target="_blank"><?php echo $image->title; ?></a>
 			<span class="speasyimagegallery-image-filename"><?php echo $image->filename; ?></span>
 			<div class="speasyimagegallery-image-tools">
 				<a href="#" class="speasyimagegallery-edit-image" data-id="<?php echo $image->id; ?>"><i class="fa fa-edit"></i> <?php echo Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_EDIT'); ?></a>

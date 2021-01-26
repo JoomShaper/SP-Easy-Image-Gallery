@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
@@ -11,11 +10,9 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Component\Router\RouterBase;
-
 class SpeasyimagegalleryRouterBase
 {
-	public function buildRoute(&$query)
+	public static function buildRoute(&$query)
 	{
 		$app = Factory::getApplication();
 		$menu = $app->getMenu();
@@ -129,7 +126,7 @@ class SpeasyimagegalleryRouterBase
 
 	}
 
-	public function parseRoute(&$segments)
+	public static function parseRoute(&$segments)
 	{
 		$app = Factory::getApplication();
 		$menu = $app->getMenu();
@@ -139,12 +136,19 @@ class SpeasyimagegalleryRouterBase
 		$vars = array();
 		$vars['view'] = 'album';
 
+		for ($i = 0; $i < $count; $i++)
+		{
+			$segments[$i] = preg_replace('/-/', ':', $segments[$i], 1);
+		}
+
 		if (!isset($item))
 		{
 			$alias = $segments[$count - 1];
 		} else {
 			$alias = $segments[0];
 		}
+
+		$alias = preg_replace('/:/', '-', $alias);
 
 		$db = Factory::getDbo();
 		$dbquery = $db->getQuery(true);
@@ -185,12 +189,12 @@ if(JVERSION >= 4 ) {
 
 function speasyimagegalleryBuildRoute(&$query)
 {
-	$segments = SpeasyimagegalleryRouter::buildRoute($query);
+	$segments = SpeasyimagegalleryRouterBase::buildRoute($query);
 	return $segments;
 }
 
 function speasyimagegalleryParseRoute(&$segments)
 {
-	$vars = SpeasyimagegalleryRouter::parseRoute($segments);
+	$vars = SpeasyimagegalleryRouterBase::parseRoute($segments);
 	return $vars;
 }

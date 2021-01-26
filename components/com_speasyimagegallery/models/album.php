@@ -1,5 +1,4 @@
 <?php
-
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
