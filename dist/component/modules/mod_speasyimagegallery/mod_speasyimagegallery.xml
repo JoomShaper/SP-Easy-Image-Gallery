@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<extension type="module" version="3.1" client="site" method="upgrade">
+	<name>SP Easy Image Gallery Module</name>
+	<creationDate>Mar 2016</creationDate>
+	<author>JoomShaper</author>
+	<authorEmail>support@joomshaper.com</authorEmail>
+	<authorUrl>http://www.joomshaper.com</authorUrl>
+	<copyright>@JoomShaper 2010 - 2021. All rights reserved.</copyright>
+	<license>GNU General Public License version 2 or later</license>
+	<version>2.0.0</version>
+	<description>Module to display albums or album images from SP Easy Image Gallery component.</description>
+
+	<updateservers>
+		<server type="extension" priority="1" name="SP Easy Image Gallery Module">https://www.joomshaper.com/updates/mod-sp-easyimagegallery.xml</server>
+	</updateservers>
+
+	<files>
+		<filename module="mod_speasyimagegallery">mod_speasyimagegallery.php</filename>
+		<folder>layouts</folder>
+		<folder>tmpl</folder>
+		<filename>helper.php</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">en-GB.mod_speasyimagegallery.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/administrator/components/com_speasyimagegallery/models/fields">
+
+				<field name="layout" type="list" default="album" label="MOD_SPEASYIMAGEGALLERY_LAYOUT_TYPE" description="MOD_SPEASYIMAGEGALLERY_LAYOUT_TYPE_DESC">
+					<option value="album">MOD_SPEASYIMAGEGALLERY_LAYOUT_ALBUM</option>
+					<option value="albums">MOD_SPEASYIMAGEGALLERY_LAYOUT_ALBUMS</option>
+				</field>
+
+				<field name="spacer1" type="spacer" hr="true" showon="layout:albums" />
+				<field name="spacer2" type="spacer" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_ALBUM_LIST_OPTIONS" showon="layout:albums" />
+				<field name="catid" type="category" label="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY" description="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY_DESC" extension="com_speasyimagegallery" showon="layout:albums">
+					<option value="">MOD_SPEASYIMAGEGALLERY_SELECT_CATEGORY</option>
+				</field>
+				<field name="albums_column" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_DESC" default="3" showon="layout:albums">
+					<option value="12">1</option>
+					<option value="6">2</option>
+					<option value="4">3</option>
+					<option value="3">4</option>
+					<option value="2">6</option>
+				</field>
+				<field name="albums_column_sm" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_SM" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_SM_DESC" default="4" showon="layout:albums">
+					<option value="12">1</option>
+					<option value="6">2</option>
+					<option value="4">3</option>
+					<option value="3">4</option>
+					<option value="2">6</option>
+				</field>
+				<field name="albums_column_xs" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_XS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_XS_DESC" default="6" showon="layout:albums">
+					<option value="12">1</option>
+					<option value="6">2</option>
+					<option value="4">3</option>
+					<option value="3">4</option>
+					<option value="2">6</option>
+				</field>
+				<field name="albums_gutter" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_DESC" default="20" showon="layout:albums" />
+				<field name="albums_gutter_sm" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM_DESC" default="15" showon="layout:albums" />
+				<field name="albums_gutter_xs" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS_DESC" default="10" showon="layout:albums" />
+
+
+				<field name="spacer3" type="spacer" hr="true" showon="layout:album" />
+				<field name="spacer4" type="spacer" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_ALBUM_OPTIONS" showon="layout:album" />
+				<field name="album_id" type="albums" label="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM" description="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_DESC" showon="layout:album" />
+				<field name="album_limit" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_LIMIT" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_LIMIT_DESC" default="8" showon="layout:album" />
+
+				<field name="album_layout" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_DESC" default="default" showon="layout:album">
+					<option value="default">MOD_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_DEFAULT</option>
+					<option value="mosaic">MOD_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_MOSAIC</option>
+					<option value="rectangle">MOD_SPEASYIMAGEGALLERY_GLOBAL_LAYOUT_RECTANGLE</option>
+				</field>
+				<field name="album_column" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_DESC" default="3" showon="layout:album[AND]album_layout:default">
+					<option value="12">1</option>
+					<option value="6">2</option>
+					<option value="4">3</option>
+					<option value="3">4</option>
+					<option value="2">6</option>
+				</field>
+				<field name="album_column_sm" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_SM" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_SM_DESC" default="4" showon="layout:album[AND]album_layout:default">
+					<option value="12">1</option>
+					<option value="6">2</option>
+					<option value="4">3</option>
+					<option value="3">4</option>
+					<option value="2">6</option>
+				</field>
+				<field name="album_column_xs" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_XS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_XS_DESC" default="6" showon="layout:album[AND]album_layout:default">
+					<option value="12">1</option>
+					<option value="6">2</option>
+					<option value="4">3</option>
+					<option value="3">4</option>
+					<option value="2">6</option>
+				</field>
+				<field name="album_gutter" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_DESC" default="20" showon="layout:album" />
+				<field name="album_gutter_sm" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM_DESC" default="15" showon="layout:album" />
+				<field name="album_gutter_xs" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS_DESC" default="10" showon="layout:album" />
+
+				<field name="spacer5" type="spacer" hr="true" showon="layout:album" />
+				<field name="spacer6" type="spacer" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_POPUP_OPTIONS" showon="layout:album" />
+				<field name="show_title" type="radio" class="btn-group" label="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_TITLE" description="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_TITLE_DESC" default="1" showon="layout:album">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="show_desc" type="radio" class="btn-group" label="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_DESC" description="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_DESC_DESC" default="1" showon="layout:album">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+				<field name="show_count" type="radio" class="btn-group" label="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_COUNT" description="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_COUNT_DESC" default="1" showon="layout:album">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
+			</fieldset>
+			<fieldset name="advanced">
+				<field name="moduleclass_sfx" type="textarea" label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL" description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" rows="3"				/>
+				<field name="cache" type="list" label="COM_MODULES_FIELD_CACHING_LABEL" description="COM_MODULES_FIELD_CACHING_DESC" default="1" >
+					<option value="1">JGLOBAL_USE_GLOBAL</option>
+					<option value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+				<field name="cache_time" type="text" label="COM_MODULES_FIELD_CACHE_TIME_LABEL" description="COM_MODULES_FIELD_CACHE_TIME_DESC" default="900" />
+				<field name="cachemode" type="hidden" default="itemid" >
+					<option value="itemid">
+					</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

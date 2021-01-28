@@ -1,0 +1,24 @@
+{
+  "name": "speasyimagegallery",
+  "version": "1.0.0",
+  "description": "Joomla! CMS™",
+  "main": "gulpfile.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JoomShaper/SP-Easy-Image-Gallery.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JoomShaper/SP-Easy-Image-Gallery/issues"
+  },
+  "homepage": "https://github.com/JoomShaper/SP-Easy-Image-Gallery#readme",
+  "dependencies": {
+    "del": "^6.0.0",
+    "gulp": "^4.0.2",
+    "gulp-zip": "^5.0.2"
+  }
+}
