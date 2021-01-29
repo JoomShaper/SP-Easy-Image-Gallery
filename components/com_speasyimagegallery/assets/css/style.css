@@ -194,7 +194,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1033;
+  z-index: 99999;
   background: rgba(0, 0, 0, 0.8);
   overflow: hidden;
   text-align: center;
@@ -206,7 +206,7 @@
   top: 50%;
   left: 50%;
   background: #000;
-  z-index: 1034;
+  z-index: 99999;
   max-width: 100%;
   max-height: 100%;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
