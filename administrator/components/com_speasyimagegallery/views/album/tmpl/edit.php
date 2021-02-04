@@ -33,6 +33,7 @@ if (JVERSION > 4)
 else
 {
 	$doc->addStylesheet(Uri::base(true) . '/components/com_speasyimagegallery/assets/css/jquery-ui.min.css');
+	$doc->addScript(Uri::base(true) . '/components/com_speasyimagegallery/assets/js/jquery.min.js');
 	$doc->addScript(Uri::base(true) . '/components/com_speasyimagegallery/assets/js/jquery-ui.min.js');
 }
 
