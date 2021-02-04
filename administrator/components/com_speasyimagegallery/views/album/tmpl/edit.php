@@ -33,7 +33,7 @@ if (SpeasyimagegalleryHelper::getVersion() < 4)
 else
 {
 	$doc->addStylesheet(Uri::base(true) . '/components/com_speasyimagegallery/assets/css/jquery-ui.min.css');
-	$doc->addScript(Uri::base(true) . '/components/com_speasyimagegallery/assets/js/jquery.min.js');
+	HTMLHelper::_('jquery.framework');
 	$doc->addScript(Uri::base(true) . '/components/com_speasyimagegallery/assets/js/jquery-ui.min.js');
 }
 
