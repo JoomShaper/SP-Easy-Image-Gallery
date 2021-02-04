@@ -26,7 +26,7 @@ if (SpeasyimagegalleryHelper::getVersion() < 4)
 	HTMLHelper::_('formbehavior.chosen', 'select', null, array('disable_search_threshold' => 0 ));
 }
 
-if (JVERSION > 4)
+if (SpeasyimagegalleryHelper::getVersion() < 4)
 {
 	HTMLHelper::_('jquery.ui', array('core', 'sortable'));
 }
