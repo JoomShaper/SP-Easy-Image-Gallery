@@ -10,10 +10,6 @@
 	<version>2.0.0</version>
 	<description>Module to display albums or album images from SP Easy Image Gallery component.</description>
 
-	<updateservers>
-		<server type="extension" priority="1" name="SP Easy Image Gallery Module">https://www.joomshaper.com/updates/mod-sp-easyimagegallery.xml</server>
-	</updateservers>
-
 	<files>
 		<filename module="mod_speasyimagegallery">mod_speasyimagegallery.php</filename>
 		<folder>layouts</folder>
