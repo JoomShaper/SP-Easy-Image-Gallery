@@ -78,9 +78,16 @@ if ($saveOrder && !empty($this->items))
 
 
 		<?php if (empty($this->items)) : ?>
+			<?php if (SpeasyimagegalleryHelper::getVersion() < 4) :?>
 			<div class="alert alert-no-items">
 				<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
 			</div>
+			<?php else : ?>
+				<div class="alert alert-info">
+					<span class="icon-info-circle" aria-hidden="true"></span><span class="visually-hidden"><?php echo Text::_('INFO'); ?></span>
+					<?php echo Text::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>
+				</div>
+			<?php endif; ?>
 		<?php else : ?>
 			<table class="table table-striped" id="albumList">
 				<thead>
