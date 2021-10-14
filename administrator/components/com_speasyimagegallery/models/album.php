@@ -88,8 +88,8 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 		$input  = Factory::getApplication()->input;
 		$filter = InputFilter::getInstance();
 
-		$filteredImage = explode('?', $data['image']);
-		$data['image'] = $filteredImage[0];
+		$filteredImage = explode('#', $data['image']);
+		$data['image'] = str_replace('%20', ' ', $filteredImage[0]);
 
 		// Automatic handling of alias for empty fields
 		if (in_array($input->get('task'), array('apply', 'save')) && (!isset($data['id']) || (int) $data['id'] == 0))

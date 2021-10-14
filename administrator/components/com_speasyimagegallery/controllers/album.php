@@ -17,8 +17,6 @@ use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Controller\FormController;
 
-jimport('joomla.filesystem.file');
-jimport( 'joomla.application.component.helper');
 
 class SpeasyimagegalleryControllerAlbum extends FormController
 {
@@ -52,8 +50,8 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		$folder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
 		$image = JPATH_ROOT . '/' . $item->image;
 
-		$filteredImage = explode('?', $image);
-		$image = $filteredImage[0];
+		$filteredImage = explode('#', $image);
+		$image = str_replace('%20', ' ', $filteredImage[0]);
 
 		$ext = File::getExt($image);
 
