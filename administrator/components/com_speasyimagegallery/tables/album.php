@@ -72,6 +72,10 @@ class SpeasyimagegalleryTableAlbum extends Table
 		{
 			$this->alias = $this->title;
 		}
+		if (empty($this->attribs))
+		{
+			$this->attribs = '';
+		}
 
 		$this->alias = ApplicationHelper::stringURLSafe($this->alias, $this->language);
 
