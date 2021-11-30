@@ -89,6 +89,7 @@ class ModSpeasyimagegalleryHelper
 		$query->select($db->quoteName(array('id')));
 		$query->from($db->quoteName('#__menu'));
 		$query->where($db->quoteName('link') . ' LIKE '. $db->quote('%option=com_speasyimagegallery%'));
+		$query->where('language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		$query->where($db->quoteName('published') . ' = '. $db->quote('1'));
 		$db->setQuery($query);
 		$result = $db->loadResult();

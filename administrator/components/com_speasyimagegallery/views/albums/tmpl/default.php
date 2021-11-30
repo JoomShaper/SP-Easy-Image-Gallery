@@ -153,7 +153,7 @@ if ($saveOrder && !empty($this->items))
 							<?php if(SpeasyimagegalleryHelper::getVersion() < 4) :?>
 								<tr>
 							<?php else: ?>
-								<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
+								<tr class="row<?php echo $i % 2; ?>" data-draggable-group="<?php echo $item->catid; ?>">
 							<?php endif; ?>
 								<td class="order nowrap center hidden-phone">
 									<?php

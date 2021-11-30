@@ -87,12 +87,12 @@ defined('_JEXEC') or die('Restricted access');
 			</div>
 
 			<div id="imagesList" class="sp-tbody">
-<?php
-foreach ($images as $key => $image)
-{
-	echo LayoutHelper::render('image', array('image' => $image));
-}
-?>
+				<?php
+				foreach ($images as $key => $image)
+				{
+					echo LayoutHelper::render('image', array('image' => $image));
+				}
+				?>
 			</div>
 
 		</div>

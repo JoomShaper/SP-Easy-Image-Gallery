@@ -47,6 +47,7 @@ class SpeasyimagegalleryTableAlbum extends Table
 				$this->modified_by = $user->get('id');
 			}
 		}
+
 		// Verify that the alias is unique
 		$table = Table::getInstance('Album', 'SpeasyimagegalleryTable');
 
@@ -71,6 +72,16 @@ class SpeasyimagegalleryTableAlbum extends Table
 		if (empty($this->alias))
 		{
 			$this->alias = $this->title;
+		}
+
+		if (empty($this->attribs))
+		{
+			$this->attribs = '';
+		}
+
+		if (empty($this->metadata))
+		{
+			$this->metadata = '';
 		}
 
 		$this->alias = ApplicationHelper::stringURLSafe($this->alias, $this->language);
