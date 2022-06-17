@@ -116,7 +116,7 @@ class SpeasyimagegalleryHelper
 	 * @param	string	$ext		file extention
 	 * @return	boolean/string
 	 */
-	public static function createThumbs($src, $sizes = array(), $folder, $base_name, $ext)
+	public static function createThumbs($src, $sizes , $folder, $base_name, $ext)
 	{
 
 		list($originalWidth, $originalHeight) = getimagesize($src);
