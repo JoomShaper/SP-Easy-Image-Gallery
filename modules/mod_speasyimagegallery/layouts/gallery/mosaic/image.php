@@ -35,11 +35,12 @@ if($column == 1) {
 $source = json_decode($image->images);
 $thumb = $sizes[$index];
 ?>
-<a class="speasyimagegallery-gallery-item" href="<?php echo $source->original; ?>" data-title="<?php echo $image->title; ?>" data-desc="<?php echo strip_tags($image->description); ?>">
-  <div>
-    <img src="<?php echo $source->$thumb; ?>" title="<?php echo $image->title; ?>" alt="<?php echo $image->alt; ?>">
-    <div class="speasyimagegallery-gallery-item-content">
-      <span class="speasyimagegallery-gallery-item-title"><?php echo $image->title; ?></span>
+<a class="speasyimagegallery-gallery-item" href="<?php echo $source->original; ?>" data-title="<?php echo $image->title; ?>"
+    data-desc="<?php echo ($image->description) ? strip_tags($image->description) : ''; ?>">
+    <div>
+        <img src="<?php echo $source->$thumb; ?>" title="<?php echo $image->title; ?>" alt="<?php echo $image->alt; ?>">
+        <div class="speasyimagegallery-gallery-item-content">
+            <span class="speasyimagegallery-gallery-item-title"><?php echo $image->title; ?></span>
+        </div>
     </div>
-  </div>
 </a>
