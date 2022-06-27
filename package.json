@@ -16,9 +16,9 @@
     "url": "https://github.com/JoomShaper/SP-Easy-Image-Gallery/issues"
   },
   "homepage": "https://github.com/JoomShaper/SP-Easy-Image-Gallery#readme",
-  "dependencies": {
-    "del": "^6.0.0",
+  "devDependencies": {
+    "del": "^6.1.1",
     "gulp": "^4.0.2",
-    "gulp-zip": "^5.0.2"
+    "gulp-zip": "^5.1.0"
   }
 }
