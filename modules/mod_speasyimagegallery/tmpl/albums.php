@@ -72,7 +72,7 @@ if($gutter || $gutter_sm || $gutter_xs) {
                   <div class="speasyimagegallery-album-info">
                     <span class="speasyimagegallery-album-title"><?php echo $album->title; ?></span>
                     <div class="speasyimagegallery-album-meta clearfix">
-                      <span class="speasyimagegallery-album-meta-count"><?php echo $album->count; ?> <?php echo ($album->count > 1) ? 'Photos' : 'Photo'; ?></span>
+                      <span class="speasyimagegallery-album-meta-count"><?php echo $album->count; ?> <?php echo ($album->count > 1) ? Text::_('MOD_SPEASYIMAGEGALLERY_PHOTOS') : Text::_('MOD_SPEASYIMAGEGALLERY_PHOTO'); ?></span>
 	                    <?php if(!empty($album->description)): ;?>
                             <br>
                             <span class="speasyimagegallery-album-meta-count" style="font-weight: normal;"><small><?php echo $album->description ;?></small></span>
