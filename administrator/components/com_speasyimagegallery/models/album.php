@@ -226,6 +226,7 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 		$image->modified = HTMLHelper::_('date', strtotime(Factory::getDate('now')), 'Y-m-d h:m:s');
 		$image->modified_by = Factory::getUser()->id;
 		$image->images = $attribs['images'];
+		$image->language = $attribs['lang'];
 
 		try
 		{

@@ -42,6 +42,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 		$input = Factory::getApplication()->input;
 		$album_id = $input->post->get('album_id', 0, 'INT');
 		$file = $input->files->get('image');
+		$lang = $input->get('lang','*','STRING');
 
 		$report = array();
 		$params = ComponentHelper::getParams('com_speasyimagegallery');
@@ -138,7 +139,8 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 								'alt' => $base_name,
 								'ext' => $ext,
 								'album_id' => $album_id,
-								'images' => json_encode($sources)
+								'images' => json_encode($sources),
+								'lang' => $lang
 							);
 
 							$inserted_image = $model->insertMedia($image);
