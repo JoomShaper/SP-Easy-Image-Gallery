@@ -9,7 +9,7 @@ const config = {
     buildPath: './dist/component/',
     rootPath: './dist/',
     componentName: 'speasyimagegallery',
-    com_package_name: 'com_speasyimagegallery_fullpackage_v2.0.2.zip',
+    com_package_name: 'com_speasyimagegallery_fullpackage_v2.0.4.zip',
     moduleExts: ['xml','php','js','css','jpg','png','gif','ttf','otf','woff','woff2','svg','eot']
 }
 
