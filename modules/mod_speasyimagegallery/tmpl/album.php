@@ -27,6 +27,7 @@ $layout = $params->get('album_layout', 'default');
 $show_title = $params->get('show_title', 1);
 $show_desc = $params->get('show_desc', 1);
 $show_count = $params->get('show_count', 1);
+$show_album_desc = $params->get('show_album_desc', 1);
 $gutter = $params->get('album_gutter', 20)/2;
 $gutter_sm = $params->get('album_gutter_sm', 15)/2;
 $gutter_xs = $params->get('album_gutter_xs', 10)/2;
@@ -65,18 +66,16 @@ if($gutter || $gutter_sm || $gutter_xs) {
 ?>
 
 <div class="mod-speasyimagegallery" id="mod-speasyimagegallery-<?php echo $module->id; ?>">
-  <?php
-  if(count($images)) {
-    ?>
-    <div class="speasyimagegallery-gallery clearfix" <?php echo $gallery_attribs; ?>>
-      <?php
-      $layout = new FileLayout('gallery.'. $layout .'.row', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
-      echo $layout->render(array('images'=>$images, 'params'=>$params));
-      ?>
-    </div>
-    <?php
-  } else {
+<?php if(count($images)) { ?>
+  <?php if ($albumDescription): ?>
+  <div class="speasyimagegallery-album-description"><?php echo $albumDescription; ?></div>
+  <?php endif;?>
+  <div class="speasyimagegallery-gallery clearfix" <?php echo $gallery_attribs; ?>>
+  <?php $layout = new FileLayout('gallery.'. $layout .'.row', JPATH_ROOT .'/modules/mod_speasyimagegallery/layouts');
+      echo $layout->render(array('images'=>$images, 'params'=>$params)); ?>
+  </div>
+<?php } 
+else {
     echo '<div class="alert">' . Text::_('MOD_SPEASYIMAGEGALLERY_NO_IMAGES') . '</div>';
-  }
-  ?>
+} ?>
 </div>

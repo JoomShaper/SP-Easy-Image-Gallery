@@ -12,8 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\Router\Route;
+use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 class ModSpeasyimagegalleryHelper
 {
 	public static function getAlbumList($params) {
@@ -99,6 +99,33 @@ class ModSpeasyimagegalleryHelper
 		}
 
 		return;
+	}
+
+
+	/**
+	 * Retrieves the album description based on module parameters.
+	 *
+	 * @param  object 		$params -- The module parameters.
+	 * @return string|null 			-- The album description, or null if not found or not configured to display.
+	 * @since  2.0.5
+	 */
+	public static function getAlbumDescription($params)
+	{
+		if (!$params->get('show_album_desc',0)) {
+			return null;
+		}
+		
+		$album_id = $params->get('album_id', 0);
+
+		$db    = Factory::getDbo();
+		$query = $db->getQuery(true);
+		
+		$query->select($db->quoteName('description'));
+		$query->from($db->quoteName('#__speasyimagegallery_albums'));
+		$query->where($db->quoteName('id') . ' = ' . $db->quote($album_id));
+		$query->where($db->quoteName('published') . ' = ' . $db->quote('1'));
+		$db->setQuery($query);
+		return $db->loadResult();
 	}
 
 }

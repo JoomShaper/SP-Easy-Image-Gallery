@@ -26,7 +26,8 @@ $layout = $params->get('layout', 'album');
 if($layout == 'albums') {
   $albums = ModSpeasyimagegalleryHelper::getAlbumList($params);
 } else {
-  $images = ModSpeasyimagegalleryHelper::getImages($params);
+  $images           = ModSpeasyimagegalleryHelper::getImages($params);
+  $albumDescription = (!is_null($images) && !empty($images)) ? ModSpeasyimagegalleryHelper::getAlbumDescription($params): null;
 }
 
 require ModuleHelper::getLayoutPath('mod_speasyimagegallery', $layout);
