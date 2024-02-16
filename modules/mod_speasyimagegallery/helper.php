@@ -111,7 +111,7 @@ class ModSpeasyimagegalleryHelper
 	 */
 	public static function getAlbumDescription($params)
 	{
-		if (!$params->get('show_album_desc',0)) {
+		if (!$params->get('show_album_desc', 0)) {
 			return null;
 		}
 		
