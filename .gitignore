@@ -19,6 +19,7 @@ robots.txt.dist
 /api
 /installation
 /dist
+/files
 
 LICENSE.txt
 README.txt
