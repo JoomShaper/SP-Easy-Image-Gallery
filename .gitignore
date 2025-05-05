@@ -28,6 +28,7 @@ htaccess.txt
 index.php
 robots.txt
 web.config.txt
+yarn.lock
 
 /plugins
 

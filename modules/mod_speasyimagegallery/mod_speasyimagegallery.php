@@ -4,7 +4,7 @@
  * @package com_speasyimagegallery
  * @subpackage mod_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2021 JoomShaper
+ * @copyright Copyright (c) 2010 - 2024 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
  */
 
@@ -26,7 +26,8 @@ $layout = $params->get('layout', 'album');
 if($layout == 'albums') {
   $albums = ModSpeasyimagegalleryHelper::getAlbumList($params);
 } else {
-  $images = ModSpeasyimagegalleryHelper::getImages($params);
+  $images           = ModSpeasyimagegalleryHelper::getImages($params);
+  $albumDescription = (!is_null($images) && !empty($images)) ? ModSpeasyimagegalleryHelper::getAlbumDescription($params) : null;
 }
 
 require ModuleHelper::getLayoutPath('mod_speasyimagegallery', $layout);

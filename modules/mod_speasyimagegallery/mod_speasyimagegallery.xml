@@ -5,9 +5,9 @@
 	<author>JoomShaper</author>
 	<authorEmail>support@joomshaper.com</authorEmail>
 	<authorUrl>http://www.joomshaper.com</authorUrl>
-	<copyright>@JoomShaper 2010 - 2021. All rights reserved.</copyright>
+	<copyright>@JoomShaper 2010 - 2024. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>2.0.2</version>
+	<version>2.0.4</version>
 	<description>Module to display albums or album images from SP Easy Image Gallery component.</description>
 
 	<files>
@@ -57,7 +57,10 @@
 				<field name="albums_gutter" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_DESC" default="20" showon="layout:albums" />
 				<field name="albums_gutter_sm" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_SM_DESC" default="15" showon="layout:albums" />
 				<field name="albums_gutter_xs" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_GUTTER_XS_DESC" default="10" showon="layout:albums" />
-
+				<field name="show_album_desc" type="radio" class="btn-group" label="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_ALBUM_DESC" description="MOD_SPEASYIMAGEGALLERY_POPUP_SHOW_ALBUM_DESC_DESC" default="0" showon="layout:album">
+					<option value="1">JYES</option>
+					<option value="0">JNO</option>
+				</field>
 
 				<field name="spacer3" type="spacer" hr="true" showon="layout:album" />
 				<field name="spacer4" type="spacer" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_ALBUM_OPTIONS" showon="layout:album" />
