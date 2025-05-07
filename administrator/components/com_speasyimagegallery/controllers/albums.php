@@ -20,13 +20,22 @@ use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Controller\AdminController;
 
-jimport( 'joomla.application.component.helper' );
+jimport('joomla.application.component.helper');
 jimport('joomla.filesystem.folder');
 jimport('joomla.filesystem.file');
 jimport('joomla.filter.output');
+jimport('joomla.sortable.sortable');
 
 class SpeasyimagegalleryControllerAlbums extends AdminController
 {
+	public function __construct($config = [])
+	{
+		parent::__construct($config);
+
+		// Needed for jgrid.featured to work
+		$this->registerTask('unfeature', 'feature');
+	}
+
 
 	public function getModel($name = 'Album', $prefix = 'SpeasyimagegalleryModel', $config = array('ignore_request' => true))
 	{
@@ -42,7 +51,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 		$input = Factory::getApplication()->input;
 		$album_id = $input->post->get('album_id', 0, 'INT');
 		$file = $input->files->get('image');
-		$lang = $input->get('lang','*','STRING');
+		$lang = $input->get('lang', '*', 'STRING');
 
 		$report = array();
 		$params = ComponentHelper::getParams('com_speasyimagegallery');
@@ -51,18 +60,15 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 		$authorised = $user->authorise('core.edit', 'com_speasyimagegallery') || $user->authorise('core.edit.own', 'com_speasyimagegallery');
 
-		if ($authorised !== true)
-		{
+		if ($authorised !== true) {
 			$report['status'] = false;
 			$report['output'] = Text::_('JERROR_ALERTNOAUTHOR');
 			echo json_encode($report);
 			die();
 		}
 
-		if (count($file))
-		{
-			if ($file['error'] == UPLOAD_ERR_OK)
-			{
+		if (count($file)) {
+			if ($file['error'] == UPLOAD_ERR_OK) {
 				$error = false;
 				$contentLength = (int) $_SERVER['CONTENT_LENGTH'];
 				$mediaHelper = new MediaHelper;
@@ -70,8 +76,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 				$memoryLimit = $mediaHelper->toBytes(ini_get('memory_limit'));
 
 				// Check for the total size of post back data.
-				if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit))
-				{
+				if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit)) {
 					$report['status'] = false;
 					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_TOTAL_SIZE_EXCEEDS');
 					$error = true;
@@ -81,8 +86,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 				$uploadMaxFileSize = $mediaHelper->toBytes(ini_get('upload_max_filesize'));
 
-				if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
-				{
+				if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize)) {
 					$report['status'] = false;
 					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_LARGE');
 					$error = true;
@@ -92,18 +96,15 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 				$accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
 
 				// Upload if no error found
-				if(!$error)
-				{
+				if (!$error) {
 					$date = Factory::getDate();
 
 					$file_ext = strtolower(File::getExt($file['name']));
 
-					if(in_array($file_ext, $accepted_formats))
-					{
+					if (in_array($file_ext, $accepted_formats)) {
 						$folder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
 
-						if(!Folder::exists( JPATH_ROOT . '/' . $folder ))
-						{
+						if (!Folder::exists(JPATH_ROOT . '/' . $folder)) {
 							Folder::create(JPATH_ROOT . '/' . $folder, 0755);
 						}
 
@@ -120,16 +121,15 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 							$i++;
 							$dest       = JPATH_ROOT . '/' . $folder . '/' . $media_name;
 							$src        = $folder . '/'  . $media_name;
-						} while(file_exists($dest));
+						} while (file_exists($dest));
 						// End Do not override
 
-						if (File::upload($path, $dest, false, true))
-						{
+						if (File::upload($path, $dest, false, true)) {
 							$sources = SpeasyimagegalleryHelper::createThumbs($dest, array(
-								'mini'=> array(64, 64),
-								'thumb'=> array($width, $height),
-								'x_thumb'=> array($width*2, $height*2),
-								'y_thumb'=> array($width, $height*1.5)
+								'mini' => array(64, 64),
+								'thumb' => array($width, $height),
+								'x_thumb' => array($width * 2, $height * 2),
+								'y_thumb' => array($width, $height * 1.5)
 							), $folder, $base_name, $ext);
 
 							$report['thumb'] = Uri::root(true) . '/' . $sources['thumb'];
@@ -147,23 +147,17 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 							$report['status'] = true;
 							$report['output'] = LayoutHelper::render('image', array('image' => $inserted_image));
-						}
-						else
-						{
+						} else {
 							$report['status'] = false;
 							$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
 						}
-					}
-					else
-					{
+					} else {
 						$report['status'] = false;
 						$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
 					}
 				}
 			}
-		}
-		else
-		{
+		} else {
 			$report['status'] = false;
 			$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
 		}
@@ -175,7 +169,8 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 	}
 
 	// Sort images
-	public function sort_images() {
+	public function sort_images()
+	{
 		$input = Factory::getApplication()->input;
 		$orders = $input->get('orders', '', 'STRING');
 		$orders = explode(',', $orders);
@@ -185,7 +180,8 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 	}
 
 	// Change Image state
-	public function image_state() {
+	public function image_state()
+	{
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$state = $input->get('state', 'enabled', 'STRING');
@@ -195,7 +191,8 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 	}
 
 	// Delete Image
-	public function image_delete() {
+	public function image_delete()
+	{
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$album_id = $input->get('album_id', '', 'INT');
@@ -206,18 +203,20 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 	}
 
 	// Edit Image
-	public function edit_image() {
+	public function edit_image()
+	{
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$album_id = $input->get('album_id', '', 'INT');
 		$model = $this->getModel();
 		$image = $model->getImages($album_id, $id);
-		echo LayoutHelper::render('edit', array('image'=>$image));
+		echo LayoutHelper::render('edit', array('image' => $image));
 		die();
 	}
 
 	// save image
-	public function save_image() {
+	public function save_image()
+	{
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$title = $input->get('title', '', 'STRING');
@@ -225,15 +224,32 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 		$desc = $input->get('desc', '', 'STRING');
 
 		$attr = array(
-			'id'=>$id,
-			'title'=>$title,
-			'alt'=>$alt,
-			'desc'=>$desc
+			'id' => $id,
+			'title' => $title,
+			'alt' => $alt,
+			'desc' => $desc
 		);
 
 		$model = $this->getModel();
 		$model->saveImage($attr);
 		die();
 	}
+
+	public function feature()
+	{
+		$input = $this->input;
+		$cid = (array) $input->get('cid', array(), 'array');
+		$value = ($this->getTask() == 'feature') ? 1 : 0;
+
+		$model = $this->getModel('Albums');
+
+		if ($model->setFeatured($cid, $value)) {
+			$message = $value ? 'Items featured' : 'Items unfeatured';
+			$this->setMessage(JText::_($message));
+		}
+
+		$this->setRedirect('index.php?option=com_speasyimagegallery&view=albums');
+	}
+
 
 }

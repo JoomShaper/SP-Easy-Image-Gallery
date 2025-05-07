@@ -14,4 +14,5 @@ use Joomla\CMS\MVC\Controller\BaseController;
 class SpeasyimagegalleryController extends BaseController
 {
 	protected $default_view = 'albums';
+
 }

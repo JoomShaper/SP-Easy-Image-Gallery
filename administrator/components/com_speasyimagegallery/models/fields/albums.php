@@ -33,5 +33,6 @@ class JFormFieldAlbums extends JFormFieldList
 
 		return $db->loadAssocList('id', 'title');
 
+		
 	}
 }

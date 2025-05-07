@@ -1,4 +1,5 @@
 <?php
+
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
@@ -20,21 +21,38 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 
 	public function __construct($config = array())
 	{
-		if (empty($config['filter_fields']))
-		{
+		if (empty($config['filter_fields'])) {
 			$config['filter_fields'] = array(
-				'id','a.id',
-				'title','a.title',
-				'checked_out', 'a.checked_out',
-				'checked_out_time', 'a.checked_out_time',
-				'created_by','a.created_by',
-				'published','a.published',
-				'catid', 'a.catid', 'category_title',
-				'access', 'a.access', 'access_level',
-				'created_on','a.created_on',
-				'ordering', 'a.ordering',
-				'hits', 'a.hits',
-				'language','a.language',
+				'id',
+				'a.id',
+				'title',
+				'a.title',
+				'featured',
+				'a.featured',
+				'checked_out',
+				'a.checked_out',
+				'checked_out_time',
+				'a.checked_out_time',
+				'created_by',
+				'a.created_by',
+				'published',
+				'a.published',
+				'catid',
+				'a.catid',
+				'category_title',
+				'access',
+				'a.access',
+				'access_level',
+				'created_on',
+				'a.created_on',
+				'created',
+				'a.created',
+				'ordering',
+				'a.ordering',
+				'hits',
+				'a.hits',
+				'language',
+				'a.language',
 				'category_id',
 			);
 		}
@@ -42,10 +60,40 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 		parent::__construct($config);
 	}
 
-	protected function populateState($ordering = 'a.id', $direction = 'desc')
+	protected function populateState($ordering = 'a.ordering', $direction = 'ASC')
 	{
 		$app = Factory::getApplication();
 		$context = $this->context;
+
+		// // Get ordering from fullordering
+		// $fullOrdering = $app->getUserStateFromRequest($this->context . '.list.fullordering', 'list[fullordering]', '', 'string');
+		// if (!empty($fullOrdering)) {
+		// 	$parts = explode(' ', $fullOrdering);
+		// 	if (count($parts) === 2) {
+		// 		$this->setState('list.ordering', $parts[0]);
+		// 		$this->setState('list.direction', $parts[1]);
+		// 	}
+		// } else {
+		// 	$this->setState('list.ordering', $ordering);
+		// 	$this->setState('list.direction', $direction);
+		// }
+
+		$fullOrdering = $app->getUserStateFromRequest(
+			$this->context . '.list.fullordering',
+			'list[fullordering]',
+			'',
+			'string'
+		);
+	
+		if (!empty($fullOrdering)) {
+			$parts = explode(' ', $fullOrdering);
+			$this->setState('list.ordering', $parts[0]);
+			$this->setState('list.direction', $parts[1] ?? 'ASC');
+		} else {
+			$this->setState('list.ordering', $ordering);
+			$this->setState('list.direction', $direction);
+		}	
+	
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -79,10 +127,10 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 	}
 
 	/**
-	* Method to build an SQL query to load the list data.
-	*
-	* @return      string  An SQL query
-	*/
+	 * Method to build an SQL query to load the list data.
+	 *
+	 * @return      string  An SQL query
+	 */
 	protected function getListQuery()
 	{
 		// Initialize variables.
@@ -95,98 +143,125 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			$this->getState(
 				'list.select',
 				'a.*'
-				)
-			);
+			)
+		);
 
-			$query->from('#__speasyimagegallery_albums as a');
+		$query->from('#__speasyimagegallery_albums as a');
 
-			$query->select('l.title AS language_title')
-				->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
+		$query->select('l.title AS language_title')
+			->join('LEFT', $db->quoteName('#__languages') . ' AS l ON l.lang_code = a.language');
 
-				// Join over the users for the checked out user.
-			$query->select('uc.name AS editor')
-				->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor')
+			->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
-			$query->select('ua.name AS author_name')
-				->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
+		$query->select('ua.name AS author_name')
+			->join('LEFT', '#__users AS ua ON ua.id = a.created_by');
 
-			$query->select('ug.title AS access_title')
-				->join('LEFT','#__viewlevels AS ug ON ug.id = a.access');
+		$query->select('ug.title AS access_title')
+			->join('LEFT', '#__viewlevels AS ug ON ug.id = a.access');
 
-			// Join over the categories.
-			$query->select('c.title AS category_title')
-				->join('LEFT', '#__categories AS c ON c.id = a.catid');
+		// Join over the categories.
+		$query->select('c.title AS category_title')
+			->join('LEFT', '#__categories AS c ON c.id = a.catid');
 
-			// Filter by published state
-			$published = $this->getState('filter.published');
+		// Filter by published state
+		$published = $this->getState('filter.published');
 
-			if (is_numeric($published))
-			{
-				$query->where('a.published = ' . (int) $published);
+		if (is_numeric($published)) {
+			$query->where('a.published = ' . (int) $published);
+		} elseif ($published === '') {
+			$query->where('(a.published IN (0, 1))');
+		}
+
+		// Filter by featured state
+		$featured = $this->getState('filter.featured');
+		if (is_numeric($featured)) {
+			$query->where('a.featured = ' . (int) $featured);
+		}
+
+		// Filter by a single or group of categories.
+		$baselevel = 1;
+		$categoryId = $this->getState('filter.category_id');
+
+		if (is_numeric($categoryId)) {
+			$cat_tbl = Table::getInstance('Category', 'JTable');
+			$cat_tbl->load($categoryId);
+			$rgt = $cat_tbl->rgt;
+			$lft = $cat_tbl->lft;
+			$baselevel = (int) $cat_tbl->level;
+			$query->where('c.lft >= ' . (int) $lft)
+				->where('c.rgt <= ' . (int) $rgt);
+		} elseif (is_array($categoryId)) {
+			ArrayHelper::toInteger($categoryId);
+			$categoryId = implode(',', $categoryId);
+			$query->where('a.catid IN (' . $categoryId . ')');
+		}
+
+		// Filter by language
+		if ($language = $this->getState('filter.language')) {
+			$query->where('a.language = ' . $db->quote($language));
+		}
+
+		$search = $this->getState('filter.search');
+		if (!empty($search)) {
+			if (stripos($search, 'id:') === 0) {
+				$query->where('a.id = ' . (int) substr($search, 3));
+			} elseif (stripos($search, 'author:') === 0) {
+				$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
+				$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
+			} else {
+				$search = $db->quote('%' . $db->escape($search, true) . '%');
+				$query->where('(a.title LIKE ' . $search . ')');
 			}
-			elseif ($published === '')
-			{
-				$query->where('(a.published IN (0, 1))');
-			}
+		}
 
-			// Filter by a single or group of categories.
-			$baselevel = 1;
-			$categoryId = $this->getState('filter.category_id');
+		// Filter by access level
+		$access_level = $this->getState('filter.access');
+		if (!empty($access_level)) {
+			$query->where('a.access = ' . (int) $access_level);
+		}
 
-			if (is_numeric($categoryId))
-			{
-				$cat_tbl = Table::getInstance('Category', 'JTable');
-				$cat_tbl->load($categoryId);
-				$rgt = $cat_tbl->rgt;
-				$lft = $cat_tbl->lft;
-				$baselevel = (int) $cat_tbl->level;
-				$query->where('c.lft >= ' . (int) $lft)
-					->where('c.rgt <= ' . (int) $rgt);
-			}
-			elseif (is_array($categoryId))
-			{
-				ArrayHelper::toInteger($categoryId);
-				$categoryId = implode(',', $categoryId);
-				$query->where('a.catid IN (' . $categoryId . ')');
-			}
+		// Add the list ordering clause.
+		// $orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
+		// $orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
+		
+		// Ordering
+		$orderCol  = $this->state->get('list.ordering', 'a.id');
+		$orderDirn = $this->state->get('list.direction', 'DESC');
 
-			// Filter by language
-			if ($language = $this->getState('filter.language'))
-			{
-				$query->where('a.language = ' . $db->quote($language));
-			}
+		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
-			$search = $this->getState('filter.search');
-			if (!empty($search))
-			{
-				if (stripos($search, 'id:') === 0)
-				{
-					$query->where('a.id = ' . (int) substr($search, 3));
-				}
-				elseif (stripos($search, 'author:') === 0)
-				{
-					$search = $db->quote('%' . $db->escape(substr($search, 7), true) . '%');
-					$query->where('(uc.name LIKE ' . $search . ' OR uc.username LIKE ' . $search . ')');
-				}
-				else
-				{
-					$search = $db->quote('%' . $db->escape($search, true) . '%');
-					$query->where('(a.title LIKE ' . $search . ')');
-				}
-			}
+		return $query;
+	}
 
-			// Filter by access level
-			$access_level = $this->getState('filter.access');
-			if (!empty($access_level)) {
-				$query->where('a.access = ' . (int) $access_level);
-			}
+	protected function getSortFields()
+	{
+		return [
+			'a.title'    => JText::_('JGLOBAL_TITLE'),
+			'a.created'  => JText::_('JDATE'),
+			'a.published'=> JText::_('JSTATUS'),
+			'a.id'       => JText::_('JGRID_HEADING_ID'),
+		];
+	}
 
-			// Add the list ordering clause.
-			$orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
-			$orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
+	public function setFeatured($cid, $value)
+	{
+		if (empty($cid)) {
+			return false;
+		}
 
-			$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__speasyimagegallery_albums'))
+			->set($db->quoteName('featured') . ' = ' . (int) $value)
+			->where('id IN (' . implode(',', $cid) . ')');
 
-			return $query;
+		$db->setQuery($query);
+		// Execute the query
+		return $db->execute();
 	}
 }
+
+
+

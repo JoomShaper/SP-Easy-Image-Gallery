@@ -54,6 +54,11 @@ defined('_JEXEC') or die('Restricted access');
 						<input type="checkbox" class="speasyimage-gallery-select-all-row" value="all" />
 					</div>
 				</div>
+				<div style="width: 20%;" class="nowrap">
+					<div>
+						<?php echo Text::_('COM_SPEASYIMAGEGALLERY_LIST_FEATURED'); ?>
+					</div>
+				</div>
 				<div style="width: 15%;" class="nowrap center">
 					<div>
 						<?php echo Text::_('COM_SPEASYIMAGEGALLERY_LIST_IMAGE'); ?>
