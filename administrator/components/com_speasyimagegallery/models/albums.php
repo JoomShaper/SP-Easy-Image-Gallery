@@ -63,9 +63,10 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 	protected function populateState($ordering = 'a.id', $direction = 'ASC')
 	{
 		$app = Factory::getApplication();
-		$context = $this->context;
+		$context = $this->context;    
 
 		$fullOrdering = $app->getUserStateFromRequest(
+			
 			$this->context . '.list.fullordering',
 			'list[fullordering]',
 			'',
