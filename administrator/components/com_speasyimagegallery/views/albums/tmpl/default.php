@@ -21,6 +21,7 @@ use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 
 HTMLHelper::_('script', 'com_speasyimagegallery/assets/featured.js', ['version' => 'auto', 'relative' => true]);
+HTMLHelper::_('stylesheet', 'com_speasyimagegallery/assets/css/style.css', ['version' => 'auto', 'relative' => true]);
 
 if (SpeasyimagegalleryHelper::getVersion() < 4) {
 	HTMLHelper::_('formbehavior.chosen', 'select');
@@ -43,7 +44,6 @@ if ($saveOrder && !empty($this->items)) {
 	}
 }
 ?>
-
 
 <script type="text/javascript">
 	window.addEventListener('DOMContentLoaded', e => {
@@ -216,8 +216,8 @@ if ($saveOrder && !empty($this->items)) {
 											array('title' => $title)
 										);
 										?>
-					
 									</td>
+
 									<td class="hidden-phone">
 										<?php echo $this->escape($item->access_title); ?>
 									</td>
