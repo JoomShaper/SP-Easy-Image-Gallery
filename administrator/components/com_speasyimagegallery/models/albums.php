@@ -60,23 +60,10 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 		parent::__construct($config);
 	}
 
-	protected function populateState($ordering = 'a.ordering', $direction = 'ASC')
+	protected function populateState($ordering = 'a.id', $direction = 'ASC')
 	{
 		$app = Factory::getApplication();
 		$context = $this->context;
-
-		// // Get ordering from fullordering
-		// $fullOrdering = $app->getUserStateFromRequest($this->context . '.list.fullordering', 'list[fullordering]', '', 'string');
-		// if (!empty($fullOrdering)) {
-		// 	$parts = explode(' ', $fullOrdering);
-		// 	if (count($parts) === 2) {
-		// 		$this->setState('list.ordering', $parts[0]);
-		// 		$this->setState('list.direction', $parts[1]);
-		// 	}
-		// } else {
-		// 	$this->setState('list.ordering', $ordering);
-		// 	$this->setState('list.direction', $direction);
-		// }
 
 		$fullOrdering = $app->getUserStateFromRequest(
 			$this->context . '.list.fullordering',
@@ -233,16 +220,6 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 		$query->order($db->escape($orderCol . ' ' . $orderDirn));
 
 		return $query;
-	}
-
-	protected function getSortFields()
-	{
-		return [
-			'a.title'    => JText::_('JGLOBAL_TITLE'),
-			'a.created'  => JText::_('JDATE'),
-			'a.published'=> JText::_('JSTATUS'),
-			'a.id'       => JText::_('JGRID_HEADING_ID'),
-		];
 	}
 
 	public function setFeatured($cid, $value)
