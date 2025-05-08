@@ -20,8 +20,6 @@ use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Layout\LayoutHelper;
 
-HTMLHelper::_('script', 'com_speasyimagegallery/assets/featured.js', ['version' => 'auto', 'relative' => true]);
-HTMLHelper::_('stylesheet', 'com_speasyimagegallery/assets/css/style.css', ['version' => 'auto', 'relative' => true]);
 
 if (SpeasyimagegalleryHelper::getVersion() < 4) {
 	HTMLHelper::_('formbehavior.chosen', 'select');

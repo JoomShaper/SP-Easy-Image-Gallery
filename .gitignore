@@ -21,6 +21,7 @@ robots.txt.dist
 /dist
 /files
 
+.vscode
 LICENSE.txt
 README.txt
 configuration.php
@@ -30,6 +31,7 @@ index.php
 robots.txt
 web.config.txt
 yarn.lock
+phpinfo.php
 
 /plugins
 

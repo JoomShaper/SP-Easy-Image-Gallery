@@ -93,7 +93,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 				}
 
 				// File formats
-				$accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+				$accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
 
 				// Upload if no error found
 				if (!$error) {

@@ -10,7 +10,7 @@ const config = {
     rootPath: './dist/',
     componentName: 'speasyimagegallery',
     com_package_name: 'com_speasyimagegallery_fullpackage_v2.0.4.zip',
-    moduleExts: ['xml','php','js','css','jpg','png','gif','ttf','otf','woff','woff2','svg','eot']
+    moduleExts: ['xml','php','js','css','jpg','png','gif','webp','ttf','otf','woff','woff2','svg','eot']
 }
 
 const tasks = {
@@ -20,12 +20,12 @@ const tasks = {
     },
     admin: {
         src: [
-            config.srcPath + 'administrator/components/com_' + config.componentName + '/**/*.{xml,php,js,css,jpg,png,gif,ttf,otf,woff,woff2,svg,eot,sql,json}'
+            config.srcPath + 'administrator/components/com_' + config.componentName + '/**/*.{xml,php,js,css,jpg,png,gif,ttf,webp,otf,woff,woff2,svg,eot,sql,json}'
         ],
         dest: config.buildPath + '/admin'
     },
     site: {
-        src: [config.srcPath + 'components/com_' + config.componentName + '/**/*.{xml,php,js,css,jpg,png,gif,ttf,otf,woff,woff2,svg,eot,json,txt}'],
+        src: [config.srcPath + 'components/com_' + config.componentName + '/**/*.{xml,php,js,css,jpg,png,gif,ttf,webp,otf,woff,woff2,svg,eot,json,txt}'],
         dest: config.buildPath + '/site'
     },
     modules: [
@@ -90,7 +90,7 @@ function plugins(callback) {
     if (plugins) {
         plugins.map(plugin => {
             let plg_task = taskDone => {
-                src([plugin.path + '/' + plugin.name + '/**/*.{xml,php,js,css,jpg,png,gif,ttf,otf,woff,woff2,svg,eot,json}',
+                src([plugin.path + '/' + plugin.name + '/**/*.{xml,php,js,css,jpg,png,gif,ttf,webp,otf,woff,woff2,svg,eot,json}',
                 config.srcPath + 'administrator/language/en-GB/en-GB.plg_' + plugin.type + '_' + plugin.name + '*.ini'], { allowEmpty: true })
                 .pipe(dest(config.buildPath + '/plugins/' + plugin.name));
                 taskDone();
