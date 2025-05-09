@@ -30,6 +30,7 @@ index.php
 robots.txt
 web.config.txt
 yarn.lock
+.vscode
 
 /plugins
 
