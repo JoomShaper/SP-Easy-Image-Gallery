@@ -27,6 +27,13 @@ jimport('joomla.filter.output');
 
 class SpeasyimagegalleryControllerAlbums extends AdminController
 {
+	public function __construct($config = [])
+	{
+		parent::__construct($config);
+
+		// Needed for jgrid.featured to work
+		$this->registerTask('unfeature', 'feature');
+	}
 
 	public function getModel($name = 'Album', $prefix = 'SpeasyimagegalleryModel', $config = array('ignore_request' => true))
 	{
@@ -234,6 +241,22 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 		$model = $this->getModel();
 		$model->saveImage($attr);
 		die();
+	}
+
+	public function feature()
+	{
+		$input = $this->input;
+		$cid = (array) $input->get('cid', array(), 'array');
+		$value = ($this->getTask() == 'feature') ? 1 : 0;
+
+		$model = $this->getModel('Albums');
+
+		if ($model->setFeatured($cid, $value)) {
+			$message = $value ? 'Items featured' : 'Items unfeatured';
+			$this->setMessage(JText::_($message));
+		}
+
+		$this->setRedirect('index.php?option=com_speasyimagegallery&view=albums');
 	}
 
 }

@@ -25,6 +25,7 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			$config['filter_fields'] = array(
 				'id','a.id',
 				'title','a.title',
+				'featured','a.featured',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'created_by','a.created_by',
@@ -46,6 +47,23 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 	{
 		$app = Factory::getApplication();
 		$context = $this->context;
+
+		$fullOrdering = $app->getUserStateFromRequest(
+			
+			$this->context . '.list.fullordering',
+			'list[fullordering]',
+			'',
+			'string'
+		);
+
+		if (!empty($fullOrdering)) {
+			$parts = explode(' ', $fullOrdering);
+			$this->setState('list.ordering', $parts[0]);
+			$this->setState('list.direction', $parts[1] ?? 'ASC');
+		} else {
+			$this->setState('list.ordering', $ordering);
+			$this->setState('list.direction', $direction);
+		}
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -129,6 +147,12 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 				$query->where('(a.published IN (0, 1))');
 			}
 
+			// Filter by featured state
+			$featured = $this->getState('filter.featured');
+			if (is_numeric($featured)) {
+				$query->where('a.featured = ' . (int) $featured);
+			}
+
 			// Filter by a single or group of categories.
 			$baselevel = 1;
 			$categoryId = $this->getState('filter.category_id');
@@ -182,11 +206,32 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			}
 
 			// Add the list ordering clause.
-			$orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
-			$orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
+			// $orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
+			// $orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
+
+			// Ordering
+			$orderCol  = $this->state->get('list.ordering', 'a.id');
+			$orderDirn = $this->state->get('list.direction', 'DESC');
 
 			$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 
 			return $query;
+	}
+
+	public function setFeatured($cid, $value)
+	{
+		if (empty($cid)) {
+			return false;
+		}
+
+		$db = $this->getDbo();
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__speasyimagegallery_albums'))
+			->set($db->quoteName('featured') . ' = ' . (int) $value)
+			->where('id IN (' . implode(',', $cid) . ')');
+
+		$db->setQuery($query);
+		// Execute the query
+		return $db->execute();
 	}
 }

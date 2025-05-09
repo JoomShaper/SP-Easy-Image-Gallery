@@ -224,3 +224,22 @@
 .center {
   text-align: center;
 }
+
+.feature-toggle {
+	border: 2px solid gray;
+	border-radius: 50%;
+	padding: 5px;
+	display: inline-block;
+}
+
+.feature-toggle.featured {
+	border-color: orange;
+}
+
+.feature-toggle .fa-star {
+	color: orange;
+}
+
+.feature-toggle .fa-circle {
+	color: gray;
+}
