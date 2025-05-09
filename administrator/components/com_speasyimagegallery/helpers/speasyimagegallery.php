@@ -130,6 +130,7 @@ class SpeasyimagegalleryHelper
 			case 'jpg': $img = imagecreatefromjpeg($src); break;
 			case 'jpeg': $img = imagecreatefromjpeg($src); break;
 			case 'png': $img = imagecreatefrompng($src); break;
+			case 'webp': $img = imagecreatefromwebp($src); break;
 		}
 
 		if (count($sizes))
@@ -191,6 +192,7 @@ class SpeasyimagegalleryHelper
 					case 'jpg': imagejpeg($new, $dest); break;
 					case 'jpeg': imagejpeg($new, $dest); break;
 					case 'png': imagepng($new, $dest); break;
+					case 'webp': imagewebp($new, $dest); break;
 				}
 			}
 
