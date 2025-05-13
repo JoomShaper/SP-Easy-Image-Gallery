@@ -205,10 +205,6 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 				$query->where('a.access = ' . (int) $access_level);
 			}
 
-			// Add the list ordering clause.
-			// $orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
-			// $orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
-
 			// Ordering
 			$orderCol  = $this->state->get('list.ordering', 'a.id');
 			$orderDirn = $this->state->get('list.direction', 'DESC');
