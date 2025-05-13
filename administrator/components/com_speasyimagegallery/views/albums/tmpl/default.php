@@ -200,7 +200,7 @@ if ($saveOrder && !empty($this->items)) {
 										<?php
 										$isFeatured = $item->featured;
 										$task = $isFeatured ? 'unfeature' : 'feature';
-										$title = $isFeatured ? Text::_('COM_SPEASYIMAGEGALLERY_FEATURED_ITEM') : Text::_('COM_SPEASYIMAGEGALLERY_UNFEATURED_ITEM');
+										$title = $isFeatured ? Text::_('COM_SPEASYIMAGEGALLERY_FEATURED_ITEM') : Text::_('COM_SPEASYIMAGEGALLERY_NOTFEATURED_ITEM');
 										$iconClass = $isFeatured ? 'fa-solid fa-star text-warning featured' : 'fa-solid fa-circle text-muted unfeatured';
 										$style = 'border: 2px solid ' . ($isFeatured ? 'orange' : 'gray') . '; border-radius: 50%; padding: 5px;';
 										echo HTMLHelper::_(
