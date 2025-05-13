@@ -38,7 +38,8 @@
 				<field name="catid" type="category" label="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY" description="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY_DESC" extension="com_speasyimagegallery" showon="layout:albums">
 					<option value="">MOD_SPEASYIMAGEGALLERY_SELECT_CATEGORY</option>
 				</field>
-				
+
+				<field name="albums_limit" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_LIMIT" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_LIMIT_DESC" default="8" showon="layout:albums" />
 
 				<field name="albums_column" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_DESC" default="3" showon="layout:albums">
 					<option value="12">1</option>

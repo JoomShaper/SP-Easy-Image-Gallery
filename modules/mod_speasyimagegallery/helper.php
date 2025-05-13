@@ -22,6 +22,7 @@ class ModSpeasyimagegalleryHelper
 		$catid = $params->get('catid', 0, 'INT');
 		$layout = $params->get('layout', '' , 'STRING');
 		$featuredOnly = (int) $params->get('show_featured_only', 0);
+		$limit = $params->get('albums_limit', 0, 'INT');
 		// Load albums model
 		jimport('joomla.application.component.model');
 		BaseDatabaseModel::addIncludePath(JPATH_SITE.'/components/com_speasyimagegallery/models');
@@ -61,6 +62,11 @@ class ModSpeasyimagegalleryHelper
 		$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		$query->where('a.published = 1');
 		$query->order('a.ordering ASC');
+
+		// Apply limit if set
+		if ($limit > 0) {
+			$query->setLimit($limit);
+		}
 
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
