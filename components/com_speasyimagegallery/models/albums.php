@@ -21,6 +21,10 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 		$this->setState('list.start', $app->input->get('limitstart', 0, 'uint'));
 		$limit = $params->get('limit', 20);
 		$this->setState('list.limit', $limit);
+
+		// Store featured flag from menu/module params
+		$showFeaturedOnly = (int) $params->get('show_featured_only', 0);
+		$this->setState('filter.featured', $showFeaturedOnly);
 	}
 
 	protected function getListQuery()
@@ -53,6 +57,11 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			$descendants = implode(',',$this->getCatChild($catid));
 			$query->where('a.catid IN ( ' . $descendants . ')'); // Get in all the descendants
 
+		}
+
+		// Filter by featured
+		if ((int) $this->getState('filter.featured', 0)) {
+			$query->where('a.featured = 1');
 		}
 
 		// Filter by language

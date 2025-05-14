@@ -225,21 +225,22 @@
   text-align: center;
 }
 
-.feature-toggle {
+.speasyimagegallery-feature-toggle {
 	border: 2px solid gray;
 	border-radius: 50%;
 	padding: 5px;
 	display: inline-block;
 }
 
-.feature-toggle.featured {
+.speasyimagegallery-feature-toggle.speasyimagegallery-featured {
 	border-color: orange;
 }
 
-.feature-toggle .fa-star {
+.speasyimagegallery-feature-toggle .fa-star {
 	color: orange;
 }
 
-.feature-toggle .fa-circle {
+.speasyimagegallery-feature-toggle .fa-circle {
 	color: gray;
 }
+

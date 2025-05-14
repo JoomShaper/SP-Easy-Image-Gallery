@@ -28,6 +28,11 @@
 					<option value="albums">MOD_SPEASYIMAGEGALLERY_LAYOUT_ALBUMS</option>
 				</field>
 
+				<field name="show_featured_only" type="radio" class="btn-group" label="MOD_SPEASYIMAGEGALLERY_SHOW_FEATURED_ONLY_LABEL" description="MOD_SPEASYIMAGEGALLERY_SHOW_FEATURED_ONLY_DESC" default="0" showon="layout:albums">
+				    <option value="1">JYES</option>
+				    <option value="0">JNO</option>
+				</field>
+				
 				<field name="spacer1" type="spacer" hr="true" showon="layout:albums" />
 				<field name="spacer2" type="spacer" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_ALBUM_LIST_OPTIONS" showon="layout:albums" />
 				<field name="catid" type="category" label="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY" description="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY_DESC" extension="com_speasyimagegallery" showon="layout:albums">

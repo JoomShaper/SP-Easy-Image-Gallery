@@ -83,8 +83,16 @@
 				<option value="1">JYES</option>
 				<option value="0">JNO</option>
 			</field>
+
 			<field name="spacer6" type="spacer" hr="true" />
-			<field name="spacer7" type="spacer" label="COM_SPEASYIMAGEGALLERY_GLOBAL_PAGINATION" />
+			<field name="spacer7" type="spacer" label="COM_SPEASYIMAGEGALLERY_TOGGLE_FEATURED" />
+			<field name="show_featured_only" type="radio" class="btn-group" label="COM_SPEASYIMAGEGALLERY_SHOW_FEATURED_ONLY_LABEL" description="COM_SPEASYIMAGEGALLERY_SHOW_FEATURED_ONLY_DESC" default="0">
+			    <option value="1">JYES</option>
+			    <option value="0">JNO</option>
+			</field>
+
+			<field name="spacer8" type="spacer" hr="true" />
+			<field name="spacer9" type="spacer" label="COM_SPEASYIMAGEGALLERY_GLOBAL_PAGINATION" />
 			<field name="limit" type="number" default="20" label="COM_SPEASYIMAGEGALLERY_GLOBAL_LIMIT" description="COM_SPEASYIMAGEGALLERY_GLOBAL_LIMIT_DESC" />
 		</fieldset>
 	</fields>
