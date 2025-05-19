@@ -21,6 +21,7 @@ class ModSpeasyimagegalleryHelper
 		$user = Factory::getUser();
 		$catid = $params->get('catid', 0, 'INT');
 		$layout = $params->get('layout', '' , 'STRING');
+		$featuredOnly = (int) $params->get('show_featured_only', 0);
 		$limit = $params->get('albums_limit', 0, 'INT');
 		// Load albums model
 		jimport('joomla.application.component.model');
@@ -47,9 +48,14 @@ class ModSpeasyimagegalleryHelper
 		$query->where('a.access IN (' . $groups . ')');
 
 		// Filter category
-		if( $catid && $layout = 'albums' ) {
+		if( $catid && $layout == 'albums' ) {
 			$descendants = implode(',', $albums_model->getCatChild($catid));
 			$query->where('a.catid IN (' . $descendants . ' )');
+		}
+
+		// Filter by featured
+		if ($featuredOnly) {
+		$query->where('a.featured = 1');
 		}
 
 		// Filter by language
