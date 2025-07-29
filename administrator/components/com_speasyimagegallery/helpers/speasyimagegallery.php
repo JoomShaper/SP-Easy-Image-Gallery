@@ -121,6 +121,18 @@ class SpeasyimagegalleryHelper
 
 		list($originalWidth, $originalHeight) = getimagesize($src);
 
+		$info = getimagesize($src);
+		
+		if (!$info)
+		{
+			return false;
+		}
+
+		if (isset($info['mime']))
+		{
+			$ext = self::mimeToExt($info['mime']);
+		}
+
 		$img = "";
 
 		switch ($ext)
@@ -200,6 +212,26 @@ class SpeasyimagegalleryHelper
 		}
 
 		return false;
+	}
+
+	/**
+	 * Convert mime type to file extension
+	 *
+	 * @param	string	$mime	mime type
+	 * @return	string|null
+	 */
+	private static function mimeToExt(string $mime)
+	{
+		$map = [
+			'image/jpeg' => 'jpg',
+			'image/png'  => 'png',
+			'image/gif'  => 'gif',
+			'image/webp' => 'webp',
+			'image/bmp'  => 'bmp',
+        	'image/x-ms-bmp' => 'bmp',
+		];
+
+		return $map[strtolower($mime)] ?? null;
 	}
 
 }
