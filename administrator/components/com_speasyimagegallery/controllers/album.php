@@ -46,7 +46,7 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		$width = $params->get('thumb_width', 400);
 		$height = $params->get('thumb_height', 400);
 		$item = $model->getItem();
-		$id = $item->get('id');
+		$id = $item->id;
 		$folder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
 		$image = JPATH_ROOT . '/' . $item->image;
 
