@@ -11,7 +11,6 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Access\Access;
-use Joomla\CMS\Language\Text;
 use Joomla\Registry\Registry;
 
 /**
@@ -26,33 +25,6 @@ class SpeasyimagegalleryHelper
 	 * @var string
 	 */
 	public static $extension = 'com_speasyimagegallery';
-
-	/**
-	 * Undocumented function
-	 *
-	 * @param	string $submenu	submenu name
-	 * @return void
-	 */
-	public static function addSubmenu($submenu)
-	{
-		JHtmlSidebar::addEntry(
-			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_ALBUMS'),
-			'index.php?option=com_speasyimagegallery',
-			$submenu == 'albums'
-		);
-
-		JHtmlSidebar::addEntry(
-			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_speasyimagegallery',
-			$submenu == 'categories'
-		);
-
-		JHtmlSidebar::addEntry(
-			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_OPTIONS'),
-			'index.php?option=com_config&view=component&component=com_speasyimagegallery',
-			$submenu == 'options'
-		);
-	}
 
 	/**
 	 * Actions

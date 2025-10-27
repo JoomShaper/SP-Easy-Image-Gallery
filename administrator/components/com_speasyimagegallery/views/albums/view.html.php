@@ -52,9 +52,7 @@ class SpeasyimagegalleryViewAlbums extends HtmlView
 		}
 
 		// Set the submenu
-		SpeasyimagegalleryHelper::addSubmenu('albums');
 		$this->addToolBar();
-		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 
