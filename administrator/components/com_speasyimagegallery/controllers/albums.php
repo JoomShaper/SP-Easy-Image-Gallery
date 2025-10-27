@@ -13,17 +13,12 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Controller\AdminController;
-
-jimport( 'joomla.application.component.helper' );
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-jimport('joomla.filter.output');
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 class SpeasyimagegalleryControllerAlbums extends AdminController
 {
@@ -109,7 +104,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 					{
 						$folder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
 
-						if(!Folder::exists( JPATH_ROOT . '/' . $folder ))
+						if(!is_dir( JPATH_ROOT . '/' . $folder ))
 						{
 							Folder::create(JPATH_ROOT . '/' . $folder, 0755);
 						}
@@ -253,7 +248,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 		if ($model->setFeatured($cid, $value)) {
 			$message = $value ? 'Items featured' : 'Items unfeatured';
-			$this->setMessage(JText::_($message));
+			$this->setMessage(Text::_($message));
 		}
 
 		$this->setRedirect('index.php?option=com_speasyimagegallery&view=albums');

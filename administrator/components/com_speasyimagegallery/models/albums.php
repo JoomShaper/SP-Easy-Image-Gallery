@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\DatabaseInterface;
 
 class SpeasyimagegalleryModelAlbums extends ListModel
 {
@@ -103,9 +104,7 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 	*/
 	protected function getListQuery()
 	{
-		// Initialize variables.
-		$app = Factory::getApplication();
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
@@ -220,7 +219,7 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			return false;
 		}
 
-		$db = $this->getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__speasyimagegallery_albums'))
 			->set($db->quoteName('featured') . ' = ' . (int) $value)

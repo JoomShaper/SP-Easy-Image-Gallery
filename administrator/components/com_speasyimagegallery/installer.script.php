@@ -11,6 +11,7 @@ defined('_JEXEC') or die('Restricted Access!');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Installer\Installer;
+use Joomla\Database\DatabaseInterface;
 
 
 class com_speasyimagegalleryInstallerScript
@@ -29,7 +30,7 @@ class com_speasyimagegalleryInstallerScript
             $name = (string)$module->attributes()->module;
             $client = (string)$module->attributes()->client;
             
-            $db = Factory::getDBO();
+            $db = Factory::getContainer()->get(DatabaseInterface::class);
             $query = $db->getQuery(true);
             $query->select($db->quoteName('extension_id'));
             $query->from($db->quoteName('#__extensions'));
@@ -41,6 +42,7 @@ class com_speasyimagegalleryInstallerScript
             if (!empty($extension_id))
             {
                 $installer = new Installer;
+                $installer->setDatabase($db);
                 $result = $installer->uninstall('module', $extension_id);
                 $status->modules[] = array('name' => $name, 'client' => $client, 'result' => $result);
             }
@@ -54,7 +56,7 @@ class com_speasyimagegalleryInstallerScript
             return true;
         }
 
-        $db = Factory::getDbo();
+        $db = Factory::getContainer()->get(DatabaseInterface::class);
         $src = $parent->getParent()->getPath('source');
         $manifest = $parent->getParent()->manifest;
         
@@ -69,6 +71,7 @@ class com_speasyimagegalleryInstallerScript
             $ordering = (isset($module->attributes()->ordering) && $module->attributes()->ordering) ? (string)$module->attributes()->ordering : 0;
             
             $installer = new Installer;
+            $installer->setDatabase($db);
             $result = $installer->install($path);
         }
     }

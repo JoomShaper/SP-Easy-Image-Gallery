@@ -12,6 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Access\Access;
 use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 /**
  * SP easy image gallery helper class.
@@ -57,11 +58,11 @@ class SpeasyimagegalleryHelper
 	 * Actions
 	 *
 	 * @param	integer	$messageId	action id
-	 * @return	JObject
+	 * @return	Registry
 	 */
 	public static function getActions($messageId = 0)
 	{
-		$result	= new JObject;
+		$result	= new Registry();
 
 		if (empty($messageId))
 		{

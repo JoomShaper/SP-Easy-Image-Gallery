@@ -10,13 +10,13 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\Filesystem\Folder;
 
 class SpeasyimagegalleryControllerAlbum extends FormController
 {
@@ -55,9 +55,9 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 
 		$ext = File::getExt($image);
 
-		if (File::exists($image))
+		if (file_exists($image))
 		{
-			if (!Folder::exists($folder))
+			if (!is_dir($folder))
 			{
 				Folder::create($folder, 0755);
 			}
