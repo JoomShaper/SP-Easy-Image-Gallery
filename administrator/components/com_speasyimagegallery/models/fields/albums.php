@@ -11,11 +11,12 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\CMS\Form\Field\ListField;
 use Joomla\CMS\Form\FormHelper;
 
 FormHelper::loadFieldClass('list');
 
-class JFormFieldAlbums extends JFormFieldList
+class JFormFieldAlbums extends ListField
 {
 
 	protected $type = 'Albums';
