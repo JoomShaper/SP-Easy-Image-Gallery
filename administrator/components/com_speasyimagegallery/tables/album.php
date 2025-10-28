@@ -25,17 +25,17 @@ class SpeasyimagegalleryTableAlbum extends Table
 	public function store($updateNulls = false)
 	{
 		$date = Factory::getDate()->toSql();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if ($this->id) {
 			$this->modified		= $date;
-			$this->modified_by		= $user->get('id');
+			$this->modified_by		= $user->id;
 		} else {
 			if (!(int) $this->created) {
 				$this->created = $date;
 			}
 			if (empty($this->created_by)) {
-				$this->created_by = $user->get('id');
+				$this->created_by = $user->id;
 			}
 			if (!(int) $this->modified)
 			{
@@ -44,7 +44,7 @@ class SpeasyimagegalleryTableAlbum extends Table
 
 			if (empty($this->modified_by))
 			{
-				$this->modified_by = $user->get('id');
+				$this->modified_by = $user->id;
 			}
 		}
 
