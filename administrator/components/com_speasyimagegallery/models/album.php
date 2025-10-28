@@ -298,7 +298,7 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 			}
 		}
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$conditions = array($db->quoteName('id') . ' = ' . $id);
 		$query->delete($db->quoteName('#__speasyimagegallery_images'));

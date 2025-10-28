@@ -14,6 +14,7 @@ use Joomla\CMS\Table\Table;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\MVC\Model\ItemModel;
 use Joomla\CMS\Language\Multilanguage;
+use Joomla\Database\DatabaseInterface;
 
 class SpeasyimagegalleryModelAlbum extends ItemModel
 {
@@ -26,14 +27,12 @@ class SpeasyimagegalleryModelAlbum extends ItemModel
 		$albumId = $app->input->getInt('id');
 		$this->setState('album.id', $albumId);
 
-		$user = Factory::getUser();
-
 		$this->setState('filter.language', Multilanguage::isEnabled());
 	}
 
 	public function getItem( $albumId = null )
 	{
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		$albumId = (!empty($albumId))? $albumId : (int)$this->getState('album.id');
 
@@ -46,7 +45,7 @@ class SpeasyimagegalleryModelAlbum extends ItemModel
 		{
 			try
 			{
-				$db = $this->getDbo();
+				$db = $this->getDatabase();
 				$query = $db->getQuery(true)
 					->select('a.*')
 					->from('#__speasyimagegallery_albums as a')
@@ -77,7 +76,7 @@ class SpeasyimagegalleryModelAlbum extends ItemModel
 					return new \Exception(Text::_('COM_SPEASYIMAGEGALLERY_ERROR_ALBUM_NOT_FOUND'), 404);
 				}
 
-				$user = Factory::getUser();
+				// Check the access level.
 				$groups = $user->getAuthorisedViewLevels();
 				if(!in_array($data->access, $groups)) {
 					return new \Exception(Text::_('COM_SPEASYIMAGEGALLERY_ERROR_ALBUM_NOT_AUTHORISED'), 404);
@@ -103,7 +102,7 @@ class SpeasyimagegalleryModelAlbum extends ItemModel
 	}
 
 	public function getImages($album_id) {
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$query->select(array('a.*'));
 		$query->from($db->quoteName('#__speasyimagegallery_images', 'a'));

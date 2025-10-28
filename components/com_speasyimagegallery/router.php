@@ -10,6 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
+use Joomla\Database\DatabaseInterface;
 class SpeasyimagegalleryRouterBase
 {
 	public static function buildRoute(&$query)
@@ -86,7 +87,7 @@ class SpeasyimagegalleryRouterBase
 					// Make sure we have the id and the alias
 					if (strpos($query['id'], ':') === false)
 					{
-						$db = Factory::getDbo();
+						$db = Factory::getContainer()->get(DatabaseInterface::class);
 						$dbQuery = $db->getQuery(true)
 							->select('alias')
 							->from('#__speasyimagegallery_albums')
@@ -150,7 +151,7 @@ class SpeasyimagegalleryRouterBase
 
 		$alias = preg_replace('/:/', '-', $alias);
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$dbquery = $db->getQuery(true);
 		$dbquery->select($dbquery->qn('id'))
 			->from($dbquery->qn('#__speasyimagegallery_albums'))

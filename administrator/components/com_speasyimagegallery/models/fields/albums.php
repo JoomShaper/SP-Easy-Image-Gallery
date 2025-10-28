@@ -12,9 +12,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Form\Field\ListField;
-use Joomla\CMS\Form\FormHelper;
-
-FormHelper::loadFieldClass('list');
+use Joomla\Database\DatabaseInterface;
 
 class JFormFieldAlbums extends ListField
 {
@@ -24,7 +22,7 @@ class JFormFieldAlbums extends ListField
 	public function getOptions()
 	{
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$query->select($db->quoteName(array('id', 'title')));
 		$query->from($db->quoteName('#__speasyimagegallery_albums'));

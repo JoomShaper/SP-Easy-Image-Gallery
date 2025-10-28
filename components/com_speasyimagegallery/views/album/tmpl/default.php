@@ -68,7 +68,7 @@ if($gutter || $gutter_sm || $gutter_xs) {
 <?php endif; ?>
 
 <?php
-if(count($this->item->images)) {
+if(!empty($this->item->images) && count($this->item->images)) {
   ?>
   <div class="speasyimagegallery-gallery clearfix" <?php echo $gallery_attribs; ?>>
     <?php echo LayoutHelper::render('gallery.'. $layout .'.row', array('images'=>$this->item->images, 'params'=>$this->params)); ?>
