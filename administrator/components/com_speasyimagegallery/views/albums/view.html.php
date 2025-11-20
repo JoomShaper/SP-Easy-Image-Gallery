@@ -76,7 +76,7 @@ class SpeasyimagegalleryViewAlbums extends HtmlView
 		{
 			ToolbarHelper::deleteList('', 'albums.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
-		elseif ($this->canDo->get('core.edit.state'))
+		elseif ($this->state->get('filter.published') !== -2)
 		{
 			ToolbarHelper::trash('albums.trash');
 		}
