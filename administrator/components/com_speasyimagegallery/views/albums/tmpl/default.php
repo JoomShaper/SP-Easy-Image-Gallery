@@ -172,7 +172,7 @@ if ($saveOrder && !empty($this->items)) {
 										<?php echo HtmlHelper::_('grid.id', $i, $item->id); ?>
 									</td>
 									<td>
-										<img src="<?php echo Uri::root(true) . '/images/speasyimagegallery/albums/' . $item->id . '/thumb.' . File::getExt(basename($item->image)); ?>" alt="" style="width: 64px; height: 64px; border: 1px solid #e5e5e5; background-color: #f5f5f5;">
+										<img src="<?php echo Uri::root(true) . '/images/speasyimagegallery/albums/' . $item->id . '/thumb.' . SpeasyimagegalleryHelper::getExt(basename($item->image)); ?>" alt="" style="width: 64px; height: 64px; border: 1px solid #e5e5e5; background-color: #f5f5f5;">
 									</td>
 									<td>
 										<?php if ($item->checked_out) : ?>

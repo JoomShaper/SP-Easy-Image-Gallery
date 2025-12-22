@@ -53,7 +53,7 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		$filteredImage = explode('#', $image);
 		$image = str_replace('%20', ' ', $filteredImage[0]);
 
-		$ext = File::getExt($image);
+		$ext = SpeasyimagegalleryHelper::getExt($image);
 
 		if (file_exists($image))
 		{

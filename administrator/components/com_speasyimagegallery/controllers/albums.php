@@ -98,7 +98,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 				{
 					$date = Factory::getDate();
 
-					$file_ext = strtolower(File::getExt($file['name']));
+					$file_ext = strtolower(SpeasyimagegalleryHelper::getExt($file['name']));
 
 					if(in_array($file_ext, $accepted_formats))
 					{
@@ -117,7 +117,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 						$i = 0;
 						do {
 							$base_name  = File::stripExt($media_file) . ($i ? "$i" : "");
-							$ext        = File::getExt($media_file);
+							$ext        = SpeasyimagegalleryHelper::getExt($media_file);
 							$media_name = $base_name . '.' . $ext;
 							$i++;
 							$dest       = JPATH_ROOT . '/' . $folder . '/' . $media_name;
