@@ -259,6 +259,5 @@ if ($saveOrder && !empty($this->items)) {
 			<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
 			<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 			<?php echo HTMLHelper::_('form.token'); ?>
-		</div>
 
 </form>
