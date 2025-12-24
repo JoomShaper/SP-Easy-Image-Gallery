@@ -103,7 +103,7 @@ class SpeasyimagegalleryHelper
 
 		if (isset($info['mime']))
 		{
-			$ext = self::mimeToExt($info['mime']);
+			$ext = self::mimeToExt($info['mime'], $ext);
 		}
 
 		$img = "";
@@ -193,10 +193,10 @@ class SpeasyimagegalleryHelper
 	 * @param	string	$mime	mime type
 	 * @return	string|null
 	 */
-	private static function mimeToExt(string $mime)
+	private static function mimeToExt(string $mime, $originalExt)
 	{
 		$map = [
-			'image/jpeg' => 'jpg',
+			'image/jpeg' => $originalExt, 
 			'image/png'  => 'png',
 			'image/gif'  => 'gif',
 			'image/webp' => 'webp',
