@@ -10,10 +10,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\Filesystem\File;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Filesystem\Folder;
@@ -47,26 +47,36 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		$height = $params->get('thumb_height', 400);
 		$item = $model->getItem();
 		$id = $item->id;
-		$folder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
+
+		// Create the album folder first
+		$albumFolder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
+		if (!is_dir($albumFolder)) {
+			if (!Folder::create($albumFolder, 0755)) {
+				return false;
+			}
+		}
+
+		// Now create the "images" folder inside the album folder
+		$imagesFolder = $albumFolder . '/images';
+		if (!is_dir($imagesFolder)) {
+			if (!Folder::create($imagesFolder, 0755)) {
+				return false;
+			}
+		}
+
 		$image = JPATH_ROOT . '/' . $item->image;
 
-		$filteredImage = explode('#', $image);
-		$image = str_replace('%20', ' ', $filteredImage[0]);
+		if (file_exists($image)) {
+			$image = MediaHelper::getCleanMediaFieldValue($image);
+			$ext = SpeasyimagegalleryHelper::getExt($image);
 
-		$ext = SpeasyimagegalleryHelper::getExt($image);
-
-		if (file_exists($image))
-		{
-			if (!is_dir($folder))
-			{
-				Folder::create($folder, 0755);
-			}
-
-			SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $folder, '', $ext);
+			// Create thumbnails for the image
+			SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $albumFolder, '', $ext);
 		}
 
 		return true;
 	}
+
 	/**
 	 * Delete selected image from list
 	 *

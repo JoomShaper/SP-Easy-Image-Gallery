@@ -44,7 +44,7 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 		$input = Factory::getApplication()->input;
 		$album_id = $input->post->get('album_id', 0, 'INT');
 		$file = $input->files->get('image');
-		$lang = $input->get('lang','*','STRING');
+		$lang = $input->get('lang', '*', 'STRING');
 
 		$report = array();
 		$params = ComponentHelper::getParams('com_speasyimagegallery');
@@ -53,18 +53,15 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 		$authorised = $user->authorise('core.edit', 'com_speasyimagegallery') || $user->authorise('core.edit.own', 'com_speasyimagegallery');
 
-		if ($authorised !== true)
-		{
+		if ($authorised !== true) {
 			$report['status'] = false;
 			$report['output'] = Text::_('JERROR_ALERTNOAUTHOR');
 			echo json_encode($report);
 			die();
 		}
 
-		if (count($file))
-		{
-			if ($file['error'] == UPLOAD_ERR_OK)
-			{
+		if (count($file)) {
+			if ($file['error'] == UPLOAD_ERR_OK) {
 				$error = false;
 				$contentLength = (int) $_SERVER['CONTENT_LENGTH'];
 				$mediaHelper = new MediaHelper;
@@ -72,19 +69,17 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 				$memoryLimit = $mediaHelper->toBytes(ini_get('memory_limit'));
 
 				// Check for the total size of post back data.
-				if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit))
-				{
+				if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit)) {
 					$report['status'] = false;
 					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_TOTAL_SIZE_EXCEEDS');
 					$error = true;
 					echo json_encode($report);
-					die;
+					die();
 				}
 
 				$uploadMaxFileSize = $mediaHelper->toBytes(ini_get('upload_max_filesize'));
 
-				if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
-				{
+				if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize)) {
 					$report['status'] = false;
 					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_LARGE');
 					$error = true;
@@ -94,24 +89,15 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 				$accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
 
 				// Upload if no error found
-				if(!$error)
-				{
+				if (!$error) {
 					$date = Factory::getDate();
 
 					$file_ext = strtolower(SpeasyimagegalleryHelper::getExt($file['name']));
 
-					if(in_array($file_ext, $accepted_formats))
-					{
-						$folder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
-
-						if(!is_dir( JPATH_ROOT . '/' . $folder ))
-						{
-							Folder::create(JPATH_ROOT . '/' . $folder, 0755);
-						}
-
+					if (in_array($file_ext, $accepted_formats)) {
+						$albumFolder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
 						$name = $file['name'];
 						$path = $file['tmp_name'];
-						// Do no override existing file
 
 						$media_file = preg_replace("/[\s\-_]+/", "-", File::makeSafe(basename(strtolower($name))));
 						$i = 0;
@@ -120,19 +106,17 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 							$ext        = SpeasyimagegalleryHelper::getExt($media_file);
 							$media_name = $base_name . '.' . $ext;
 							$i++;
-							$dest       = JPATH_ROOT . '/' . $folder . '/' . $media_name;
-							$src        = $folder . '/'  . $media_name;
-						} while(file_exists($dest));
+							$dest       = JPATH_ROOT . '/' . $albumFolder . '/' . $media_name;
+						} while (file_exists($dest));
 						// End Do not override
 
-						if (File::upload($path, $dest, false, true))
-						{
+						if (File::upload($path, $dest, false, true)) {
 							$sources = SpeasyimagegalleryHelper::createThumbs($dest, array(
-								'mini'=> array(64, 64),
-								'thumb'=> array($width, $height),
-								'x_thumb'=> array($width*2, $height*2),
-								'y_thumb'=> array($width, $height*1.5)
-							), $folder, $base_name, $ext);
+								'mini' => array(64, 64),
+								'thumb' => array($width, $height),
+								'x_thumb' => array($width * 2, $height * 2),
+								'y_thumb' => array($width, $height * 1.5)
+							), $albumFolder, $base_name, $ext);
 
 							$report['thumb'] = Uri::root(true) . '/' . $sources['thumb'];
 
@@ -149,23 +133,17 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 							$report['status'] = true;
 							$report['output'] = LayoutHelper::render('image', array('image' => $inserted_image));
-						}
-						else
-						{
+						} else {
 							$report['status'] = false;
 							$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
 						}
-					}
-					else
-					{
+					} else {
 						$report['status'] = false;
 						$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
 					}
 				}
 			}
-		}
-		else
-		{
+		} else {
 			$report['status'] = false;
 			$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
 		}
