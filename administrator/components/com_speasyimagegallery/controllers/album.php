@@ -10,10 +10,10 @@
 defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
-use Joomla\Filesystem\File;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\FormController;
 use Joomla\Filesystem\Folder;
@@ -67,8 +67,7 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		$image = JPATH_ROOT . '/' . $item->image;
 
 		if (file_exists($image)) {
-			$filteredImage = explode('#', $image);
-			$image = str_replace('%20', ' ', $filteredImage[0]);
+			$image = MediaHelper::getCleanMediaFieldValue($image);
 			$ext = SpeasyimagegalleryHelper::getExt($image);
 
 			// Create thumbnails for the image
