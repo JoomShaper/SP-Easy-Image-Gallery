@@ -198,21 +198,16 @@ jQuery(function($) {
     event.preventDefault()
     var $this = $(this)
     var files = $(this).prop('files');
-    var album_id = $(this).data('album-id');
+    var formdata = new FormData();
 
-    for (i = 0; i < files.length; i++) {
+    for (i=0;i<files.length;i++){
 
-      var formdata = new FormData();
       formdata.append('image', files[i]);
       formdata.append('album_id', album_id);
 
-      // Generate unique ID for each upload
-      var uploadId = 'image-id-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
-      // console.log(uploadId);
-      
       $(this).uploadImages({
         data: formdata,
-        index: uploadId
+        index: 'image-id-' + Math.floor(Math.random() * (1e6 - 1 + 1) + 1)
       })
     }
 

@@ -42,31 +42,42 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 
 	protected function postSaveHook(BaseDatabaseModel $model, $validData = array())
 	{
-		$params = ComponentHelper::getParams('com_speasyimagegallery');
-		$width = $params->get('thumb_width', 400);
-		$height = $params->get('thumb_height', 400);
-		$item = $model->getItem();
-		$id = $item->id;
-		$folder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
-		$image = JPATH_ROOT . '/' . $item->image;
+	    $params = ComponentHelper::getParams('com_speasyimagegallery');
+	    $width = $params->get('thumb_width', 400);
+	    $height = $params->get('thumb_height', 400);
+	    $item = $model->getItem();
+	    $id = $item->id;
 
-		$filteredImage = explode('#', $image);
-		$image = str_replace('%20', ' ', $filteredImage[0]);
+	    // Create the album folder first
+	    $albumFolder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
+	    if (!is_dir($albumFolder)) {
+	        if (!Folder::create($albumFolder, 0755)) {
+	            return false;
+	        }
+	    }
 
-		$ext = SpeasyimagegalleryHelper::getExt($image);
+	    // Now create the "images" folder inside the album folder
+	    $imagesFolder = $albumFolder . '/images';
+	    if (!is_dir($imagesFolder)) {
+	        if (!Folder::create($imagesFolder, 0755)) {
+	            return false;
+	        }
+	    }
 
-		if (file_exists($image))
-		{
-			if (!is_dir($folder))
-			{
-				Folder::create($folder, 0755);
-			}
+	    $image = JPATH_ROOT . '/' . $item->image;
 
-			SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $folder, '', $ext);
-		}
+	    if (file_exists($image)) {
+	        $filteredImage = explode('#', $image);
+	        $image = str_replace('%20', ' ', $filteredImage[0]);
+	        $ext = SpeasyimagegalleryHelper::getExt($image);
 
-		return true;
+	        // Create thumbnails for the image
+	        SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $albumFolder, '', $ext);
+	    }
+
+	    return true;
 	}
+
 	/**
 	 * Delete selected image from list
 	 *
