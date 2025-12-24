@@ -42,40 +42,40 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 
 	protected function postSaveHook(BaseDatabaseModel $model, $validData = array())
 	{
-	    $params = ComponentHelper::getParams('com_speasyimagegallery');
-	    $width = $params->get('thumb_width', 400);
-	    $height = $params->get('thumb_height', 400);
-	    $item = $model->getItem();
-	    $id = $item->id;
+		$params = ComponentHelper::getParams('com_speasyimagegallery');
+		$width = $params->get('thumb_width', 400);
+		$height = $params->get('thumb_height', 400);
+		$item = $model->getItem();
+		$id = $item->id;
 
-	    // Create the album folder first
-	    $albumFolder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
-	    if (!is_dir($albumFolder)) {
-	        if (!Folder::create($albumFolder, 0755)) {
-	            return false;
-	        }
-	    }
+		// Create the album folder first
+		$albumFolder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
+		if (!is_dir($albumFolder)) {
+			if (!Folder::create($albumFolder, 0755)) {
+				return false;
+			}
+		}
 
-	    // Now create the "images" folder inside the album folder
-	    $imagesFolder = $albumFolder . '/images';
-	    if (!is_dir($imagesFolder)) {
-	        if (!Folder::create($imagesFolder, 0755)) {
-	            return false;
-	        }
-	    }
+		// Now create the "images" folder inside the album folder
+		$imagesFolder = $albumFolder . '/images';
+		if (!is_dir($imagesFolder)) {
+			if (!Folder::create($imagesFolder, 0755)) {
+				return false;
+			}
+		}
 
-	    $image = JPATH_ROOT . '/' . $item->image;
+		$image = JPATH_ROOT . '/' . $item->image;
 
-	    if (file_exists($image)) {
-	        $filteredImage = explode('#', $image);
-	        $image = str_replace('%20', ' ', $filteredImage[0]);
-	        $ext = SpeasyimagegalleryHelper::getExt($image);
+		if (file_exists($image)) {
+			$filteredImage = explode('#', $image);
+			$image = str_replace('%20', ' ', $filteredImage[0]);
+			$ext = SpeasyimagegalleryHelper::getExt($image);
 
-	        // Create thumbnails for the image
-	        SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $albumFolder, '', $ext);
-	    }
+			// Create thumbnails for the image
+			SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $albumFolder, '', $ext);
+		}
 
-	    return true;
+		return true;
 	}
 
 	/**

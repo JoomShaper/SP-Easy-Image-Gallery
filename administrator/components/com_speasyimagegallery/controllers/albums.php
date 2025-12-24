@@ -39,114 +39,114 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 	// Upload File
 	public function upload_image()
 	{
-	    $model = $this->getModel();
-	    $user = Factory::getUser();
-	    $input = Factory::getApplication()->input;
-	    $album_id = $input->post->get('album_id', 0, 'INT');
-	    $file = $input->files->get('image');
-	    $lang = $input->get('lang','*','STRING');
+		$model = $this->getModel();
+		$user = Factory::getUser();
+		$input = Factory::getApplication()->input;
+		$album_id = $input->post->get('album_id', 0, 'INT');
+		$file = $input->files->get('image');
+		$lang = $input->get('lang', '*', 'STRING');
 
-	    $report = array();
-	    $params = ComponentHelper::getParams('com_speasyimagegallery');
-	    $width = $params->get('thumb_width', 400);
-	    $height = $params->get('thumb_height', 400);
+		$report = array();
+		$params = ComponentHelper::getParams('com_speasyimagegallery');
+		$width = $params->get('thumb_width', 400);
+		$height = $params->get('thumb_height', 400);
 
-	    $authorised = $user->authorise('core.edit', 'com_speasyimagegallery') || $user->authorise('core.edit.own', 'com_speasyimagegallery');
+		$authorised = $user->authorise('core.edit', 'com_speasyimagegallery') || $user->authorise('core.edit.own', 'com_speasyimagegallery');
 
-	    if ($authorised !== true) {
-	        $report['status'] = false;
-	        $report['output'] = Text::_('JERROR_ALERTNOAUTHOR');
-	        echo json_encode($report);
-	        die();
-	    }
+		if ($authorised !== true) {
+			$report['status'] = false;
+			$report['output'] = Text::_('JERROR_ALERTNOAUTHOR');
+			echo json_encode($report);
+			die();
+		}
 
-	    if (count($file)) {
-	        if ($file['error'] == UPLOAD_ERR_OK) {
-	            $error = false;
-	            $contentLength = (int) $_SERVER['CONTENT_LENGTH'];
-	            $mediaHelper = new MediaHelper;
-	            $postMaxSize = $mediaHelper->toBytes(ini_get('post_max_size'));
-	            $memoryLimit = $mediaHelper->toBytes(ini_get('memory_limit'));
+		if (count($file)) {
+			if ($file['error'] == UPLOAD_ERR_OK) {
+				$error = false;
+				$contentLength = (int) $_SERVER['CONTENT_LENGTH'];
+				$mediaHelper = new MediaHelper;
+				$postMaxSize = $mediaHelper->toBytes(ini_get('post_max_size'));
+				$memoryLimit = $mediaHelper->toBytes(ini_get('memory_limit'));
 
-	            // Check for the total size of post back data.
-	            if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit)) {
-	                $report['status'] = false;
-	                $report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_TOTAL_SIZE_EXCEEDS');
-	                $error = true;
-	                echo json_encode($report);
-	                die();
-	            }
+				// Check for the total size of post back data.
+				if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit)) {
+					$report['status'] = false;
+					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_TOTAL_SIZE_EXCEEDS');
+					$error = true;
+					echo json_encode($report);
+					die();
+				}
 
-	            $uploadMaxFileSize = $mediaHelper->toBytes(ini_get('upload_max_filesize'));
+				$uploadMaxFileSize = $mediaHelper->toBytes(ini_get('upload_max_filesize'));
 
-	            if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize)) {
-	                $report['status'] = false;
-	                $report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_LARGE');
-	                $error = true;
-	            }
+				if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize)) {
+					$report['status'] = false;
+					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_LARGE');
+					$error = true;
+				}
 
-	            // File formats
-	            $accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
+				// File formats
+				$accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
 
-	            // Upload if no error found
-	            if (!$error) {
-	                $date = Factory::getDate();
+				// Upload if no error found
+				if (!$error) {
+					$date = Factory::getDate();
 
-	                $file_ext = strtolower(SpeasyimagegalleryHelper::getExt($file['name']));
+					$file_ext = strtolower(SpeasyimagegalleryHelper::getExt($file['name']));
 
-	                if (in_array($file_ext, $accepted_formats)) {
-	                    $albumFolder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
-	                    $name = $file['name'];
-	                    $path = $file['tmp_name'];
+					if (in_array($file_ext, $accepted_formats)) {
+						$albumFolder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
+						$name = $file['name'];
+						$path = $file['tmp_name'];
 
-	                    $media_file = preg_replace("/[\s\-_]+/", "-", File::makeSafe(basename(strtolower($name))));
-	                    $i = 0;
-	                    do {
-	                        $base_name  = File::stripExt($media_file) . ($i ? "$i" : "");
-	                        $ext        = SpeasyimagegalleryHelper::getExt($media_file);
-	                        $media_name = $base_name . '.' . $ext;
-	                        $i++;
-	                        $dest       = JPATH_ROOT . '/' . $albumFolder . '/' . $media_name;
-	                    } while (file_exists($dest));
+						$media_file = preg_replace("/[\s\-_]+/", "-", File::makeSafe(basename(strtolower($name))));
+						$i = 0;
+						do {
+							$base_name  = File::stripExt($media_file) . ($i ? "$i" : "");
+							$ext        = SpeasyimagegalleryHelper::getExt($media_file);
+							$media_name = $base_name . '.' . $ext;
+							$i++;
+							$dest       = JPATH_ROOT . '/' . $albumFolder . '/' . $media_name;
+						} while (file_exists($dest));
 						// End Do not override
 
-	                    if (File::upload($path, $dest, false, true)) {
-	                        $sources = SpeasyimagegalleryHelper::createThumbs($dest, array(
-	                            'mini'=> array(64, 64),
-	                            'thumb'=> array($width, $height),
-	                            'x_thumb'=> array($width * 2, $height * 2),
-	                            'y_thumb'=> array($width, $height * 1.5)
-	                        ), $albumFolder, $base_name, $ext);
+						if (File::upload($path, $dest, false, true)) {
+							$sources = SpeasyimagegalleryHelper::createThumbs($dest, array(
+								'mini' => array(64, 64),
+								'thumb' => array($width, $height),
+								'x_thumb' => array($width * 2, $height * 2),
+								'y_thumb' => array($width, $height * 1.5)
+							), $albumFolder, $base_name, $ext);
 
-	                        $report['thumb'] = Uri::root(true) . '/' . $sources['thumb'];
+							$report['thumb'] = Uri::root(true) . '/' . $sources['thumb'];
 
-	                        $image = array(
-	                            'title' => $base_name,
-	                            'alt' => $base_name,
-	                            'ext' => $ext,
-	                            'album_id' => $album_id,
-	                            'images' => json_encode($sources),
-	                            'lang' => $lang
-	                        );
+							$image = array(
+								'title' => $base_name,
+								'alt' => $base_name,
+								'ext' => $ext,
+								'album_id' => $album_id,
+								'images' => json_encode($sources),
+								'lang' => $lang
+							);
 
-	                        $inserted_image = $model->insertMedia($image);
+							$inserted_image = $model->insertMedia($image);
 
-	                        $report['status'] = true;
-	                        $report['output'] = LayoutHelper::render('image', array('image' => $inserted_image));
-	                    } else {
-	                        $report['status'] = false;
-	                        $report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
-	                    }
-	                } else {
-	                    $report['status'] = false;
-	                    $report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
-	                }
-	            }
-	        }
-	    } else {
-	        $report['status'] = false;
-	        $report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
-	    }
+							$report['status'] = true;
+							$report['output'] = LayoutHelper::render('image', array('image' => $inserted_image));
+						} else {
+							$report['status'] = false;
+							$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
+						}
+					} else {
+						$report['status'] = false;
+						$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
+					}
+				}
+			}
+		} else {
+			$report['status'] = false;
+			$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
+		}
 
 		$report['count'] = $model->getCount($input->post->get('album_id', 0, 'INT'));
 
