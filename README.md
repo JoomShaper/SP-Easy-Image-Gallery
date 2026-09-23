@@ -42,12 +42,12 @@
 
 ## System Requirements
 
-| Requirement | Recommended / Supported |
-| :--- | :--- |
-| **Joomla!** | 4.x / 5.x |
-| **PHP** | 7.4, 8.0, 8.1, 8.2, 8.3+ |
-| **Database** | MySQL 5.7+ / MariaDB 10.4+ |
-| **Node.js** *(development only)* | 16.x or newer |
+| Requirement                      | Recommended / Supported    |
+| :------------------------------- | :------------------------- |
+| **Joomla!**                      | 4.x / 5.x / 6.x            |
+| **PHP**                          | 7.4, 8.0, 8.1, 8.2, 8.3+   |
+| **Database**                     | MySQL 5.7+ / MariaDB 10.4+ |
+| **Node.js** _(development only)_ | 16.x or newer              |
 
 ---
 
@@ -88,12 +88,14 @@ speasyimagegallery/
 To build the distributable zip package from the repository source code:
 
 1. **Clone the repository**:
+
    ```bash
    git clone https://github.com/JoomShaper/SP-Easy-Image-Gallery.git
    cd SP-Easy-Image-Gallery
    ```
 
 2. **Install Node dependencies**:
+
    ```bash
    npm install
    # or with yarn:
@@ -101,6 +103,7 @@ To build the distributable zip package from the repository source code:
    ```
 
 3. **Build the package**:
+
    ```bash
    npx gulp
    ```
@@ -115,10 +118,12 @@ To build the distributable zip package from the repository source code:
 ## Usage & Configuration
 
 ### 1. Managing Categories
+
 1. In the Joomla Administrator panel, navigate to **Components > SP Easy Image Gallery > Categories**.
-2. Click **New** to create a category (e.g., *Portfolios*, *Events*, *Nature*).
+2. Click **New** to create a category (e.g., _Portfolios_, _Events_, _Nature_).
 
 ### 2. Creating Albums & Uploading Photos
+
 1. Navigate to **Components > SP Easy Image Gallery > Albums**.
 2. Click **New** to create a new album.
 3. Enter the album title, assign a category, set the feature status, and upload a thumbnail cover image.
@@ -127,6 +132,7 @@ To build the distributable zip package from the repository source code:
 6. Click **Save & Close**.
 
 ### 3. Displaying via Menu Items
+
 1. Go to **Menus > [Your Menu] > Add New Menu Item**.
 2. In **Menu Item Type**, select **SP Easy Image Gallery**:
    - **Albums**: Displays a list of albums (optionally filtered by category or featured status).
@@ -135,6 +141,7 @@ To build the distributable zip package from the repository source code:
 4. Save and publish the menu item.
 
 ### 4. Using the Gallery Module
+
 1. Go to **Content > Site Modules** (or **System > Modules**).
 2. Click **New** and choose **SP Easy Image Gallery**.
 3. Choose the **Layout Type**:
