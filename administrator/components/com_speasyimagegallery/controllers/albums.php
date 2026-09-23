@@ -39,6 +39,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 	// Upload File
 	public function upload_image()
 	{
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$model = $this->getModel();
 		$user = Factory::getUser();
 		$input = Factory::getApplication()->input;
@@ -95,7 +101,35 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 					$file_ext = strtolower(SpeasyimagegalleryHelper::getExt($file['name']));
 
 					if (in_array($file_ext, $accepted_formats)) {
-						$albumFolder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
+				// Validate MIME type to prevent malicious file uploads
+				$finfo = new finfo(FILEINFO_MIME_TYPE);
+				$mimeType = $finfo->file($file['tmp_name']);
+
+				$allowedMimes = [
+					'image/jpeg',
+					'image/png',
+					'image/gif',
+					'image/bmp',
+					'image/webp'
+				];
+
+				if (!in_array($mimeType, $allowedMimes)) {
+					$report['status'] = false;
+					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
+					echo json_encode($report);
+					die();
+				}
+
+				// Also verify it's a valid image using getimagesize
+				$imageInfo = @getimagesize($file['tmp_name']);
+				if ($imageInfo === false) {
+					$report['status'] = false;
+					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
+					echo json_encode($report);
+					die();
+				}
+
+				$albumFolder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
 						$name = $file['name'];
 						$path = $file['tmp_name'];
 
@@ -156,6 +190,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Sort images
 	public function sort_images() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$orders = $input->get('orders', '', 'STRING');
 		$orders = explode(',', $orders);
@@ -166,6 +206,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Change Image state
 	public function image_state() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$state = $input->get('state', 'enabled', 'STRING');
@@ -176,6 +222,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Delete Image
 	public function image_delete() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$album_id = $input->get('album_id', '', 'INT');
@@ -187,6 +239,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Edit Image
 	public function edit_image() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$album_id = $input->get('album_id', '', 'INT');
@@ -198,6 +256,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// save image
 	public function save_image() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$title = $input->get('title', '', 'STRING');

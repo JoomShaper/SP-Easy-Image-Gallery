@@ -50,18 +50,14 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 
 		// Create the album folder first
 		$albumFolder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
-		if (!is_dir($albumFolder)) {
-			if (!Folder::create($albumFolder, 0755)) {
-				return false;
-			}
+		if (!Folder::create($albumFolder, 0750)) {
+			return false;
 		}
 
 		// Now create the "images" folder inside the album folder
 		$imagesFolder = $albumFolder . '/images';
-		if (!is_dir($imagesFolder)) {
-			if (!Folder::create($imagesFolder, 0755)) {
-				return false;
-			}
+		if (!Folder::create($imagesFolder, 0750)) {
+			return false;
 		}
 
 		$image = JPATH_ROOT . '/' . $item->image;
@@ -106,6 +102,8 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		if (!empty($selected_id))
 		{
 			$image_items = explode(',', $selected_id);
+			// Ensure all IDs are integers to prevent SQL injection
+			$image_items = array_map('intval', $image_items);
 		}
 
 		if (!empty($image_items))

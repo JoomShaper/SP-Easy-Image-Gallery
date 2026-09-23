@@ -219,6 +219,9 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			return false;
 		}
 
+		// Ensure all IDs are integers to prevent SQL injection
+		$cid = array_map('intval', $cid);
+
 		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true)
 			->update($db->quoteName('#__speasyimagegallery_albums'))
