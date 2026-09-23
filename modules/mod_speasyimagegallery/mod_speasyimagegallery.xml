@@ -7,21 +7,22 @@
 	<authorUrl>http://www.joomshaper.com</authorUrl>
 	<copyright>@JoomShaper 2010 - 2025. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>2.1.0</version>
+	<version>3.0.0</version>
 	<description>Module to display albums or album images from SP Easy Image Gallery component.</description>
+	<namespace path="src">JoomShaper\Module\Speasyimagegallery</namespace>
 
 	<files>
-		<filename module="mod_speasyimagegallery">mod_speasyimagegallery.php</filename>
+		<folder module="mod_speasyimagegallery">services</folder>
+		<folder>src</folder>
 		<folder>layouts</folder>
 		<folder>tmpl</folder>
-		<filename>helper.php</filename>
 	</files>
 	<languages>
 		<language tag="en-GB">en-GB.mod_speasyimagegallery.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/administrator/components/com_speasyimagegallery/models/fields">
+			<fieldset name="basic" addfieldprefix="JoomShaper\Component\Speasyimagegallery\Administrator\Field" addfieldpath="/administrator/components/com_speasyimagegallery/models/fields">
 
 				<field name="layout" type="list" default="album" label="MOD_SPEASYIMAGEGALLERY_LAYOUT_TYPE" description="MOD_SPEASYIMAGEGALLERY_LAYOUT_TYPE_DESC">
 					<option value="album">MOD_SPEASYIMAGEGALLERY_LAYOUT_ALBUM</option>

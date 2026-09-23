@@ -9,7 +9,7 @@ const config = {
     buildPath: './dist/component/',
     rootPath: './dist/',
     componentName: 'speasyimagegallery',
-    com_package_name: 'com_speasyimagegallery_fullpackage_v2.1.1.zip',
+    com_package_name: 'com_speasyimagegallery_fullpackage_v3.0.0.zip',
     moduleExts: ['xml','php','js','css','jpg','png','gif','webp','ttf','otf','woff','woff2','svg','eot']
 }
 
@@ -27,6 +27,10 @@ const tasks = {
     site: {
         src: [config.srcPath + 'components/com_' + config.componentName + '/**/*.{xml,php,js,css,jpg,png,webp,gif,ttf,otf,woff,woff2,svg,eot,json,txt}'],
         dest: config.buildPath + '/site'
+    },
+    media: {
+        src: [config.srcPath + 'media/com_' + config.componentName + '/**/*.{json,css,js,png,jpg,svg,webp}'],
+        dest: config.buildPath + '/media'
     },
     modules: [
         {
@@ -57,6 +61,12 @@ function admin() {
 function site() {
     return src(tasks.site.src)
     .pipe(dest(tasks.site.dest));
+}
+
+// media tasks
+function media() {
+    return src(tasks.media.src, {allowEmpty: true})
+    .pipe(dest(tasks.media.dest));
 }
 
 // modules tasks
@@ -145,6 +155,6 @@ function componentPackage(callback) {
 }
 
 exports.default = series(
-    clean,modules, plugins, manifest, admin, site, adminLanguage, siteLanguage, 
+    clean, modules, plugins, manifest, admin, site, media, adminLanguage, siteLanguage, 
     componentPackage
 )

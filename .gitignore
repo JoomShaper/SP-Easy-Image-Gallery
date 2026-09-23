@@ -21,6 +21,10 @@ robots.txt.dist
 /dist
 /files
 
+!/media
+/media/*
+!/media/com_speasyimagegallery
+
 LICENSE.txt
 README.txt
 configuration.php

@@ -1,31 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension type="component" version="3.6" method="upgrade">
+<extension type="component" method="upgrade">
 	<name>COM_SPEASYIMAGEGALLERY</name>
-	<creationDate>Mar 2017</creationDate>
+	<creationDate>March 2026</creationDate>
 	<author>JoomShaper</author>
 	<authorEmail>support@joomshaper.com</authorEmail>
-	<authorUrl>http://www.joomshaper.com</authorUrl>
-	<copyright>@JoomShaper 2010 - 2025. All rights reserved.</copyright>
+	<authorUrl>https://www.joomshaper.com</authorUrl>
+	<copyright>@JoomShaper 2010 - 2026. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>2.1.1</version>
-	<description>A simple image gallery component for Joomla.</description>
+	<version>3.0.0</version>
+	<description>A simple and powerful image gallery component for Joomla.</description>
+	<namespace path="src">JoomShaper\Component\Speasyimagegallery</namespace>
 	<scriptfile>installer.script.php</scriptfile>
 
 	<updateservers>
 		<server type="extension" priority="1" name="SP Easy Image Gallery">https://www.joomshaper.com/updates/com-sp-easyimagegallery.xml</server>
 	</updateservers>
 
-	<install> <!-- Runs on install -->
+	<install>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/install.mysql.utf8.sql</file>
 		</sql>
 	</install>
 
-	<uninstall> <!-- Runs on uninstall -->
+	<uninstall>
 		<sql>
 			<file driver="mysql" charset="utf8">sql/uninstall.mysql.utf8.sql</file>
 		</sql>
 	</uninstall>
+
 	<update>
 		<schemas>
 			<schemapath type="mysql">sql/updates/</schemapath>
@@ -37,21 +39,24 @@
 		<module module="mod_speasyimagegallery" client="site" />
 	</modules>
 
+	<media destination="com_speasyimagegallery" folder="media">
+		<filename>joomla.asset.json</filename>
+		<folder>css</folder>
+		<folder>js</folder>
+	</media>
+
 	<files folder="site">
-		<filename>speasyimagegallery.php</filename>
-		<filename>controller.php</filename>
-		<filename>router.php</filename>
-		<folder>views</folder>
-		<folder>models</folder>
+		<folder>src</folder>
+		<folder>tmpl</folder>
 		<folder>layouts</folder>
-		<folder>assets</folder>
 	</files>
+
 	<languages folder="language/site">
 		<language tag="en-GB">en-GB/en-GB.com_speasyimagegallery.ini</language>
 	</languages>
 
 	<administration>
-		<menu link='index.php?option=com_speasyimagegallery'>COM_SPEASYIMAGEGALLERY</menu>
+		<menu link="index.php?option=com_speasyimagegallery">COM_SPEASYIMAGEGALLERY</menu>
 		<submenu>
 			<menu
 				link="option=com_speasyimagegallery&amp;view=albums"
@@ -67,18 +72,14 @@
 			</menu>
 		</submenu>
 		<files folder="admin">
-			<filename>speasyimagegallery.php</filename>
 			<filename>config.xml</filename>
-			<filename>controller.php</filename>
 			<filename>access.xml</filename>
-			<folder>assets</folder>
-			<folder>controllers</folder>
-			<folder>helpers</folder>
+			<folder>forms</folder>
 			<folder>layouts</folder>
-			<folder>models</folder>
+			<folder>services</folder>
 			<folder>sql</folder>
-			<folder>tables</folder>
-			<folder>views</folder>
+			<folder>src</folder>
+			<folder>tmpl</folder>
 		</files>
 		<languages folder="language/admin">
 			<language tag="en-GB">en-GB/en-GB.com_speasyimagegallery.ini</language>

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://developer.joomla.org/schemas/json-schema/web_assets.json",
+  "name": "com_speasyimagegallery",
+  "version": "3.0.0",
+  "description": "SP Easy Image Gallery assets for Joomla 6",
+  "license": "GPL-2.0-or-later",
+  "assets": [
+    {
+      "name": "com_speasyimagegallery.admin-css",
+      "type": "style",
+      "uri": "com_speasyimagegallery/admin.css"
+    },
+    {
+      "name": "com_speasyimagegallery.admin-album",
+      "type": "script",
+      "uri": "com_speasyimagegallery/admin-album.js",
+      "dependencies": [
+        "core"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_speasyimagegallery.site-css",
+      "type": "style",
+      "uri": "com_speasyimagegallery/site.css"
+    },
+    {
+      "name": "com_speasyimagegallery.site-vendor",
+      "type": "script",
+      "uri": "com_speasyimagegallery/site-vendor.js",
+      "attributes": {
+        "defer": true
+      }
+    },
+    {
+      "name": "com_speasyimagegallery.site-gallery",
+      "type": "script",
+      "uri": "com_speasyimagegallery/site-gallery.js",
+      "dependencies": [
+        "com_speasyimagegallery.site-vendor"
+      ],
+      "attributes": {
+        "defer": true
+      }
+    }
+  ]
+}
