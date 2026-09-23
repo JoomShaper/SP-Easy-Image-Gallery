@@ -8,6 +8,7 @@
 
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
+use Joomla\CMS\HTML\HTMLHelper;
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
@@ -23,7 +24,7 @@ $col_css_class = SpeasyimagegalleryHelper::getVersion() < 4 ? 'span' : 'col-lg-'
 <div class="clearfix">
 	<div class="<?php echo $row_css_class; ?>">
 		<div class="<?php echo $col_css_class ;?>6 hidden-phone">
-			<a href="<?php echo Uri::root(true) . '/' . $source->original; ?>" target="_blank"><img src="<?php echo Uri::root(true) . '/' . $source->original; ?>" alt="<?php echo $image->alt; ?>" class="img-fluid"></a>
+			<a href="<?php echo Uri::root(true) . '/' . htmlspecialchars($source->original, ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><img src="<?php echo Uri::root(true) . '/' . htmlspecialchars($source->original, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($image->alt, ENT_QUOTES, 'UTF-8'); ?>" class="img-fluid"></a>
 		</div>
 		<div class="<?php echo $col_css_class ;?>5 offset1">
 			<div class="control-group">
@@ -33,7 +34,7 @@ $col_css_class = SpeasyimagegalleryHelper::getVersion() < 4 ? 'span' : 'col-lg-'
 					</label>
 				</div>
 				<div class="controls">
-					<input type="text" id="speasyimagegallery-image-field-title" value="<?php echo $image->title; ?>">
+					<input type="text" id="speasyimagegallery-image-field-title" value="<?php echo htmlspecialchars($image->title, ENT_QUOTES, 'UTF-8'); ?>">
 				</div>
 			</div>
 
@@ -44,7 +45,7 @@ $col_css_class = SpeasyimagegalleryHelper::getVersion() < 4 ? 'span' : 'col-lg-'
 					</label>
 				</div>
 				<div class="controls">
-					<input type="text" id="speasyimagegallery-image-field-alt" value="<?php echo $image->alt; ?>">
+					<input type="text" id="speasyimagegallery-image-field-alt" value="<?php echo htmlspecialchars($image->alt, ENT_QUOTES, 'UTF-8'); ?>">
 				</div>
 			</div>
 
@@ -55,7 +56,7 @@ $col_css_class = SpeasyimagegalleryHelper::getVersion() < 4 ? 'span' : 'col-lg-'
 					</label>
 				</div>
 				<div class="controls">
-					<textarea id="speasyimagegallery-image-field-desc" rows="8" ><?php echo $image->description; ?></textarea>
+					<textarea id="speasyimagegallery-image-field-desc" rows="8" ><?php echo htmlspecialchars($image->description, ENT_QUOTES, 'UTF-8'); ?></textarea>
 				</div>
 			</div>
 

@@ -1,5 +1,8 @@
 jQuery(function($) {
 
+  // Get CSRF token
+  var csrfToken = Joomla.getOptions('csrf.token');
+
   //Ordering
   $(document).ready(function(){
 
@@ -10,7 +13,8 @@ jQuery(function($) {
       axis: 'y',
       update: function (event, ui) {
         var data = {
-          orders: $(this).sortable('toArray').toString()
+          orders: $(this).sortable('toArray').toString(),
+          csrf_token: csrfToken
         }
         $.ajax({
           type: "POST",
@@ -28,7 +32,8 @@ jQuery(function($) {
 
     var data = {
       id: $(this).closest('.speasyimagegallery-singe-image').attr('id'),
-      state: $(this).attr('data-state')
+      state: $(this).attr('data-state'),
+      csrf_token: csrfToken
     }
 
     if(data.state == 'enabled') {
@@ -51,7 +56,8 @@ jQuery(function($) {
       var $this = $(this);
       var data = {
         id: $this.closest('.speasyimagegallery-singe-image').attr('id'),
-        album_id: album_id
+        album_id: album_id,
+        csrf_token: csrfToken
       }
       $.ajax({
         type: "POST",
@@ -111,7 +117,8 @@ jQuery(function($) {
       id: id,
       title: title,
       alt: alt,
-      desc: desc
+      desc: desc,
+      csrf_token: csrfToken
     }
 
     $.ajax({

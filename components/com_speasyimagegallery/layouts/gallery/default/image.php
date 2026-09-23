@@ -14,14 +14,14 @@ extract($displayData);
 
 $source = json_decode($image->images);
 ?>
-<a class="speasyimagegallery-gallery-item" href="<?php echo $source->original; ?>" data-title="<?php echo $image->title; ?>"
-    data-desc="<?php echo ($image->description) ? htmlspecialchars($image->description) : ''; ?>">
+<a class="speasyimagegallery-gallery-item" href="<?php echo htmlspecialchars($source->original, ENT_QUOTES, 'UTF-8'); ?>" data-title="<?php echo htmlspecialchars($image->title, ENT_QUOTES, 'UTF-8'); ?>"
+    data-desc="<?php echo ($image->description) ? htmlspecialchars($image->description, ENT_QUOTES, 'UTF-8') : ''; ?>">
     <div>
-        <img src="<?php echo $source->thumb; ?>" title="<?php echo $image->title; ?>" alt="<?php echo $image->alt; ?>">
+        <img src="<?php echo htmlspecialchars($source->thumb, ENT_QUOTES, 'UTF-8'); ?>" title="<?php echo htmlspecialchars($image->title, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($image->alt, ENT_QUOTES, 'UTF-8'); ?>">
         <div class="speasyimagegallery-gallery-item-content">
-            <span class="speasyimagegallery-gallery-item-title"><?php echo $image->title; ?></span>
+            <span class="speasyimagegallery-gallery-item-title"><?php echo htmlspecialchars($image->title, ENT_QUOTES, 'UTF-8'); ?></span>
             <?php if($params->get('album_show_desc', false) && $image->description) { ?>
-            <span class="speasyimagegallery-gallery-item-title"><small><?php echo $image->description; ?></small></span>
+            <span class="speasyimagegallery-gallery-item-title"><small><?php echo htmlspecialchars($image->description, ENT_QUOTES, 'UTF-8'); ?></small></span>
             <?php } ?>
         </div>
     </div>
