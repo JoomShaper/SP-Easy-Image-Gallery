@@ -4,7 +4,7 @@
  * @package com_speasyimagegallery
  * @subpackage mod_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2024 JoomShaper
+ * @copyright Copyright (c) 2010 - 2025 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
  */
 
@@ -21,6 +21,8 @@ class ModSpeasyimagegalleryHelper
 		$user = Factory::getUser();
 		$catid = $params->get('catid', 0, 'INT');
 		$layout = $params->get('layout', '' , 'STRING');
+		$featuredOnly = (int) $params->get('show_featured_only', 0);
+		$limit = $params->get('albums_limit', 0, 'INT');
 		// Load albums model
 		jimport('joomla.application.component.model');
 		BaseDatabaseModel::addIncludePath(JPATH_SITE.'/components/com_speasyimagegallery/models');
@@ -46,15 +48,26 @@ class ModSpeasyimagegalleryHelper
 		$query->where('a.access IN (' . $groups . ')');
 
 		// Filter category
-		if( $catid && $layout = 'albums' ) {
+		if( $catid && $layout == 'albums' ) {
 			$descendants = implode(',', $albums_model->getCatChild($catid));
 			$query->where('a.catid IN (' . $descendants . ' )');
+		}
+
+		// Filter by featured
+		if ($featuredOnly) {
+		$query->where('a.featured = 1');
 		}
 
 		// Filter by language
 		$query->where('a.language in (' . $db->quote(Factory::getLanguage()->getTag()) . ',' . $db->quote('*') . ')');
 		$query->where('a.published = 1');
 		$query->order('a.ordering ASC');
+
+		// Apply limit if set
+		if ($limit > 0) {
+			$query->setLimit($limit);
+		}
+
 		$db->setQuery($query);
 		$items = $db->loadObjectList();
 		$ItemID = self::getItemID();

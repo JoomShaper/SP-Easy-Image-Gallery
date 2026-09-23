@@ -2,7 +2,7 @@
 /**
 * @package com_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2024 JoomShaper
+* @copyright Copyright (c) 2010 - 2025 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
@@ -12,11 +12,11 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Component\ComponentHelper;
+use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\MVC\Model\BaseDatabaseModel;
 use Joomla\CMS\MVC\Controller\FormController;
+use Joomla\Filesystem\Folder;
 
 class SpeasyimagegalleryControllerAlbum extends FormController
 {
@@ -46,27 +46,33 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		$width = $params->get('thumb_width', 400);
 		$height = $params->get('thumb_height', 400);
 		$item = $model->getItem();
-		$id = $item->get('id');
-		$folder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
+		$id = $item->id;
+
+		// Create the album folder first
+		$albumFolder = JPATH_ROOT . '/images/speasyimagegallery/albums/' . $id;
+		if (!Folder::create($albumFolder, 0750)) {
+			return false;
+		}
+
+		// Now create the "images" folder inside the album folder
+		$imagesFolder = $albumFolder . '/images';
+		if (!Folder::create($imagesFolder, 0750)) {
+			return false;
+		}
+
 		$image = JPATH_ROOT . '/' . $item->image;
 
-		$filteredImage = explode('#', $image);
-		$image = str_replace('%20', ' ', $filteredImage[0]);
+		if (file_exists($image)) {
+			$image = MediaHelper::getCleanMediaFieldValue($image);
+			$ext = SpeasyimagegalleryHelper::getExt($image);
 
-		$ext = File::getExt($image);
-
-		if (File::exists($image))
-		{
-			if (!Folder::exists($folder))
-			{
-				Folder::create($folder, 0755);
-			}
-
-			SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $folder, '', $ext);
+			// Create thumbnails for the image
+			SpeasyimagegalleryHelper::createThumbs($image, array('thumb' => array($width, $height)), $albumFolder, '', $ext);
 		}
 
 		return true;
 	}
+
 	/**
 	 * Delete selected image from list
 	 *
@@ -96,6 +102,8 @@ class SpeasyimagegalleryControllerAlbum extends FormController
 		if (!empty($selected_id))
 		{
 			$image_items = explode(',', $selected_id);
+			// Ensure all IDs are integers to prevent SQL injection
+			$image_items = array_map('intval', $image_items);
 		}
 
 		if (!empty($image_items))

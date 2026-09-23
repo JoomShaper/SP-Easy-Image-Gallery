@@ -2,25 +2,23 @@
 /**
 * @package com_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2024 JoomShaper
+* @copyright Copyright (c) 2010 - 2025 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
 
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-
 use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\Folder;
 use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\String\StringHelper;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Filter\InputFilter;
 use Joomla\CMS\Filter\OutputFilter;
 use Joomla\CMS\MVC\Model\AdminModel;
+use Joomla\Database\DatabaseInterface;
+use Joomla\Filesystem\File;
 
 class SpeasyimagegalleryModelAlbum extends AdminModel
 {
@@ -150,7 +148,7 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 			foreach ($pks as $pk) {
 				// delete images
 				$cover = JPATH_ROOT . "/images/speasyimagegallery/albums/" . $pk;
-				if(Folder::exists($cover)) {
+				if(is_dir($cover)) {
 					Folder::delete($cover);
 				}
 
@@ -170,7 +168,7 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 
 	// Get images
 	public function getImages($album_id = 0, $id = 0) {
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$query->select(array('a.*'));
 		$query->from($db->quoteName('#__speasyimagegallery_images', 'a'));
@@ -191,7 +189,7 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 	}
 
 	public function getCount($album_id = 0) {
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$query->select('COUNT(a.id)');
 		$query->from($db->quoteName('#__speasyimagegallery_images', 'a'));
@@ -212,7 +210,7 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 	public function insertMedia($attribs = array())
 	{
 		$total = $this->getCount($attribs['album_id']);
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$image = new stdClass();
 		$title = ucwords(preg_replace("/[\s\-_]+/", " ", $attribs['title']));
 		$image->filename = $attribs['title'] . '.' . $attribs['ext'];
@@ -253,7 +251,8 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 				$image = new stdClass();
 				$image->id = $id;
 				$image->ordering = ($count - $key) + 1;
-				$result = Factory::getDbo()->updateObject('#__speasyimagegallery_images', $image, 'id');
+				$db = Factory::getContainer()->get(DatabaseInterface::class);
+				$result = $db->updateObject('#__speasyimagegallery_images', $image, 'id');
 			}
 		}
 	}
@@ -277,7 +276,8 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 		$image->title = $attr['title'];
 		$image->alt = $attr['alt'];
 		$image->description = $attr['desc'];
-		$result = Factory::getDbo()->updateObject('#__speasyimagegallery_images', $image, 'id');
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$result = $db->updateObject('#__speasyimagegallery_images', $image, 'id');
 	}
 
 	public function image_delete($id, $album_id)
@@ -295,7 +295,7 @@ class SpeasyimagegalleryModelAlbum extends AdminModel
 			}
 		}
 
-		$db = Factory::getDbo();
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 		$conditions = array($db->quoteName('id') . ' = ' . $id);
 		$query->delete($db->quoteName('#__speasyimagegallery_images'));

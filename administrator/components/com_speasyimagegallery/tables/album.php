@@ -2,7 +2,7 @@
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2024 JoomShaper
+ * @copyright Copyright (c) 2010 - 2025 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
  */
 
@@ -25,17 +25,17 @@ class SpeasyimagegalleryTableAlbum extends Table
 	public function store($updateNulls = false)
 	{
 		$date = Factory::getDate()->toSql();
-		$user = Factory::getUser();
+		$user = Factory::getApplication()->getIdentity();
 
 		if ($this->id) {
 			$this->modified		= $date;
-			$this->modified_by		= $user->get('id');
+			$this->modified_by		= $user->id;
 		} else {
 			if (!(int) $this->created) {
 				$this->created = $date;
 			}
 			if (empty($this->created_by)) {
-				$this->created_by = $user->get('id');
+				$this->created_by = $user->id;
 			}
 			if (!(int) $this->modified)
 			{
@@ -44,7 +44,7 @@ class SpeasyimagegalleryTableAlbum extends Table
 
 			if (empty($this->modified_by))
 			{
-				$this->modified_by = $user->get('id');
+				$this->modified_by = $user->id;
 			}
 		}
 

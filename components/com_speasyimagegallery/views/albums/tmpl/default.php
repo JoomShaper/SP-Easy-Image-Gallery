@@ -2,7 +2,7 @@
 /**
 * @package com_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2024 JoomShaper
+* @copyright Copyright (c) 2010 - 2025 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
@@ -14,7 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Router\Route;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
+use Joomla\Filesystem\File;
 
 $doc = Factory::getDocument();
 $doc->addStylesheet( Uri::base(true) . '/components/com_speasyimagegallery/assets/css/style-min.css' );

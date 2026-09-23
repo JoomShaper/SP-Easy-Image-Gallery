@@ -2,7 +2,7 @@
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2024 JoomShaper
+ * @copyright Copyright (c) 2010 - 2025 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
  */
 
@@ -14,6 +14,7 @@ use Joomla\CMS\Factory;
 use Joomla\CMS\Table\Table;
 use Joomla\Utilities\ArrayHelper;
 use Joomla\CMS\MVC\Model\ListModel;
+use Joomla\Database\DatabaseInterface;
 
 class SpeasyimagegalleryModelAlbums extends ListModel
 {
@@ -25,6 +26,7 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			$config['filter_fields'] = array(
 				'id','a.id',
 				'title','a.title',
+				'featured','a.featured',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'created_by','a.created_by',
@@ -46,6 +48,23 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 	{
 		$app = Factory::getApplication();
 		$context = $this->context;
+
+		$fullOrdering = $app->getUserStateFromRequest(
+			
+			$this->context . '.list.fullordering',
+			'list[fullordering]',
+			'',
+			'string'
+		);
+
+		if (!empty($fullOrdering)) {
+			$parts = explode(' ', $fullOrdering);
+			$this->setState('list.ordering', $parts[0]);
+			$this->setState('list.direction', $parts[1] ?? 'ASC');
+		} else {
+			$this->setState('list.ordering', $ordering);
+			$this->setState('list.direction', $direction);
+		}
 
 		$search = $this->getUserStateFromRequest($this->context . '.filter.search', 'filter_search');
 		$this->setState('filter.search', $search);
@@ -85,9 +104,7 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 	*/
 	protected function getListQuery()
 	{
-		// Initialize variables.
-		$app = Factory::getApplication();
-		$db    = Factory::getDbo();
+		$db    = Factory::getContainer()->get(DatabaseInterface::class);
 		$query = $db->getQuery(true);
 
 		// Create the base select statement.
@@ -127,6 +144,12 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 			elseif ($published === '')
 			{
 				$query->where('(a.published IN (0, 1))');
+			}
+
+			// Filter by featured state
+			$featured = $this->getState('filter.featured');
+			if (is_numeric($featured)) {
+				$query->where('a.featured = ' . (int) $featured);
 			}
 
 			// Filter by a single or group of categories.
@@ -181,12 +204,32 @@ class SpeasyimagegalleryModelAlbums extends ListModel
 				$query->where('a.access = ' . (int) $access_level);
 			}
 
-			// Add the list ordering clause.
-			$orderCol = $app->getUserStateFromRequest($this->context.'filter_order', 'filter_order', 'id', 'cmd');
-			$orderDirn = $app->getUserStateFromRequest($this->context.'filter_order_Dir', 'filter_order_Dir', 'desc', 'cmd');
+			// Ordering
+			$orderCol  = $this->state->get('list.ordering', 'a.id');
+			$orderDirn = $this->state->get('list.direction', 'DESC');
 
 			$query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
 
 			return $query;
+	}
+
+	public function setFeatured($cid, $value)
+	{
+		if (empty($cid)) {
+			return false;
+		}
+
+		// Ensure all IDs are integers to prevent SQL injection
+		$cid = array_map('intval', $cid);
+
+		$db = Factory::getContainer()->get(DatabaseInterface::class);
+		$query = $db->getQuery(true)
+			->update($db->quoteName('#__speasyimagegallery_albums'))
+			->set($db->quoteName('featured') . ' = ' . (int) $value)
+			->where('id IN (' . implode(',', $cid) . ')');
+
+		$db->setQuery($query);
+		// Execute the query
+		return $db->execute();
 	}
 }

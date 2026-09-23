@@ -2,7 +2,7 @@
 /**
 * @package com_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2024 JoomShaper
+* @copyright Copyright (c) 2010 - 2025 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
@@ -18,7 +18,7 @@ $sources = json_decode($image->images);
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-<div class="sp-tr speasyimagegallery-singe-image clearfix" id="<?php echo $image->id; ?>">
+<div class="sp-tr speasyimagegallery-singe-image clearfix" id="<?php echo (int) $image->id; ?>">
 
 	<div style="width: 5%;" class="order nowrap center hidden-phone">
 		<span class="sortable-handler" style="cursor: move;">
@@ -27,17 +27,17 @@ defined('_JEXEC') or die('Restricted access');
 	</div>
 
 	<div class="center" style="width: 2%;">
-		<input type="checkbox" name="speasygallery_row[]" class="select-single-image" value="<?php echo $image->id; ?>" />
+		<input type="checkbox" name="speasygallery_row[]" class="select-single-image" value="<?php echo (int) $image->id; ?>" />
 	</div>
 
 	<div style="width: 15%;" class="center">
-		<img src="<?php echo Uri::root(true) . '/' . $sources->mini; ?>" alt="<?php echo $image->alt; ?>" width="64">
+		<img src="<?php echo Uri::root(true) . '/' . htmlspecialchars($sources->mini, ENT_QUOTES, 'UTF-8'); ?>" alt="<?php echo htmlspecialchars($image->alt, ENT_QUOTES, 'UTF-8'); ?>" width="64">
 	</div>
 
 	<div style="width: 25%;" class="has-context">
 		<div class="pull-left break-word">
-			<a class="speasyimagegallery-image-title" href="<?php echo Uri::root(true) . '/' . $sources->original; ?>" target="_blank"><?php echo $image->title; ?></a>
-			<span class="speasyimagegallery-image-filename"><?php echo $image->filename; ?></span>
+			<a class="speasyimagegallery-image-title" href="<?php echo Uri::root(true) . '/' . htmlspecialchars($sources->original, ENT_QUOTES, 'UTF-8'); ?>" target="_blank"><?php echo htmlspecialchars($image->title, ENT_QUOTES, 'UTF-8'); ?></a>
+			<span class="speasyimagegallery-image-filename"><?php echo htmlspecialchars($image->filename, ENT_QUOTES, 'UTF-8'); ?></span>
 			<div class="speasyimagegallery-image-tools">
 				<a href="#" class="speasyimagegallery-edit-image" data-id="<?php echo $image->id; ?>"><i class="fa fa-edit"></i> <?php echo Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_EDIT'); ?></a>
 				<a href="#" class="speasyimagegallery-delete-image"><i class="fa fa-times"></i> <?php echo Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_DELETE'); ?></a>

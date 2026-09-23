@@ -2,7 +2,7 @@
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2024 JoomShaper
+ * @copyright Copyright (c) 2010 - 2025 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
  */
 
@@ -52,9 +52,7 @@ class SpeasyimagegalleryViewAlbums extends HtmlView
 		}
 
 		// Set the submenu
-		SpeasyimagegalleryHelper::addSubmenu('albums');
 		$this->addToolBar();
-		$this->sidebar = JHtmlSidebar::render();
 
 		return parent::display($tpl);
 
@@ -78,7 +76,7 @@ class SpeasyimagegalleryViewAlbums extends HtmlView
 		{
 			ToolbarHelper::deleteList('', 'albums.delete', 'JTOOLBAR_EMPTY_TRASH');
 		}
-		elseif ($this->canDo->get('core.edit.state'))
+		elseif ($this->state->get('filter.published') !== -2)
 		{
 			ToolbarHelper::trash('albums.trash');
 		}

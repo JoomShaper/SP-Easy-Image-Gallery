@@ -5,9 +5,9 @@
 	<author>JoomShaper</author>
 	<authorEmail>support@joomshaper.com</authorEmail>
 	<authorUrl>http://www.joomshaper.com</authorUrl>
-	<copyright>@JoomShaper 2010 - 2024. All rights reserved.</copyright>
+	<copyright>@JoomShaper 2010 - 2025. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later</license>
-	<version>2.0.4</version>
+	<version>2.1.0</version>
 	<description>Module to display albums or album images from SP Easy Image Gallery component.</description>
 
 	<files>
@@ -28,11 +28,19 @@
 					<option value="albums">MOD_SPEASYIMAGEGALLERY_LAYOUT_ALBUMS</option>
 				</field>
 
+				<field name="show_featured_only" type="radio" class="btn-group" label="MOD_SPEASYIMAGEGALLERY_SHOW_FEATURED_ONLY_LABEL" description="MOD_SPEASYIMAGEGALLERY_SHOW_FEATURED_ONLY_DESC" default="0" showon="layout:albums">
+				    <option value="1">JYES</option>
+				    <option value="0">JNO</option>
+				</field>
+				
 				<field name="spacer1" type="spacer" hr="true" showon="layout:albums" />
 				<field name="spacer2" type="spacer" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_ALBUM_LIST_OPTIONS" showon="layout:albums" />
 				<field name="catid" type="category" label="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY" description="MOD_SPEASYIMAGEGALLERY_CHOOSE_ALBUM_CATEGORY_DESC" extension="com_speasyimagegallery" showon="layout:albums">
 					<option value="">MOD_SPEASYIMAGEGALLERY_SELECT_CATEGORY</option>
 				</field>
+
+				<field name="albums_limit" type="number" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_LIMIT" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_LIMIT_DESC" default="8" showon="layout:albums" />
+
 				<field name="albums_column" type="list" label="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS" description="MOD_SPEASYIMAGEGALLERY_GLOBAL_COLUMNS_DESC" default="3" showon="layout:albums">
 					<option value="12">1</option>
 					<option value="6">2</option>

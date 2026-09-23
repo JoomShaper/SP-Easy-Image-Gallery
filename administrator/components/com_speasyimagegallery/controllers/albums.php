@@ -3,7 +3,7 @@
 /**
  * @package com_speasyimagegallery
  * @author JoomShaper http://www.joomshaper.com
- * @copyright Copyright (c) 2010 - 2024 JoomShaper
+ * @copyright Copyright (c) 2010 - 2025 JoomShaper
  * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
  */
 
@@ -13,20 +13,22 @@ defined('_JEXEC') or die('Restricted access');
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
-use Joomla\CMS\Filesystem\Folder;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\MVC\Controller\AdminController;
-
-jimport( 'joomla.application.component.helper' );
-jimport('joomla.filesystem.folder');
-jimport('joomla.filesystem.file');
-jimport('joomla.filter.output');
+use Joomla\Filesystem\File;
+use Joomla\Filesystem\Folder;
 
 class SpeasyimagegalleryControllerAlbums extends AdminController
 {
+	public function __construct($config = [])
+	{
+		parent::__construct($config);
+
+		// Needed for jgrid.featured to work
+		$this->registerTask('unfeature', 'feature');
+	}
 
 	public function getModel($name = 'Album', $prefix = 'SpeasyimagegalleryModel', $config = array('ignore_request' => true))
 	{
@@ -37,12 +39,18 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 	// Upload File
 	public function upload_image()
 	{
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$model = $this->getModel();
 		$user = Factory::getUser();
 		$input = Factory::getApplication()->input;
 		$album_id = $input->post->get('album_id', 0, 'INT');
 		$file = $input->files->get('image');
-		$lang = $input->get('lang','*','STRING');
+		$lang = $input->get('lang', '*', 'STRING');
 
 		$report = array();
 		$params = ComponentHelper::getParams('com_speasyimagegallery');
@@ -51,18 +59,15 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 		$authorised = $user->authorise('core.edit', 'com_speasyimagegallery') || $user->authorise('core.edit.own', 'com_speasyimagegallery');
 
-		if ($authorised !== true)
-		{
+		if ($authorised !== true) {
 			$report['status'] = false;
 			$report['output'] = Text::_('JERROR_ALERTNOAUTHOR');
 			echo json_encode($report);
 			die();
 		}
 
-		if (count($file))
-		{
-			if ($file['error'] == UPLOAD_ERR_OK)
-			{
+		if (count($file)) {
+			if ($file['error'] == UPLOAD_ERR_OK) {
 				$error = false;
 				$contentLength = (int) $_SERVER['CONTENT_LENGTH'];
 				$mediaHelper = new MediaHelper;
@@ -70,67 +75,82 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 				$memoryLimit = $mediaHelper->toBytes(ini_get('memory_limit'));
 
 				// Check for the total size of post back data.
-				if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit))
-				{
+				if (($postMaxSize > 0 && $contentLength > $postMaxSize) || ($memoryLimit != -1 && $contentLength > $memoryLimit)) {
 					$report['status'] = false;
 					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_TOTAL_SIZE_EXCEEDS');
 					$error = true;
 					echo json_encode($report);
-					die;
+					die();
 				}
 
 				$uploadMaxFileSize = $mediaHelper->toBytes(ini_get('upload_max_filesize'));
 
-				if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize))
-				{
+				if (($file['error'] == 1) || ($uploadMaxFileSize > 0 && $file['size'] > $uploadMaxFileSize)) {
 					$report['status'] = false;
 					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_LARGE');
 					$error = true;
 				}
 
 				// File formats
-				$accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp');
+				$accepted_formats = array('jpg', 'jpeg', 'png', 'gif', 'bmp', 'webp');
 
 				// Upload if no error found
-				if(!$error)
-				{
+				if (!$error) {
 					$date = Factory::getDate();
 
-					$file_ext = strtolower(File::getExt($file['name']));
+					$file_ext = strtolower(SpeasyimagegalleryHelper::getExt($file['name']));
 
-					if(in_array($file_ext, $accepted_formats))
-					{
-						$folder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
+					if (in_array($file_ext, $accepted_formats)) {
+				// Validate MIME type to prevent malicious file uploads
+				$finfo = new finfo(FILEINFO_MIME_TYPE);
+				$mimeType = $finfo->file($file['tmp_name']);
 
-						if(!Folder::exists( JPATH_ROOT . '/' . $folder ))
-						{
-							Folder::create(JPATH_ROOT . '/' . $folder, 0755);
-						}
+				$allowedMimes = [
+					'image/jpeg',
+					'image/png',
+					'image/gif',
+					'image/bmp',
+					'image/webp'
+				];
 
+				if (!in_array($mimeType, $allowedMimes)) {
+					$report['status'] = false;
+					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
+					echo json_encode($report);
+					die();
+				}
+
+				// Also verify it's a valid image using getimagesize
+				$imageInfo = @getimagesize($file['tmp_name']);
+				if ($imageInfo === false) {
+					$report['status'] = false;
+					$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
+					echo json_encode($report);
+					die();
+				}
+
+				$albumFolder = 'images/speasyimagegallery/albums/' . $album_id . '/images';
 						$name = $file['name'];
 						$path = $file['tmp_name'];
-						// Do no override existing file
 
 						$media_file = preg_replace("/[\s\-_]+/", "-", File::makeSafe(basename(strtolower($name))));
 						$i = 0;
 						do {
 							$base_name  = File::stripExt($media_file) . ($i ? "$i" : "");
-							$ext        = File::getExt($media_file);
+							$ext        = SpeasyimagegalleryHelper::getExt($media_file);
 							$media_name = $base_name . '.' . $ext;
 							$i++;
-							$dest       = JPATH_ROOT . '/' . $folder . '/' . $media_name;
-							$src        = $folder . '/'  . $media_name;
-						} while(file_exists($dest));
+							$dest       = JPATH_ROOT . '/' . $albumFolder . '/' . $media_name;
+						} while (file_exists($dest));
 						// End Do not override
 
-						if (File::upload($path, $dest, false, true))
-						{
+						if (File::upload($path, $dest, false, true)) {
 							$sources = SpeasyimagegalleryHelper::createThumbs($dest, array(
-								'mini'=> array(64, 64),
-								'thumb'=> array($width, $height),
-								'x_thumb'=> array($width*2, $height*2),
-								'y_thumb'=> array($width, $height*1.5)
-							), $folder, $base_name, $ext);
+								'mini' => array(64, 64),
+								'thumb' => array($width, $height),
+								'x_thumb' => array($width * 2, $height * 2),
+								'y_thumb' => array($width, $height * 1.5)
+							), $albumFolder, $base_name, $ext);
 
 							$report['thumb'] = Uri::root(true) . '/' . $sources['thumb'];
 
@@ -147,23 +167,17 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 							$report['status'] = true;
 							$report['output'] = LayoutHelper::render('image', array('image' => $inserted_image));
-						}
-						else
-						{
+						} else {
 							$report['status'] = false;
 							$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
 						}
-					}
-					else
-					{
+					} else {
 						$report['status'] = false;
 						$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_NOT_SUPPORTED');
 					}
 				}
 			}
-		}
-		else
-		{
+		} else {
 			$report['status'] = false;
 			$report['output'] = Text::_('COM_SPEASYIMAGEGALLERY_IMAGE_UPLOAD_FAILED');
 		}
@@ -176,6 +190,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Sort images
 	public function sort_images() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$orders = $input->get('orders', '', 'STRING');
 		$orders = explode(',', $orders);
@@ -186,6 +206,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Change Image state
 	public function image_state() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$state = $input->get('state', 'enabled', 'STRING');
@@ -196,6 +222,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Delete Image
 	public function image_delete() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$album_id = $input->get('album_id', '', 'INT');
@@ -207,6 +239,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// Edit Image
 	public function edit_image() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$album_id = $input->get('album_id', '', 'INT');
@@ -218,6 +256,12 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 
 	// save image
 	public function save_image() {
+		// Verify CSRF token
+		if (!Factory::getSession()->checkToken()) {
+			echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+			die();
+		}
+
 		$input = Factory::getApplication()->input;
 		$id = $input->get('id', '', 'INT');
 		$title = $input->get('title', '', 'STRING');
@@ -234,6 +278,22 @@ class SpeasyimagegalleryControllerAlbums extends AdminController
 		$model = $this->getModel();
 		$model->saveImage($attr);
 		die();
+	}
+
+	public function feature()
+	{
+		$input = $this->input;
+		$cid = (array) $input->get('cid', array(), 'array');
+		$value = ($this->getTask() == 'feature') ? 1 : 0;
+
+		$model = $this->getModel('Albums');
+
+		if ($model->setFeatured($cid, $value)) {
+			$message = $value ? 'Items featured' : 'Items unfeatured';
+			$this->setMessage(Text::_($message));
+		}
+
+		$this->setRedirect('index.php?option=com_speasyimagegallery&view=albums');
 	}
 
 }

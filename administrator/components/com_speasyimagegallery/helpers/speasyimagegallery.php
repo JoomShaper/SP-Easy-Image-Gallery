@@ -2,7 +2,7 @@
 /**
 * @package com_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2024 JoomShaper
+* @copyright Copyright (c) 2010 - 2025 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
@@ -11,7 +11,7 @@ defined('_JEXEC') or die('Restricted access');
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Access\Access;
-use Joomla\CMS\Language\Text;
+use Joomla\Registry\Registry;
 
 /**
  * SP easy image gallery helper class.
@@ -27,41 +27,14 @@ class SpeasyimagegalleryHelper
 	public static $extension = 'com_speasyimagegallery';
 
 	/**
-	 * Undocumented function
-	 *
-	 * @param	string $submenu	submenu name
-	 * @return void
-	 */
-	public static function addSubmenu($submenu)
-	{
-		JHtmlSidebar::addEntry(
-			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_ALBUMS'),
-			'index.php?option=com_speasyimagegallery',
-			$submenu == 'albums'
-		);
-
-		JHtmlSidebar::addEntry(
-			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_CATEGORIES'),
-			'index.php?option=com_categories&extension=com_speasyimagegallery',
-			$submenu == 'categories'
-		);
-
-		JHtmlSidebar::addEntry(
-			Text::_('COM_SPEASYIMAGEGALLERY_SUBMENU_OPTIONS'),
-			'index.php?option=com_config&view=component&component=com_speasyimagegallery',
-			$submenu == 'options'
-		);
-	}
-
-	/**
 	 * Actions
 	 *
 	 * @param	integer	$messageId	action id
-	 * @return	JObject
+	 * @return	Registry
 	 */
 	public static function getActions($messageId = 0)
 	{
-		$result	= new JObject;
+		$result	= new Registry();
 
 		if (empty($messageId))
 		{
@@ -121,6 +94,18 @@ class SpeasyimagegalleryHelper
 
 		list($originalWidth, $originalHeight) = getimagesize($src);
 
+		$info = getimagesize($src);
+		
+		if (!$info)
+		{
+			return false;
+		}
+
+		if (isset($info['mime']))
+		{
+			$ext = self::mimeToExt($info['mime'], $ext);
+		}
+
 		$img = "";
 
 		switch ($ext)
@@ -130,6 +115,7 @@ class SpeasyimagegalleryHelper
 			case 'jpg': $img = imagecreatefromjpeg($src); break;
 			case 'jpeg': $img = imagecreatefromjpeg($src); break;
 			case 'png': $img = imagecreatefrompng($src); break;
+			case 'webp': $img = imagecreatefromwebp($src); break;
 		}
 
 		if (count($sizes))
@@ -191,6 +177,7 @@ class SpeasyimagegalleryHelper
 					case 'jpg': imagejpeg($new, $dest); break;
 					case 'jpeg': imagejpeg($new, $dest); break;
 					case 'png': imagepng($new, $dest); break;
+					case 'webp': imagewebp($new, $dest); break;
 				}
 			}
 
@@ -199,5 +186,53 @@ class SpeasyimagegalleryHelper
 
 		return false;
 	}
+
+	/**
+	 * Convert mime type to file extension
+	 *
+	 * @param	string	$mime	mime type
+	 * @return	string|null
+	 */
+	private static function mimeToExt(string $mime, $originalExt)
+	{
+		$map = [
+			'image/jpeg' => $originalExt, 
+			'image/png'  => 'png',
+			'image/gif'  => 'gif',
+			'image/webp' => 'webp',
+			'image/bmp'  => 'bmp',
+        	'image/x-ms-bmp' => 'bmp',
+		];
+
+		return $map[strtolower($mime)] ?? null;
+	}
+
+	/**
+     * Gets the extension of a file name
+     *
+     * @param   string  $file  The file name
+     *
+     * @return  string  The file extension
+     *
+     * @since   2.1.1
+     */
+    public static function getExt($file)
+    {
+        // String manipulation should be faster than pathinfo() on newer PHP versions.
+        $dot = strrpos($file, '.');
+
+        if ($dot === false) {
+            return '';
+        }
+
+        $ext = substr($file, $dot + 1);
+
+        // Extension cannot contain slashes.
+        if (strpos($ext, '/') !== false || (DIRECTORY_SEPARATOR === '\\' && strpos($ext, '\\') !== false)) {
+            return '';
+        }
+
+        return $ext;
+    }
 
 }

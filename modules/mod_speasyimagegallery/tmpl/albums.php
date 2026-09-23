@@ -3,14 +3,14 @@
 * @package com_speasyimagegallery
 * @subpackage mod_speasyimagegallery
 * @author JoomShaper http://www.joomshaper.com
-* @copyright Copyright (c) 2010 - 2024 JoomShaper
+* @copyright Copyright (c) 2010 - 2025 JoomShaper
 * @license http://www.gnu.org/licenses/gpl-2.0.html GNU/GPLv2 or later
 */
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Uri\Uri;
+use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\Filesystem\File;
 use Joomla\CMS\HTML\HTMLHelper;
 
 // No direct access
