@@ -16,11 +16,13 @@ use Joomla\CMS\Router\Route;
 
 /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 $wa = $this->document->getWebAssetManager();
-$wa->useStyle('com_speasyimagegallery.admin-css')
+$wa->usePreset('dragula')
+   ->useStyle('com_speasyimagegallery.admin-css')
    ->useScript('com_speasyimagegallery.admin-album');
 
 HTMLHelper::_('behavior.formvalidator');
 HTMLHelper::_('behavior.keepalive');
+HTMLHelper::_('form.csrf');
 
 // Language strings
 Text::script('COM_SPEASYIMAGEGALLERY_DELETE_IMAGE_CONFIRM');

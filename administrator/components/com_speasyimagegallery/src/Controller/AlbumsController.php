@@ -12,15 +12,18 @@ namespace JoomShaper\Component\Speasyimagegallery\Administrator\Controller;
 defined('_JEXEC') or die;
 
 use finfo;
+use Joomla\CMS\Application\CMSWebApplicationInterface;
 use Joomla\CMS\Component\ComponentHelper;
 use Joomla\CMS\Factory;
 use Joomla\CMS\Helper\MediaHelper;
 use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 use Joomla\CMS\MVC\Controller\AdminController;
+use Joomla\CMS\MVC\Factory\MVCFactoryInterface;
 use Joomla\CMS\Session\Session;
 use Joomla\CMS\Uri\Uri;
 use Joomla\Filesystem\File;
+use Joomla\Input\Input;
 use JoomShaper\Component\Speasyimagegallery\Administrator\Helper\SpeasyimagegalleryHelper;
 
 /**
@@ -31,11 +34,18 @@ class AlbumsController extends AdminController
     /**
      * Constructor.
      *
-     * @param   array  $config  An optional associative array of configuration settings.
+     * @param   array                        $config   An optional associative array of configuration settings.
+     * @param   ?MVCFactoryInterface         $factory  The factory.
+     * @param   ?CMSWebApplicationInterface  $app      The Application for the dispatcher
+     * @param   ?Input                       $input    The Input object for the request
      */
-    public function __construct($config = [])
-    {
-        parent::__construct($config);
+    public function __construct(
+        $config = [],
+        ?MVCFactoryInterface $factory = null,
+        ?CMSWebApplicationInterface $app = null,
+        ?Input $input = null
+    ) {
+        parent::__construct($config, $factory, $app, $input);
 
         // Needed for jgrid.featured to work
         $this->registerTask('unfeature', 'feature');
@@ -55,20 +65,69 @@ class AlbumsController extends AdminController
     }
 
     /**
+     * Verify CSRF token and user edit authorization for AJAX operations
+     *
+     * @return bool
+     */
+    private function checkAccess(): bool
+    {
+        $validToken = Session::checkToken('request') || Session::checkToken();
+
+        if (!$validToken) {
+            $token = Session::getFormToken();
+            $customToken = $this->input->get('csrf_token', '', 'alnum');
+            $validToken = (!empty($customToken) && $customToken === $token);
+        }
+
+        if (!$validToken) {
+            echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
+            $this->app->close();
+            return false;
+        }
+
+        $user = $this->app->getIdentity() ?? Factory::getUser();
+
+        if (!$user || $user->guest) {
+            echo json_encode(['status' => false, 'output' => Text::_('JERROR_ALERTNOAUTHOR')]);
+            $this->app->close();
+            return false;
+        }
+
+        $albumId = (int) $this->input->get('album_id', 0, 'INT');
+        $assetName = $albumId > 0 ? 'com_speasyimagegallery.album.' . $albumId : 'com_speasyimagegallery';
+
+        $authorised = $user->authorise('core.edit', $assetName)
+            || $user->authorise('core.edit.own', $assetName)
+            || $user->authorise('core.edit', 'com_speasyimagegallery')
+            || $user->authorise('core.edit.own', 'com_speasyimagegallery')
+            || $user->authorise('core.admin', 'com_speasyimagegallery');
+
+        if (!$authorised) {
+            echo json_encode(['status' => false, 'output' => Text::_('JERROR_ALERTNOAUTHOR')]);
+            $this->app->close();
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Upload File via AJAX
      *
      * @return void
      */
     public function upload_image(): void
     {
-        // Verify CSRF token
-        if (!Session::checkToken()) {
-            echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
-            $this->app->close();
-        }
+        $this->checkAccess();
 
         $model = $this->getModel();
-        $user = $this->app->getIdentity();
+
+        if (!$model) {
+            echo json_encode(['status' => false, 'output' => Text::_('JERROR_ALERTNOAUTHOR')]);
+            $this->app->close();
+            return;
+        }
+
         $input = $this->input;
         $album_id = $input->post->get('album_id', 0, 'INT');
         $file = $input->files->get('image');
@@ -78,15 +137,6 @@ class AlbumsController extends AdminController
         $params = ComponentHelper::getParams('com_speasyimagegallery');
         $width = (int) $params->get('thumb_width', 400);
         $height = (int) $params->get('thumb_height', 400);
-
-        $authorised = $user->authorise('core.edit', 'com_speasyimagegallery') || $user->authorise('core.edit.own', 'com_speasyimagegallery');
-
-        if ($authorised !== true) {
-            $report['status'] = false;
-            $report['output'] = Text::_('JERROR_ALERTNOAUTHOR');
-            echo json_encode($report);
-            $this->app->close();
-        }
 
         if (!empty($file) && is_array($file)) {
             if ($file['error'] == UPLOAD_ERR_OK) {
@@ -209,16 +259,17 @@ class AlbumsController extends AdminController
      */
     public function sort_images(): void
     {
-        if (!Session::checkToken()) {
-            echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
-            $this->app->close();
-        }
+        $this->checkAccess();
 
         $input = $this->input;
         $orders = $input->get('orders', '', 'STRING');
         $orders = explode(',', $orders);
         $model = $this->getModel();
-        $model->save_ajax_orderings($orders);
+
+        if ($model) {
+            $model->save_ajax_orderings($orders);
+        }
+
         $this->app->close();
     }
 
@@ -229,16 +280,17 @@ class AlbumsController extends AdminController
      */
     public function image_state(): void
     {
-        if (!Session::checkToken()) {
-            echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
-            $this->app->close();
-        }
+        $this->checkAccess();
 
         $input = $this->input;
         $id = $input->get('id', 0, 'INT');
         $state = $input->get('state', 'enabled', 'STRING');
         $model = $this->getModel();
-        $model->change_image_state($id, $state);
+
+        if ($model) {
+            $model->change_image_state($id, $state);
+        }
+
         $this->app->close();
     }
 
@@ -249,16 +301,13 @@ class AlbumsController extends AdminController
      */
     public function image_delete(): void
     {
-        if (!Session::checkToken()) {
-            echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
-            $this->app->close();
-        }
+        $this->checkAccess();
 
         $input = $this->input;
         $id = $input->get('id', 0, 'INT');
         $album_id = $input->get('album_id', 0, 'INT');
         $model = $this->getModel();
-        $result = $model->image_delete($id, $album_id);
+        $result = $model ? $model->image_delete($id, $album_id) : false;
         echo json_encode($result);
         $this->app->close();
     }
@@ -270,15 +319,19 @@ class AlbumsController extends AdminController
      */
     public function edit_image(): void
     {
-        if (!Session::checkToken()) {
-            echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
-            $this->app->close();
-        }
+        $this->checkAccess();
 
         $input = $this->input;
         $id = $input->get('id', 0, 'INT');
         $album_id = $input->get('album_id', 0, 'INT');
         $model = $this->getModel();
+
+        if (!$model) {
+            echo json_encode(['status' => false, 'output' => Text::_('JERROR_ALERTNOAUTHOR')]);
+            $this->app->close();
+            return;
+        }
+
         $image = $model->getImages($album_id, $id);
         echo LayoutHelper::render('edit', ['image' => $image]);
         $this->app->close();
@@ -291,10 +344,7 @@ class AlbumsController extends AdminController
      */
     public function save_image(): void
     {
-        if (!Session::checkToken()) {
-            echo json_encode(['status' => false, 'output' => Text::_('JINVALID_TOKEN')]);
-            $this->app->close();
-        }
+        $this->checkAccess();
 
         $input = $this->input;
         $id = $input->get('id', 0, 'INT');
@@ -310,7 +360,15 @@ class AlbumsController extends AdminController
         ];
 
         $model = $this->getModel();
+
+        if (!$model) {
+            echo json_encode(['status' => false, 'output' => Text::_('JERROR_ALERTNOAUTHOR')]);
+            $this->app->close();
+            return;
+        }
+
         $model->saveImage($attr);
+        echo json_encode(['status' => true]);
         $this->app->close();
     }
 

@@ -15,7 +15,9 @@
       "type": "script",
       "uri": "com_speasyimagegallery/admin-album.js",
       "dependencies": [
-        "core"
+        "core",
+        "jquery",
+        "dragula"
       ],
       "attributes": {
         "defer": true

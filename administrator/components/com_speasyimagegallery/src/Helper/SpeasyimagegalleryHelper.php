@@ -64,20 +64,27 @@ class SpeasyimagegalleryHelper
      * @param   string  $type  'major', 'minor', or 'patch'
      * @return  int
      */
-    public static function getVersion(string $type = 'major'): int
-    {
-        $version = new Version();
+public static function getVersion($type = 'major')
+	{
+		$version = JVERSION;
+		list ($major, $minor, $patch) = explode('.', $version);
 
-        switch ($type) {
-            case 'minor':
-                return $version->getMinor();
-            case 'patch':
-                return (int) $version->getPatch();
-            case 'major':
-            default:
-                return (int) $version->getMajor();
-        }
-    }
+		if (strpos($patch, '-') !== false)
+		{
+			$patch = explode('-', $patch)[0];
+		}
+
+		switch ($type)
+		{
+			case 'minor':
+				return (int) $minor;
+			case 'patch':
+				return (int) $patch;
+			case 'major':
+			default:
+				return (int) $major;
+		}
+	}
 
     /**
      * Create thumbnails
