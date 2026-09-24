@@ -118,7 +118,6 @@
                     '<div class="speasyimagegallery-gallery-loading"></div>',
                   ));
                 var f = a("<img />")
-                  .attr("src", e.attr("href"))
                   .on("load", function () {
                     if (
                       this.complete &&
@@ -138,7 +137,7 @@
                             '<img class="speasyimagegallery-image" src="' +
                             f[0].src +
                             '" alt="' +
-                            e.attr("data-alt") +
+                            (e.attr("data-alt") || e.find("img").attr("alt") || "") +
                             '">'),
                             (c.showCounter ||
                               (c.showTitle && e.attr("data-title")) ||
@@ -176,7 +175,12 @@
                         },
                       );
                     } else;
-                  });
+                  })
+                  .attr("src", e.attr("href"));
+
+                if (f[0].complete && f[0].naturalWidth !== 0) {
+                  f.trigger("load");
+                }
               }
             }));
         };

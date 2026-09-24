@@ -54,7 +54,7 @@ if ($gutter || $gutter_sm || $gutter_xs) {
 }
 ?>
 
-<div class="speasyimagegallery-album-view" <?php echo $gallery_attribs; ?>>
+<div class="speasyimagegallery-album-view">
 	<?php if ($this->params->get('show_page_heading', 1)) : ?>
 		<div class="page-header">
 			<h1><?php echo $this->escape($this->params->get('page_heading')); ?></h1>
@@ -67,14 +67,17 @@ if ($gutter || $gutter_sm || $gutter_xs) {
 		</div>
 	<?php endif; ?>
 
-	<?php
-	if (!empty($this->item->images)) :
-		echo LayoutHelper::render('gallery.' . $layout . '.row', [
-			'images' => $this->item->images,
-			'params' => $this->params,
-			'item'   => $this->item
-		], JPATH_ROOT . '/components/com_speasyimagegallery/layouts');
-	else : ?>
+	<?php if (!empty($this->item->images)) : ?>
+		<div class="speasyimagegallery-gallery clearfix" <?php echo $gallery_attribs; ?>>
+			<?php
+			echo LayoutHelper::render('gallery.' . $layout . '.row', [
+				'images' => $this->item->images,
+				'params' => $this->params,
+				'item'   => $this->item
+			], JPATH_ROOT . '/components/com_speasyimagegallery/layouts');
+			?>
+		</div>
+	<?php else : ?>
 		<div class="alert alert-info">
 			<?php echo Text::_('COM_SPEASYIMAGEGALLERY_NO_IMAGES'); ?>
 		</div>
