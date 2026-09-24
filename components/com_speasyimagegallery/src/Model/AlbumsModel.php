@@ -88,9 +88,10 @@ class AlbumsModel extends ListModel
 
         // Filter by language
         $langTag = Factory::getApplication()->getLanguage()->getTag();
+        $allLanguages = '*';
         $query->where($db->quoteName('a.language') . ' IN (:lang, :all)')
             ->bind(':lang', $langTag)
-            ->bind(':all', '*');
+            ->bind(':all', $allLanguages);
 
         $query->where($db->quoteName('a.published') . ' = 1');
         $query->order($db->quoteName('a.ordering') . ' ASC');
@@ -133,12 +134,13 @@ class AlbumsModel extends ListModel
     public function getCategories(int $catid): array
     {
         $db = $this->getDatabase();
+        $extension = 'com_speasyimagegallery';
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__categories'))
             ->where($db->quoteName('extension') . ' = :ext')
             ->where($db->quoteName('parent_id') . ' = :parent_id')
-            ->bind(':ext', 'com_speasyimagegallery')
+            ->bind(':ext', $extension)
             ->bind(':parent_id', $catid, ParameterType::INTEGER);
 
         $db->setQuery($query);

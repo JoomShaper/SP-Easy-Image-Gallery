@@ -67,15 +67,17 @@ class AlbumTable extends Table
         }
 
         // Verify that the alias is unique
+        $alias = (string) $this->alias;
         $query = $this->getDatabase()->getQuery(true)
             ->select($this->getDatabase()->quoteName('id'))
             ->from($this->getDatabase()->quoteName('#__speasyimagegallery_albums'))
             ->where($this->getDatabase()->quoteName('alias') . ' = :alias')
-            ->bind(':alias', $this->alias);
+            ->bind(':alias', $alias);
 
         if ($this->id) {
+            $id = (int) $this->id;
             $query->where($this->getDatabase()->quoteName('id') . ' != :id')
-                ->bind(':id', $this->id, ParameterType::INTEGER);
+                ->bind(':id', $id, ParameterType::INTEGER);
         }
 
         $this->getDatabase()->setQuery($query);

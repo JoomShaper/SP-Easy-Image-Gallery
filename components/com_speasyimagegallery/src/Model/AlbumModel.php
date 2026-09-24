@@ -79,9 +79,10 @@ class AlbumModel extends ItemModel
 
                 if ($this->getState('filter.language')) {
                     $langTag = Factory::getApplication()->getLanguage()->getTag();
+                    $allLanguages = '*';
                     $query->where($db->quoteName('a.language') . ' IN (:lang, :all)')
                         ->bind(':lang', $langTag)
-                        ->bind(':all', '*');
+                        ->bind(':all', $allLanguages);
                 }
 
                 $db->setQuery($query);

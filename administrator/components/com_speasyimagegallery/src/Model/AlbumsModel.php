@@ -175,10 +175,12 @@ class AlbumsModel extends ListModel
             $cat = $db->loadObject();
 
             if ($cat) {
+                $lft = (int) $cat->lft;
+                $rgt = (int) $cat->rgt;
                 $query->where($db->quoteName('c.lft') . ' >= :lft')
                     ->where($db->quoteName('c.rgt') . ' <= :rgt')
-                    ->bind(':lft', $cat->lft, ParameterType::INTEGER)
-                    ->bind(':rgt', $cat->rgt, ParameterType::INTEGER);
+                    ->bind(':lft', $lft, ParameterType::INTEGER)
+                    ->bind(':rgt', $rgt, ParameterType::INTEGER);
             }
         } elseif (is_array($categoryId) && !empty($categoryId)) {
             $categoryId = ArrayHelper::toInteger($categoryId);

@@ -41,12 +41,13 @@ class com_speasyimagegalleryInstallerScript
                 $client = (string) $module->attributes()->client;
 
                 $db    = Factory::getContainer()->get(DatabaseInterface::class);
+                $type  = 'module';
                 $query = $db->getQuery(true)
                     ->select($db->quoteName('extension_id'))
                     ->from($db->quoteName('#__extensions'))
                     ->where($db->quoteName('type') . ' = :type')
                     ->where($db->quoteName('element') . ' = :element')
-                    ->bind(':type', 'module')
+                    ->bind(':type', $type)
                     ->bind(':element', $name);
 
                 $db->setQuery($query);

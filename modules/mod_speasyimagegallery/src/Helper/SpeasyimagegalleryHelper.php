@@ -13,29 +13,42 @@ defined('_JEXEC') or die;
 
 use Joomla\CMS\Factory;
 use Joomla\CMS\Router\Route;
+use Joomla\Database\DatabaseAwareInterface;
+use Joomla\Database\DatabaseAwareTrait;
 use Joomla\Database\DatabaseInterface;
 use Joomla\Database\ParameterType;
 
 /**
  * Helper class for mod_speasyimagegallery.
  */
-class SpeasyimagegalleryHelper
+class SpeasyimagegalleryHelper implements DatabaseAwareInterface
 {
-    /**
-     * Database connector.
-     *
-     * @var DatabaseInterface
-     */
-    private DatabaseInterface $db;
+    use DatabaseAwareTrait;
 
     /**
      * Constructor.
      *
-     * @param   DatabaseInterface|null  $db  Database connector.
+     * @param   array|DatabaseInterface|null  $config  Configuration array or Database connector.
      */
-    public function __construct(?DatabaseInterface $db = null)
+    public function __construct($config = [])
     {
-        $this->db = $db ?: Factory::getContainer()->get(DatabaseInterface::class);
+        if ($config instanceof DatabaseInterface) {
+            $this->setDatabase($config);
+        }
+    }
+
+    /**
+     * Get the database connector.
+     *
+     * @return  DatabaseInterface
+     */
+    public function getDatabase(): DatabaseInterface
+    {
+        if (!$this->databaseAwareTraitDatabase) {
+            $this->databaseAwareTraitDatabase = Factory::getContainer()->get(DatabaseInterface::class);
+        }
+
+        return $this->databaseAwareTraitDatabase;
     }
 
     /**
@@ -53,7 +66,7 @@ class SpeasyimagegalleryHelper
         $featuredOnly = (int) $params->get('show_featured_only', 0);
         $limit = (int) $params->get('albums_limit', 0);
 
-        $db = $this->db;
+        $db = $this->getDatabase();
         $query = $db->getQuery(true);
 
         $query->select('a.*')
@@ -92,9 +105,10 @@ class SpeasyimagegalleryHelper
 
         // Filter by language
         $langTag = $app->getLanguage()->getTag();
+        $allLanguages = '*';
         $query->where($db->quoteName('a.language') . ' IN (:lang, :all)')
             ->bind(':lang', $langTag)
-            ->bind(':all', '*');
+            ->bind(':all', $allLanguages);
 
         $query->where($db->quoteName('a.published') . ' = 1');
         $query->order($db->quoteName('a.ordering') . ' ASC');
@@ -127,7 +141,7 @@ class SpeasyimagegalleryHelper
         $album_id = (int) $params->get('album_id', 0);
         $limit    = (int) $params->get('album_limit', 8);
 
-        $db = $this->db;
+        $db = $this->getDatabase();
         $query = $db->getQuery(true)
             ->select('a.*')
             ->from($db->quoteName('#__speasyimagegallery_images', 'a'))
@@ -157,7 +171,7 @@ class SpeasyimagegalleryHelper
         }
 
         $album_id = (int) $params->get('album_id', 0);
-        $db = $this->db;
+        $db = $this->getDatabase();
 
         $query = $db->getQuery(true)
             ->select($db->quoteName('description'))
@@ -177,13 +191,15 @@ class SpeasyimagegalleryHelper
      */
     private function getItemID(): string
     {
-        $db = $this->db;
+        $db = $this->getDatabase();
+        $link = '%option=com_speasyimagegallery%';
+
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__menu'))
             ->where($db->quoteName('link') . ' LIKE :link')
             ->where($db->quoteName('published') . ' = 1')
-            ->bind(':link', '%option=com_speasyimagegallery%');
+            ->bind(':link', $link);
 
         $db->setQuery($query);
         $result = $db->loadResult();
@@ -225,13 +241,15 @@ class SpeasyimagegalleryHelper
      */
     private function getCategories(int $catid): array
     {
-        $db = $this->db;
+        $db = $this->getDatabase();
+        $extension = 'com_speasyimagegallery';
+
         $query = $db->getQuery(true)
             ->select($db->quoteName('id'))
             ->from($db->quoteName('#__categories'))
             ->where($db->quoteName('extension') . ' = :ext')
             ->where($db->quoteName('parent_id') . ' = :parent_id')
-            ->bind(':ext', 'com_speasyimagegallery')
+            ->bind(':ext', $extension)
             ->bind(':parent_id', $catid, ParameterType::INTEGER);
 
         $db->setQuery($query);

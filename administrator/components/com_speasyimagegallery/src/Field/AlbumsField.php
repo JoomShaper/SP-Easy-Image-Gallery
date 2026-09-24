@@ -39,8 +39,7 @@ class AlbumsField extends ListField
         $query = $db->getQuery(true)
             ->select([$db->quoteName('id', 'value'), $db->quoteName('title', 'text')])
             ->from($db->quoteName('#__speasyimagegallery_albums'))
-            ->where($db->quoteName('published') . ' = :published')
-            ->bind(':published', 1, ParameterType::INTEGER)
+            ->where($db->quoteName('published') . ' = 1')
             ->order('ordering DESC');
 
         $db->setQuery($query);
