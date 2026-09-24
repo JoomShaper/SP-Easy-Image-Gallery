@@ -9,6 +9,7 @@
 
 defined('_JEXEC') or die;
 
+use Joomla\CMS\Language\Text;
 use Joomla\CMS\Layout\LayoutHelper;
 
 /** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
@@ -67,9 +68,15 @@ if ($gutter || $gutter_sm || $gutter_xs) {
 	<?php endif; ?>
 
 	<?php
-	echo LayoutHelper::render('gallery.' . $layout . '.default', [
-		'item'   => $this->item,
-		'params' => $this->params
-	], JPATH_ROOT . '/components/com_speasyimagegallery/layouts');
-	?>
+	if (!empty($this->item->images)) :
+		echo LayoutHelper::render('gallery.' . $layout . '.row', [
+			'images' => $this->item->images,
+			'params' => $this->params,
+			'item'   => $this->item
+		], JPATH_ROOT . '/components/com_speasyimagegallery/layouts');
+	else : ?>
+		<div class="alert alert-info">
+			<?php echo Text::_('COM_SPEASYIMAGEGALLERY_NO_IMAGES'); ?>
+		</div>
+	<?php endif; ?>
 </div>
