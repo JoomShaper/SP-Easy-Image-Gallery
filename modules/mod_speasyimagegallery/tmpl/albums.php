@@ -8,17 +8,17 @@
 */
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
-use Joomla\Filesystem\File;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
+use Joomla\Filesystem\File;
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-HTMLHelper::_('jquery.framework');
-$doc = Factory::getDocument();
-$doc->addStylesheet( Uri::base(true) . '/components/com_speasyimagegallery/assets/css/style-min.css' );
+/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
+$doc = Factory::getApplication()->getDocument();
+$wa  = $doc->getWebAssetManager();
+$wa->getRegistry()->addExtensionRegistryFile('com_speasyimagegallery');
+$wa->useStyle('com_speasyimagegallery.site-css');
 
 $col = 'speasyimagegallery-col-md-' . $params->get('albums_column', 4);
 $col .= ' speasyimagegallery-col-sm-' . $params->get('albums_column_sm', 3);

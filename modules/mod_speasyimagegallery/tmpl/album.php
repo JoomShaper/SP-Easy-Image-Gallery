@@ -8,21 +8,21 @@
 */
 
 use Joomla\CMS\Factory;
-use Joomla\CMS\Uri\Uri;
 use Joomla\CMS\Language\Text;
-use Joomla\CMS\HTML\HTMLHelper;
 use Joomla\CMS\Layout\FileLayout;
 
 // No direct access
 defined('_JEXEC') or die('Restricted access');
 
-HTMLHelper::_('jquery.framework');
+/** @var \Joomla\CMS\WebAsset\WebAssetManager $wa */
 $app = Factory::getApplication();
-$option = $app->input->get('option', '', 'STRING');
-$view = $app->input->get('view', '', 'STRING');
-$doc = Factory::getDocument();
-$doc->addStylesheet( Uri::base(true) . '/components/com_speasyimagegallery/assets/css/style-min.css' );
-$doc->addScript( Uri::base(true) . '/components/com_speasyimagegallery/assets/js/script-min.js' );
+$doc = $app->getDocument();
+$wa  = $doc->getWebAssetManager();
+$wa->getRegistry()->addExtensionRegistryFile('com_speasyimagegallery');
+
+$wa->useStyle('com_speasyimagegallery.site-css')
+   ->useScript('com_speasyimagegallery.site-gallery');
+
 $layout = $params->get('album_layout', 'default');
 $show_title = $params->get('show_title', 1);
 $show_desc = $params->get('show_desc', 1);
@@ -33,11 +33,7 @@ $gutter_sm = $params->get('album_gutter_sm', 15)/2;
 $gutter_xs = $params->get('album_gutter_xs', 10)/2;
 $id = '#mod-speasyimagegallery-' . $module->id;
 
-$gallery_attribs = '';
-if((($option != 'com_speasyimagegallery') && ($view != 'album')) || (($option == 'com_speasyimagegallery') && ($view == 'albums'))) {
-  $doc->addScript( Uri::base(true) . '/components/com_speasyimagegallery/assets/js/speasygallery-main.js' );
-  $gallery_attribs = 'data-showtitle="'. $show_title . '" data-showdescription="' .$show_desc .'" data-showcounter="' . $show_count . '"';
-}
+$gallery_attribs = 'data-showtitle="' . $show_title . '" data-showdescription="' . $show_desc . '" data-showcounter="' . $show_count . '"';
 
 // Stylesheet
 if($gutter || $gutter_sm || $gutter_xs) {

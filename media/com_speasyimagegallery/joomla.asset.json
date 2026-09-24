@@ -30,6 +30,9 @@
       "name": "com_speasyimagegallery.site-vendor",
       "type": "script",
       "uri": "com_speasyimagegallery/site-vendor.js",
+      "dependencies": [
+        "jquery"
+      ],
       "attributes": {
         "defer": true
       }
